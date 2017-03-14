@@ -1,0 +1,1219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{da7d73b5-1368-4a8f-b16a-e6722acaab9c}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{58814aee-f327-4dbb-ba82-17d7ad310222}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{2a218069-afb4-4db6-9b9f-62abc615ada3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{512899be-1d55-4b16-a858-0e9e88ce27dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Basic">
+      <UniqueIdentifier>{f8d64bf3-deba-4305-91c9-09403d807f38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools">
+      <UniqueIdentifier>{69ceee34-d2bf-49da-a87d-6777279496c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Algorithm">
+      <UniqueIdentifier>{907531af-f4f1-4874-a3f3-2dd405074c12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualize">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cxx;c;def</Extensions>
+    </Filter>
+    <Filter Include="Tools\global_datas">
+      <UniqueIdentifier>{df627ef3-bc9e-49fe-8a0e-64433c5fcb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\toolbar">
+      <UniqueIdentifier>{32ada2bc-c1ed-4af7-af76-e16b2d0c82e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\bullet">
+      <UniqueIdentifier>{7f299ada-3e0e-45a2-af8c-582e32430969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\meshes">
+      <UniqueIdentifier>{3fc71c3a-1b57-40bb-9226-52f9fe735ff4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\parser">
+      <UniqueIdentifier>{ef3d6278-a131-4122-a015-409a55bc9866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\rendering">
+      <UniqueIdentifier>{fa0ad8c3-7e2f-4efb-9fc1-3520aa71d5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\control">
+      <UniqueIdentifier>{8720c291-d79b-4de7-8bc6-e44b20195511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\animation">
+      <UniqueIdentifier>{91923195-695d-46e4-9061-76f829520d82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\toolbar\gizmo">
+      <UniqueIdentifier>{c5d70daa-ea6a-4137-b4ff-69009f46d6c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\toolbar\io_selection">
+      <UniqueIdentifier>{64b22438-6ecc-4a50-ab92-607f8da1add1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\bullet\importer">
+      <UniqueIdentifier>{6382cdde-091d-42e3-a162-e2ff18f22af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\bullet\ThirdPartyLibs">
+      <UniqueIdentifier>{7570934b-d037-4699-ab94-d6e28d933a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\bullet\utils">
+      <UniqueIdentifier>{29d7d89e-aa41-437b-bfeb-05d615a5aa55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\bullet\extras">
+      <UniqueIdentifier>{de999607-61a9-4226-a8a8-ffa8c2982cf9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GeneratedFiles\qrc_main_window.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="file_system.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="globals.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="sample_set.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="sample.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="file_io.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="vertex.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="console.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="color_table.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="select_tool.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="sample_properity.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="caculateNorm.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="triangle.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="tracer.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="merge_write_utilities.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="PLYReader.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BASEReader.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="maching_state.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="GlobalObject.cpp">
+      <Filter>Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_caculateNorm.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_dlg_graphcuts.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_dlg_Jlinkage.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_dlg_propagate.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GLLogStream.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_LayerDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_maching_state.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_main_window.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_paint_canvas.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_savePLYDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_saveSnapshotDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_caculateNorm.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_dlg_graphcuts.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_dlg_Jlinkage.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_dlg_propagate.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GLLogStream.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_LayerDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_maching_state.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_main_window.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_paint_canvas.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_savePLYDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_saveSnapshotDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_toolbar.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_toolbar_frames.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_toolbar_painting.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_fitting.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_frame.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_gizmo.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_painting_floats.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_render_mode.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_selection.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_widget_viewports.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="global_datas\toolglobals.cpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_OGL_viewports_skin2.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="bullet\BasicDemo.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\BulletOpenGLApplication.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\DebugDrawer.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\GameObject.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\GLInstancingRenderer.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\LoadShader.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\SimpleCamera.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\GLRenderToTexture.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Glew\glew.c">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\CollisionShape2TriangleMesh.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_OGL_viewports_skin2.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_toolbar.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_toolbar_frames.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_toolbar_painting.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_fitting.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_frame.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_gizmo.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_painting_floats.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_render_mode.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_selection.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_widget_viewports.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_standardCamera.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_standardCamera.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="manipulator.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_buffer_objects.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_half_edge.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_static.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_unpacked_attr.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_utils.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\gl_mesh.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_utils_loader.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\endianess.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\loader_mesh.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\loader_skel.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\obj_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\off_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\point_cache_export.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\ppm_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\tex_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\weights_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="meshes\mesh_materials.cpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\depth_peeling.cpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\opengl_stuff.cpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\rendering.cpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\render_types.cpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\OGL_viewports_skin2.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\LayerDialog.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\paint_canvas.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\saveSnapshotDialog.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\savePLYDialog.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\main_window.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\dlg_propagate.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\cameraViewer.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\standardCamera.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\GLLogStream.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\merge_propagate_write.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\toolbar.cpp">
+      <Filter>Tools\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\toolbar_frames.cpp">
+      <Filter>Tools\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\toolbar_painting.cpp">
+      <Filter>Tools\toolbar</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\main_window_menu_load_save.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="control\animated_mesh_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\color_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\cuda_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\debug_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\graph_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="control\skeleton_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="global_datas\cuda_globals.cpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClCompile>
+    <ClCompile Include="main_window_swithces.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\animesh.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\bone.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\gl_skeleton.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\graph.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\skeleton.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\kinematic.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_popup_ok_cancel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\camera.cpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\fbx_loader.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="parsers\fbx_utils.cpp">
+      <Filter>Geometry\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="main_window_display.cpp">
+      <Filter>Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\gizmo\gizmo_rot.cpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\gizmo\gizmo_trackball.cpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\gizmo\gizmo_trans.cpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\io_selection\IO_skeleton.cpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\io_selection\IO_interface_skin.cpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\io_selection\IO_graph.cpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\toolbars\io_selection\IO_mesh_edit.cpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\animesh_projection.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\animesh_colors.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Rigidbodydemo.cpp">
+      <Filter>Geometry\bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Importers\ImportMeshUtility\b3ImportMeshUtility.cpp">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\ThirdPartyLibs\stb_image\stb_image.cpp">
+      <Filter>Geometry\bullet\ThirdPartyLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\ThirdPartyLibs\Wavefront\tiny_obj_loader.cpp">
+      <Filter>Geometry\bullet\ThirdPartyLibs</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Importers\ImportObjDemo\LoadMeshFromObj.cpp">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Importers\ImportObjDemo\Wavefront2GLInstanceGraphicsShape.cpp">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClCompile>
+    <ClCompile Include="bullet\Utils\b3ResourcePath.cpp">
+      <Filter>Geometry\bullet\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bullet3-2.85.1\Extras\ConvexDecomposition\cd_wavefront.cpp">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bullet3-2.85.1\Extras\HACD\hacdGraph.cpp">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bullet3-2.85.1\Extras\HACD\hacdHACD.cpp">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bullet3-2.85.1\Extras\HACD\hacdICHull.cpp">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClCompile>
+    <ClCompile Include="..\bullet3-2.85.1\Extras\HACD\hacdManifoldMesh.cpp">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_popup_ok_cancel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="control\example_mesh_ctrl.cpp">
+      <Filter>Geometry\control</Filter>
+    </ClCompile>
+    <ClCompile Include="animation\animesh_rig.cpp">
+      <Filter>Geometry\animation</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="main_window.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_dlg_clustering.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_main_window.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="box.h">
+      <Filter>Geometry</Filter>
+    </CustomBuild>
+    <CustomBuild Include="sample.h">
+      <Filter>Geometry</Filter>
+    </CustomBuild>
+    <CustomBuild Include="sample_set.h">
+      <Filter>Geometry</Filter>
+    </CustomBuild>
+    <CustomBuild Include="selectable_item.h">
+      <Filter>Geometry</Filter>
+    </CustomBuild>
+    <CustomBuild Include="vertex.h">
+      <Filter>Geometry</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\ICP.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="color_table.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="console.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="file_io.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="file_system.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pool_allocator.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\kdtree.hpp">
+      <Filter>Basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="basic_types.h">
+      <Filter>Basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="globals.h">
+      <Filter>Basic</Filter>
+    </CustomBuild>
+    <CustomBuild Include="select_tool.h">
+      <Filter>Tools</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tool.h">
+      <Filter>Tools</Filter>
+    </CustomBuild>
+    <CustomBuild Include="tracer.h">
+      <Filter>Tools</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_clustering.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\J_linkage.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\J_linkage_II.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\T_linkage.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="octree.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="sample_properity.h">
+      <Filter>Utility</Filter>
+    </CustomBuild>
+    <CustomBuild Include="bfs_classifier.hpp">
+      <Filter>Algorithm</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_Jlinkage.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_testUi.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_J-linkageAl.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_JLinkageDlg.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_graphcuts.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_dlg_graphcut.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GeneratedFiles\ui_GraphCutsDlg.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_fitPlan.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="caculateNorm.h">
+      <Filter>Algorithm</Filter>
+    </CustomBuild>
+    <CustomBuild Include="maching_state.h">
+      <Filter>Algorithm</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\savesnapshotDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_clustering.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_graphcut.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_plan.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\GraphCutsDlg.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\J-linkageAl.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\JLinkageDlg.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\layerDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\main_window_skin.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\papagate_dialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\savePlyDialog.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\tt.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\testUi.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\OGL_viewports_skin2.hpp">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\LayerDialog.h">
+      <Filter>Algorithm</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\paint_canvas.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\saveSnapshotDialog.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\savePLYDialog.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\main_window.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\dlg_propagate.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\GLLogStream.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\standardCamera.h">
+      <Filter>Visualize</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\toolbar.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\toolbar_frames.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\toolbar_painting.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_fitting.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_fitting.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_frame.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_frame.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_gizmo.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_gizmo.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_painting_floats.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_painting_floats.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_render_mode.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_render_mode.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_selection.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_selection.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_viewports.hpp">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\toolbars\widget_viewports.ui">
+      <Filter>Tools\toolbar</Filter>
+    </CustomBuild>
+    <CustomBuild Include="main_window.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\tools\popup_ok_cancel.hpp">
+      <Filter>Tools</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InOutputDefinition.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphMatching.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_papagate_dialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BoostGraph.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_layerDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="merge_write_utilities.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_savesnapshotDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_savePlyDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="triangle.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="BASEReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PLYReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GlobalObject.h">
+      <Filter>Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_viewports.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_fitting.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_gizmo.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_painting_floats.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_render_mode.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_selection.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\toolglobals.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_widget_frame.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\BasicDemo.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\BulletOpenGLApplication.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\DebugDrawer.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\GameObject.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\OpenGLMotionState.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\CommonRenderInterface.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\GLInstancingRenderer.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\LoadShader.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\OpenGLInclude.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\GLInstanceRendererInternalData.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\SimpleCamera.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\CommonCameraInterface.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\GLRenderToTexture.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\CollisionShape2TriangleMesh.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\GLInstanceGraphicsShape.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="skinning.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="manipulator.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\g_paths.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\g_scene_tree.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\g_shaders.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\g_textures.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="skeleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bone.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="bone_type.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="joint_type.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_buffer_objects.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_half_edge.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_materials.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_static.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_types.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_unpacked_attr.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_utils.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\gl_mesh.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="meshes\mesh_utils_loader.hpp">
+      <Filter>Geometry\meshes</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\endianess.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\generic_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\loader_anims.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\loader_enum.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\loader_mesh.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\loader_skel.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\obj_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\off_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\point_cache_export.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\ppm_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\tex_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\weights_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\depth_peeling.hpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\opengl_stuff.hpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\rendering.hpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\render_types.h">
+      <Filter>Geometry\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\QGlviewerCallBacks.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\saveplysetting.h">
+      <Filter>Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\cameraViewer.h">
+      <Filter>Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\merge_propagate_write.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\snapshotsetting.h">
+      <Filter>Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\OGL_widget_enum.hpp">
+      <Filter>Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\IO_selection_enum.hpp">
+      <Filter>Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="control\animated_mesh_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\color_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\cuda_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\debug_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\display_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\graph_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\path_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\potential_plane_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="control\skeleton_ctrl.hpp">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="global_datas\cuda_globals.hpp">
+      <Filter>Tools\global_datas</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\tools\clickable_frame.hpp">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\animesh.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\animesh_enum.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\bone.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\bone_type.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\gl_skeleton.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\graph.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\joint_type.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\skeleton.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\kinematic.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering\camera.hpp">
+      <Filter>Geometry\rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\fbx_loader.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="parsers\fbx_utils.hpp">
+      <Filter>Geometry\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\gizmo\gizmo.hpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\gizmo\gizmo_rot.hpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\gizmo\gizmo_scale.hpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\gizmo\gizmo_trackball.hpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\gizmo\gizmo_trans.hpp">
+      <Filter>Tools\toolbar\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_disable_skin.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_graph.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_interface_skin.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_mesh_edit.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_RBF.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\io_selection\IO_skeleton.hpp">
+      <Filter>Tools\toolbar\io_selection</Filter>
+    </ClInclude>
+    <ClInclude Include="qt_gui\toolbars\animesh_enum.hpp">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\animesh_rig.h">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="animation\animesh_colors.h">
+      <Filter>Geometry\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\Rigidbodydemo.h">
+      <Filter>Geometry\bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\Importers\ImportMeshUtility\b3ImportMeshUtility.h">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\ThirdPartyLibs\stb_image\stb_image.h">
+      <Filter>Geometry\bullet\ThirdPartyLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\ThirdPartyLibs\Wavefront\tiny_obj_loader.h">
+      <Filter>Geometry\bullet\ThirdPartyLibs</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\Importers\ImportObjDemo\LoadMeshFromObj.h">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\Importers\ImportObjDemo\Wavefront2GLInstanceGraphicsShape.h">
+      <Filter>Geometry\bullet\importer</Filter>
+    </ClInclude>
+    <ClInclude Include="bullet\Utils\b3ResourcePath.h">
+      <Filter>Geometry\bullet\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bullet3-2.85.1\Extras\ConvexDecomposition\cd_wavefront.h">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClInclude>
+    <ClInclude Include="..\bullet3-2.85.1\Extras\HACD\hacdVector.h">
+      <Filter>Geometry\bullet\extras</Filter>
+    </ClInclude>
+    <ClInclude Include="control\example_mesh_ctrl.h">
+      <Filter>Geometry\control</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="PCM.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="qt_gui\main_window_menu_load_save" />
+    <None Include="animation\animesh_projection" />
+  </ItemGroup>
+</Project>

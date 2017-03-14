@@ -1,0 +1,48 @@
+
+#include "DebugDrawer.h"
+#include <QGLWidget>
+//#include "BulletOpenGLApplication.h"
+
+static void drawpoints(int pointsize ,const btVector3 &pointOnB,const btVector3 &color)
+{
+	glColor3f(color.getX(), color.getY(), color.getZ());
+	glPointSize(pointsize);
+	glBegin(GL_POINTS);
+	glVertex3f(pointOnB.getX(), pointOnB.getY(), pointOnB.getZ());
+	glEnd();
+
+}
+
+
+void DebugDrawer::drawLine(const btVector3 &from,const btVector3 &to, const btVector3 &color)
+{
+	// draws a simple line of pixels between points.
+
+	// use the GL_LINES primitive to draw lines
+	glColor3f(color.getX(), color.getY(), color.getZ());
+	glLineWidth(5);
+	glBegin(GL_LINES);
+	glVertex3f(from.getX(), from.getY(), from.getZ());
+	glVertex3f(to.getX(), to.getY(), to.getZ());
+	glEnd();
+}
+
+void DebugDrawer::drawContactPoint(const btVector3 &pointOnB, const btVector3 &normalOnB, btScalar distance, int lifeTime, const btVector3 &color)
+{
+	// draws a line between two contact points
+	btVector3 const startPoint = pointOnB;
+	btVector3 const endPoint = pointOnB + normalOnB * distance;
+	drawLine( startPoint, endPoint, color );
+	drawpoints(10,pointOnB,color);
+}
+
+void DebugDrawer::ToggleDebugFlag(int flag) {
+	// checks if a flag is set and enables/
+	// disables it
+	if (m_debugMode & flag)
+		// flag is enabled, so disable it
+		m_debugMode = m_debugMode & (~flag);
+	else
+		// flag is disabled, so enable it
+		m_debugMode |= flag;
+}
