@@ -412,7 +412,7 @@ bool HorseObject::OnInit(ID3D11Device* device, ID3D11DeviceContext* deviceContex
 		WriteAnimationToFile("./data/animation/keg_",boneAnim ,this ,indexs ,numFaces ,ssdrOut ,ssdrIn,ssdrParam);
     fprintf(stderr, "%d\n", numBones);
 
-    return Object::OnInit(device, deviceContext, width, height);
+    return SSDRObject::OnInit(device, deviceContext, width, height);
 }
 
 void HorseObject::OnResize(ID3D11Device* device, ID3D11DeviceContext* deviceContext, const UINT width, const UINT height)
@@ -483,7 +483,7 @@ void HorseObject::OnUpdate(ID3D11Device* device, ID3D11DeviceContext* deviceCont
         srcVertexBufferCPU[v].weight[0] = 1.0;
     }
 
-    Object::OnUpdate(device, deviceContext, elapsed);
+    SSDRObject::OnUpdate(device, deviceContext, elapsed);
 }
 
 void HorseObject::OnRender(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
@@ -523,7 +523,7 @@ void HorseObject::OnRender(ID3D11Device* device, ID3D11DeviceContext* deviceCont
         //deviceContext->DrawIndexed(numFaces * 3, 0, 0);
     }
 
-    Object::OnRender(device, deviceContext);
+    SSDRObject::OnRender(device, deviceContext);
 }
 
 void HorseObject::OnDestroy()
@@ -578,5 +578,5 @@ void HorseObject::OnDestroy()
         alphaBlendState->Release();
         alphaBlendState = nullptr;
     }
-    Object::OnDestroy();
+    SSDRObject::OnDestroy();
 }

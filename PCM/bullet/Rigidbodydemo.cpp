@@ -2473,7 +2473,8 @@ void RigidbodyDemo::UpdateScene(float dt)
 	//if(m_trimeshShape)
 	//	((btGImpactMeshShape*)m_trimeshShape)->postUpdate();
 }
-
+#define  _gim_pact_
+#ifndef  _gim_pact_
 void RigidbodyDemo::CreateObjObject()
 {
 	btBoxShape* groundShape = createBoxShape(btVector3(btScalar(50.),btScalar(50.),btScalar(50.)));
@@ -2915,6 +2916,7 @@ void RigidbodyDemo::CreateObjObjectConvexDecomp()
 
 	autogenerateGraphicsObjects(s_pWorld);
 }
+#endif
 void RigidbodyDemo::CreateGimpactObject()
 {
 
@@ -2923,8 +2925,6 @@ void RigidbodyDemo::CreateGimpactObject()
 
 	btBoxShape* groundShape = createBoxShape(btVector3(btScalar(50.),btScalar(0.2),btScalar(50.)));
 	m_collisionShapes.push_back(groundShape);
-
-
 	btRigidBody* groundObject;
 	btTransform groundTransform;
 	groundTransform.setIdentity();
@@ -2951,9 +2951,10 @@ void RigidbodyDemo::CreateGimpactObject()
 	{
 		if(1)
 		{
-			importObj(  glmesh ,  m_fileName );
+			importObj(  glmesh ,  m_fileName );  //this is the right way to import
 		}else
 		{
+			//this is for test,not use
 			glmesh = new GLInstanceGraphicsShape;
 			b3AlignedObjectArray<GLInstanceVertex>* vertices = new b3AlignedObjectArray<GLInstanceVertex>;
 			b3AlignedObjectArray<int>* indicesPtr = new b3AlignedObjectArray<int>;
@@ -2983,12 +2984,6 @@ void RigidbodyDemo::CreateGimpactObject()
 			for (int i=0;i<4;i++)
 				glmesh->m_scaling[i] = 1;//bake the scaling into the vertices
 		}
-
-
-
-
-
-
 	}
 
 	Cuda_ctrl::_example_mesh.setupExample("D:/mprojects/EBPD/ebpd/PCM/resource/meshes/keg3/","keg_skinning" );

@@ -585,6 +585,15 @@
     <ClCompile Include="animation\animesh_rig.cpp">
       <Filter>Geometry\animation</Filter>
     </ClCompile>
+    <ClCompile Include="manipulate_tool.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="manipulatedFrameSetConstraint.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="manipulate_object.cpp">
+      <Filter>Tools</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -1206,6 +1215,15 @@
     </ClInclude>
     <ClInclude Include="control\example_mesh_ctrl.h">
       <Filter>Geometry\control</Filter>
+    </ClInclude>
+    <ClInclude Include="manipulate_tool.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="manipulatedFrameSetConstraint.h">
+      <Filter>Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="manipulate_object.h">
+      <Filter>Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

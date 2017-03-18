@@ -648,7 +648,7 @@ void Example_mesh_ctrl::genertateVertices(std::string _file_paths,std::string na
 	exportObj( OutputVetices,g_faces,output_mesh_path);
 	std::vector<int> i_vertexs;
 	//i_vertexs.push_back(0);
-	//i_vertexs.push_back(8);
+	i_vertexs.push_back(8);
 	i_vertexs.push_back(2850);
 	writeColorGeoDistance( i_vertexs, _file_paths+name);
 
@@ -658,7 +658,7 @@ void Example_mesh_ctrl::genertateVertices(std::string _file_paths,std::string na
 	rebuildExampleSover();
 	std::map<int,Tbx::Vec3> delta_xi;
 //	delta_xi[0] = Tbx::Vec3(-0.217,0.3,-0.0);  //test
-//	delta_xi[8] = Tbx::Vec3(-0.1825,0.56,-0.0);  //test
+	delta_xi[8] = Tbx::Vec3(-0.1825,0.56,-0.0);  //test
 	//delta_xi[20] = Tbx::Vec3(0.217,0.3,-0.0);  //test
 	delta_xi[2850] = Tbx::Vec3(-0.877,0.8916,-0.0011);
 	std::map<int, std::vector<float> > delta_exampleWeightsOfVertex; 

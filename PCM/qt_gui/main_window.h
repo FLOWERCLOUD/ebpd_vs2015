@@ -77,6 +77,8 @@ public:
 
 		void setSelectToolMode();
 		void setSceneToolMode();
+		void setPaintMode();
+		void setEbpd_hand_Mode();
 
 		//render mode
 		void setPointMode();
@@ -258,7 +260,7 @@ public:
 
 	}
 	QString curFile;
-	void setCurrentFile(const QString &fileName);
+	void setCurrentFile(const QString fileName);
 	void updateRecentFileActions();
 	QString strippedName(const QString &fullFileName);
 	

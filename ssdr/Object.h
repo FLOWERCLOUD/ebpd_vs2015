@@ -8,15 +8,15 @@
 #include <DirectXMath.h>
 #include <iostream>
 
-struct Object
+struct SSDRObject
 {
 public:
     //using SharedPtr = std::shared_ptr<Object>;
     //using WeakPtr = std::weak_ptr<Object>;
     //using UniquePtr = std::unique_ptr<Object>;
-	typedef std::shared_ptr<Object> SharedPtr;
-	typedef std::weak_ptr<Object> WeakPtr;
-	typedef std::unique_ptr<Object> UniquePtr;
+	typedef std::shared_ptr<SSDRObject> SharedPtr;
+	typedef std::weak_ptr<SSDRObject> WeakPtr;
+	typedef std::unique_ptr<SSDRObject> UniquePtr;
 
 protected:
     WeakPtr self;
@@ -28,11 +28,11 @@ protected:
 public:
     static SharedPtr CreateInstance()
     {
-        SharedPtr s(new Object);
+        SharedPtr s(new SSDRObject);
         s->self = s;
         return s;
     }
-    virtual ~Object()
+    virtual ~SSDRObject()
     {
     }
 
@@ -123,13 +123,13 @@ public:
     }
 
 protected:
-    Object()
+    SSDRObject()
         : isVisible(true)
     {
     }
 private:
-    Object(const Object& src);
-    void operator =(const Object& src);
+    SSDRObject(const SSDRObject& src);
+    void operator =(const SSDRObject& src);
 };
 
 #endif //OBJECT_H

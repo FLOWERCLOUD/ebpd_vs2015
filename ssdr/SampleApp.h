@@ -81,7 +81,7 @@ protected:
     std::wstring wndTitle;
     LARGE_INTEGER prevCounter;
     LONGLONG counterPerFrame;
-    std::vector<Object::SharedPtr> object;
+    std::vector<SSDRObject::SharedPtr> object;
 
 public:
     bool InitializeApp();
@@ -96,7 +96,7 @@ public:
     void OnRender();
     void OnResize(const UINT w, const UINT h);
     void OnUpdate(LONGLONG elapsed);
-    void AddObject(Object::SharedPtr obj);
+    void AddObject(SSDRObject::SharedPtr obj);
 
 public:
     bool CreateDefaultRenderTarget();

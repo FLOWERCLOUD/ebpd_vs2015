@@ -112,12 +112,12 @@ void main_window::load_ism(const QString& fileName)
 		QString mesh_name = name;
 		mesh_name.append(".off");
 		if( QFile::exists(mesh_name) )
-			Cuda_ctrl::load_mesh(mesh_name.toStdString());
+			Cuda_ctrl::load_mesh(mesh_name.toLocal8Bit().constData()); //replace toStdString()
 		else if( QFile::exists((mesh_name = name).append(".obj")) )
-			Cuda_ctrl::load_mesh(mesh_name.toStdString());
+			Cuda_ctrl::load_mesh(mesh_name.toLocal8Bit().constData());
 		else if( QFile::exists((mesh_name = name).append(".fbx")) )
 		{
-			Loader::Fbx_file loader( mesh_name.toStdString() );
+			Loader::Fbx_file loader( mesh_name.toLocal8Bit().constData());
 			load_fbx_mesh( loader );
 			skel_loaded = load_fbx_skeleton_anims( loader );
 			if( skel_loaded )
@@ -198,7 +198,7 @@ void main_window::on_actionLoad_FBX_triggered()
 		mesh_name.append(".fbx");
 		if( QFile::exists(mesh_name) )
 		{
-			Loader::Fbx_file loader( mesh_name.toStdString() );
+			Loader::Fbx_file loader( mesh_name.toLocal8Bit().constData());
 			load_fbx_mesh( loader );
 			enable_mesh( true );
 			_viewports->set_io(EOGL_widget::GRAPH);
@@ -227,7 +227,7 @@ void main_window::on_actionLoad_mesh_triggered()
 		tr("*.off *.obj *.fbx") );
 	if( fileName.size() != 0)
 	{
-		Cuda_ctrl::load_mesh(fileName.toStdString());
+		Cuda_ctrl::load_mesh(fileName.toLocal8Bit().constData());
 		Cuda_ctrl::erase_graph();
 		enable_animesh( false );
 		enable_mesh( true );
@@ -256,7 +256,7 @@ void main_window::on_actionLoad_skeleton_triggered()
 		if(ext == "fbx")
 		{
 			// Parse file
-			Loader::Fbx_file loader( fileName.toStdString() );
+			Loader::Fbx_file loader( fileName.toLocal8Bit().constData() );
 
 			// Load into our data representation
 			if( load_fbx_skeleton_anims( loader ) )
@@ -325,7 +325,7 @@ void main_window::on_actionLoad_keyframes_triggered()
 		if(ext == "fbx")
 		{
 			// Parse file
-			Loader::Fbx_file loader( fileName.toStdString() );
+			Loader::Fbx_file loader( fileName.toLocal8Bit().constData() );
 			// Load into our data representation
 			std::vector<Loader::Base_anim_eval*> anims;
 			loader.get_animations( anims );
@@ -366,7 +366,7 @@ void main_window::on_actionLoad_pose_triggered()
 		"./resource/meshes",
 		tr("*.skel_pose") );
 	if( fileName.size() != 0){
-		Cuda_ctrl::_skeleton.load_pose( fileName.toStdString() );
+		Cuda_ctrl::_skeleton.load_pose( fileName.toLocal8Bit().constData() );
 		update_viewports();
 	}
 }
@@ -380,7 +380,7 @@ void main_window::on_actionLoad_camera_triggered()
 	if( fileName.size() != 0){
 
 		PaintCanvas* wgl = _viewports->active_viewport();
-		//Tbx::load_class(wgl->camera(), fileName.toStdString());
+		//Tbx::load_class(wgl->camera(), fileName.toLocal8Bit().constData());
 		update_viewports();
 	}
 }
@@ -397,8 +397,8 @@ void main_window::on_actionLoad_exampleMesh_triggered()
 	if( fileName.size() != 0)
 	{
 		Cuda_ctrl::genertateVertices(
-			(fi.canonicalPath() + "/").toStdString(),
-			fi.completeBaseName().toStdString());
+			(fi.canonicalPath() + "/").toLocal8Bit().constData(),
+			fi.completeBaseName().toLocal8Bit().constData());
 	}
 
 }
@@ -434,7 +434,7 @@ void main_window::on_actionSave_as_mesh_triggered()
 			Mesh_utils::save_mesh(*g_mesh, abs_mesh );
 			Loader::Obj_file loader;
 			loader.set_mesh( abs_mesh );
-			loader.export_file( fileName.toStdString() );
+			loader.export_file( fileName.toLocal8Bit().constData() );
 		}
 		else
 			QMessageBox::information(this, "Error !", "unsupported ext: '"+ext+"' \n");

@@ -388,7 +388,7 @@ void SampleApp::ReleaseDefaultDepthStencil()
 bool SampleApp::OnInit()
 {
     bool retval = true;
-    std::for_each(object.begin(), object.end(), [&](Object::SharedPtr o)
+    std::for_each(object.begin(), object.end(), [&](SSDRObject::SharedPtr o)
     {
         if (!o->OnInit(d3dDevice, d3dDeviceContext, wndWidth, wndHeight))
         {
@@ -401,7 +401,7 @@ bool SampleApp::OnInit()
 
 void SampleApp::OnTerminate()
 {
-    std::for_each(object.begin(), object.end(), [&](Object::SharedPtr o)
+    std::for_each(object.begin(), object.end(), [&](SSDRObject::SharedPtr o)
     {
         o->OnDestroy();
         o.reset();
@@ -415,7 +415,7 @@ void SampleApp::OnRender()
 
     d3dDeviceContext->ClearRenderTargetView(renderTargetView, clearColor);
     d3dDeviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    std::for_each(object.begin(), object.end(), [&](Object::SharedPtr o)
+    std::for_each(object.begin(), object.end(), [&](SSDRObject::SharedPtr o)
     {
         o->OnRender(d3dDevice, d3dDeviceContext);
     });
@@ -461,7 +461,7 @@ void SampleApp::OnResize(const UINT w, const UINT h)
         vp.TopLeftY = 0;
         d3dDeviceContext->RSSetViewports(1, &vp);
     }
-    std::for_each(object.begin(), object.end(), [&](Object::SharedPtr o)
+    std::for_each(object.begin(), object.end(), [&](SSDRObject::SharedPtr o)
     {
         o->OnResize(d3dDevice, d3dDeviceContext, w, h);
     });
@@ -469,7 +469,7 @@ void SampleApp::OnResize(const UINT w, const UINT h)
 
 void SampleApp::OnUpdate(LONGLONG elapsed)
 {
-    std::for_each(object.begin(), object.end(), [&](Object::SharedPtr o)
+    std::for_each(object.begin(), object.end(), [&](SSDRObject::SharedPtr o)
     {
         o->OnUpdate(d3dDevice, d3dDeviceContext, static_cast<float>(elapsed) / static_cast<float>(counterPerFrame * 30));
     });
@@ -537,7 +537,7 @@ LRESULT CALLBACK SampleApp::WndProc(HWND hWnd, UINT msg, WPARAM wp, LPARAM lp)
     return DefWindowProc(hWnd, msg, wp, lp);
 }
 
-void SampleApp::AddObject(Object::SharedPtr obj)
+void SampleApp::AddObject(SSDRObject::SharedPtr obj)
 {
     if (std::find(object.begin(), object.end(), obj) == object.end())
     {

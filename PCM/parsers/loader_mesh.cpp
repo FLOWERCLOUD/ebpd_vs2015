@@ -46,10 +46,10 @@ void Material::set_relative_paths(const std::string& p)
 {
     QDir path(QString(p.c_str()));
 
-    _map_Kd   = path.relativeFilePath( QString(_map_Kd.  c_str()) ).toStdString();
-    _map_Ka   = path.relativeFilePath( QString(_map_Ka.  c_str()) ).toStdString();
-    _map_Ks   = path.relativeFilePath( QString(_map_Ks.  c_str()) ).toStdString();
-    _map_Bump = path.relativeFilePath( QString(_map_Bump.c_str()) ).toStdString();
+    _map_Kd   = path.relativeFilePath( QString(_map_Kd.  c_str()) ).toLocal8Bit().constData();
+    _map_Ka   = path.relativeFilePath( QString(_map_Ka.  c_str()) ).toLocal8Bit().constData();
+    _map_Ks   = path.relativeFilePath( QString(_map_Ks.  c_str()) ).toLocal8Bit().constData();
+    _map_Bump = path.relativeFilePath( QString(_map_Bump.c_str()) ).toLocal8Bit().constData();
 }
 
 // END CLASS Material ==========================================================

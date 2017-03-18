@@ -128,7 +128,7 @@ static void mergeFile(char* CORR_FILESNAME ,char* CORR_FILEOUT_NAME , char* LABE
 		QFileInfo file_info = file_list.at(file_idx);
 
 
-		std::string file_path = file_info.filePath().toStdString();
+		std::string file_path = file_info.filePath().toLocal8Bit().constData();
 
 		appendcorr(  file_path.c_str() , corrout_);
 
@@ -159,7 +159,7 @@ static void mergeFile(char* CORR_FILESNAME ,char* CORR_FILEOUT_NAME , char* LABE
 		QFileInfo file_info = file_list2.at(file_idx);
 
 
-		std::string file_path = file_info.filePath().toStdString();
+		std::string file_path = file_info.filePath().toLocal8Bit().constData();
 
 		appendlabel(  file_path.c_str() , labelout_);
 

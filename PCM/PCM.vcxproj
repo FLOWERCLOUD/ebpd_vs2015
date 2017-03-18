@@ -22,6 +22,7 @@
     <ProjectGuid>{F20BD45F-1EDD-489A-A226-324F48DCD035}</ProjectGuid>
     <Keyword>Qt4VSv1.0</Keyword>
     <ProjectName>PCM_framework</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -117,7 +118,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Debug;$(QTDIR_64_12)\lib;$(PCL_ROOT)\3rdParty\FLANN\lib;$(PCL_ROOT)\3rdParty\OpenNI\lib;$(PCL_ROOT)\3rdParty\Qhull\lib;$(PCL_ROOT)\3rdParty\VTK\lib;$(PCL_ROOT)\lib;$(SolutionDir)fbxsdk\lib\vs2012\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;libeng.lib;libmx.lib;libmex.lib;libmat.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>pcl_features_debug.lib;pcl_kdtree_debug.lib;pcl_search_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;pcl_common_debug.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -218,6 +219,9 @@
     <ClCompile Include="global_datas\cuda_globals.cpp" />
     <ClCompile Include="main_window_display.cpp" />
     <ClCompile Include="main_window_swithces.cpp" />
+    <ClCompile Include="manipulatedFrameSetConstraint.cpp" />
+    <ClCompile Include="manipulate_object.cpp" />
+    <ClCompile Include="manipulate_tool.cpp" />
     <ClCompile Include="parsers\fbx_loader.cpp" />
     <ClCompile Include="parsers\fbx_utils.cpp" />
     <ClCompile Include="qt_gui\cameraViewer.cpp" />
@@ -1666,6 +1670,7 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">ui_%(Filename).h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </CustomBuild>
     <CustomBuild Include="qt_gui\ui\testUi.ui">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -1765,6 +1770,9 @@
     <ClInclude Include="control\potential_plane_ctrl.hpp" />
     <ClInclude Include="control\skeleton_ctrl.hpp" />
     <ClInclude Include="global_datas\cuda_globals.hpp" />
+    <ClInclude Include="manipulatedFrameSetConstraint.h" />
+    <ClInclude Include="manipulate_object.h" />
+    <ClInclude Include="manipulate_tool.h" />
     <ClInclude Include="parsers\fbx_loader.hpp" />
     <ClInclude Include="parsers\fbx_utils.hpp" />
     <ClInclude Include="qt_gui\cameraViewer.h" />

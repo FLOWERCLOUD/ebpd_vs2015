@@ -15,6 +15,7 @@
 #include "color_table.h"
 #include "time.h"
 #include "tracer.h"
+#include "manipulate_tool.h"
 #include "sample_properity.h"
 #include "maching_state.h"
 #include "saveSnapshotDialog.h"
@@ -251,6 +252,8 @@ void main_window::createToolAction()
 {
 	connect( ui.actionSelect_Mode, SIGNAL(triggered()), this, SLOT(setSelectToolMode()) );
 	connect( ui.actionScene_Mode, SIGNAL(triggered()),this, SLOT(setSceneToolMode()));
+	connect(ui.actionPaint_Mode, SIGNAL(triggered()), this, SLOT(setPaintMode()));
+	connect(ui.actionEbpd_hand_mode, SIGNAL(triggered()), this, SLOT(setEbpd_hand_Mode()));
 }
 
 void main_window::setObjectColorMode()
@@ -306,6 +309,7 @@ void main_window::setSelectToolMode()
 {
 	if (cur_select_sample_idx_==-1)
 	{
+		cout << " not select frame" << std::endl;
 		return;
 	}
 
@@ -325,6 +329,29 @@ void main_window::setSceneToolMode()
 {
 	_viewports->active_viewport()->single_operate_tool_->set_tool_type(Tool::EMPTY_TOOL);
 	updateGL();
+}
+
+void main_window::setPaintMode()
+{
+
+
+}
+void main_window::setEbpd_hand_Mode()
+{
+	if (cur_select_sample_idx_ == -1)
+	{
+		cout << " not select frame" << std::endl;
+		return;
+	}
+	if (_viewports->active_viewport()->single_operate_tool_)
+	{
+		delete _viewports->active_viewport()->single_operate_tool_;
+	}
+	_viewports->active_viewport()->single_operate_tool_ = new ManipulateTool(_viewports->active_viewport());
+	_viewports->active_viewport()->single_operate_tool_->set_tool_type(Tool::MANIPULATE_TOOL);
+	_viewports->active_viewport()->single_operate_tool_->set_cur_smaple_to_operate(cur_select_sample_idx_);
+	updateGL();
+
 }
 
 void main_window::setPointMode()
@@ -503,7 +530,7 @@ void main_window::setSampleSelectedIndex(int i)
 }
 void main_window::dealtarjlabel()
 {
-	std::stringstream istring(ui.text_trajectory_label->text().toStdString());
+	std::stringstream istring(ui.text_trajectory_label->text().toLocal8Bit().constData());
 	static int labelidx = 0;
 	Logger<<"dealtarjlabel  "<<std::endl;
 
@@ -525,7 +552,7 @@ void main_window::dealtarjlabel()
 }
 void main_window::Framelabel()
 {
-	std::stringstream istring(ui.showlabel_lineEdit->text().toStdString());
+	std::stringstream istring(ui.showlabel_lineEdit->text().toLocal8Bit().constData());
 	static int labelidx = 0;
 	Logger<<"framelabel  "<<std::endl;
 
@@ -1358,7 +1385,7 @@ bool main_window::saveLabelFile()
 
 	if (path.isEmpty())
 		return false;
-	getActivedCanvas()->saveLabelFile(path.toStdString(),cur_select_sample_idx_);
+	getActivedCanvas()->saveLabelFile(path.toLocal8Bit().constData(),cur_select_sample_idx_);
 	return true;
 }
 bool main_window::getLabelFromFile()
@@ -1379,7 +1406,7 @@ bool main_window::getLabelFromFile()
 		return false;
 
 
-	getActivedCanvas()->getLabelFromFile(path.toStdString(),cur_select_sample_idx_);
+	getActivedCanvas()->getLabelFromFile(path.toLocal8Bit().constData(),cur_select_sample_idx_);
 	return true;
 }
 bool main_window::wakeUpThread()
@@ -1393,7 +1420,7 @@ bool main_window::wakeUpThread()
 void main_window::logText(QString as,int level)
 {
 	//std::cout<<"logText"<<as.toStdString()<<std::endl;
-	string tmp = as.toStdString();
+	string tmp = as.toLocal8Bit().constData();
 	char* text = (char*)tmp.c_str();
 	int mode = level;
 	GLLogStream::Levels lveltype;
@@ -1518,7 +1545,7 @@ void main_window::loadFileToSample( const QFileInfoList& file_list ,bool isLazy)
 			continue;
 		}
 
-		string file_path = file_info.filePath().toStdString();
+		string file_path = file_info.filePath().toLocal8Bit().constData();
 		cur_import_files_attr_.push_back( make_pair(FileSystem::base_name(file_path), 
 			FileSystem::extension(file_path)) );
 
@@ -1550,10 +1577,11 @@ void main_window::loadFileToSample( const QFileInfoList& file_list ,bool isLazy)
 
 
 }
-void main_window::setCurrentFile(const QString &fileName)
+void main_window::setCurrentFile(const QString fileName)
 {
 	curFile = fileName;
-	std::cout<<curFile.toStdString()<<std::endl;
+//	curFile.toStdString();
+//	std::cout<<curFile.toStdString()<<std::endl;
 	//QDir::setCurrent(curFile);
 	//setWindowFilePath(curFile);
 

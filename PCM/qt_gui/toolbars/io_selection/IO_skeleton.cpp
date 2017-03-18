@@ -302,7 +302,7 @@ void IO_skeleton::trigger_menu()
 		return;
 	}
 
-	std::string item_text = selected_item->text().toStdString();
+	std::string item_text = selected_item->text().toLocal8Bit().constData();
 
 	// TODO: check if the entry doesn't exists
 

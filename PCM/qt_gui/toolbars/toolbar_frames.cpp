@@ -230,7 +230,7 @@ void Toolbar_frames::update_scene()
 enum Anim_t {MDD, PC2};
 void Toolbar_frames::export_anim(Anim_t t)
 {
-    std::string filepath = _line_edit->text().toStdString()+"/anim_export.mdd";
+    std::string filepath = std::string(_line_edit->text().toLocal8Bit().constData())+"/anim_export.mdd";
     if(g_anim_cache != 0)
         g_anim_cache->export_mdd(filepath);
 }
@@ -277,7 +277,7 @@ void Toolbar_frames::path_button_released()
 
 void Toolbar_frames::anim_box_index_changed(int idx)
 {
-    std::string name = _anim_box->itemText( idx ).toStdString();
+    std::string name = _anim_box->itemText( idx ).toLocal8Bit().constData();
     unsigned i;
 	for(i = 0; i < _anim_list.size(); i++)
 		if( _anim_list[i]->_name.compare(name) == 0 )

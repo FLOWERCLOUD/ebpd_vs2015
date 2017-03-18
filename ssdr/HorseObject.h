@@ -5,7 +5,7 @@
 #include "Object.h"
 #include "RigidTransform.h"
 
-class HorseObject : public Object
+class HorseObject : public SSDRObject
 {
 public:
 //    using SharedPtr = std::shared_ptr<HorseObject>;
