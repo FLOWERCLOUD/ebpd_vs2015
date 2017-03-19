@@ -39,7 +39,7 @@
 #include "toolbars/io_selection/IO_mesh_edit.hpp"
 #include "toolbars/io_selection/IO_graph.hpp"
 #include "toolbars/io_selection/IO_disable_skin.hpp"
-
+class ManipulateTool;
 
 using namespace pcm;
 using namespace qglviewer;
@@ -55,7 +55,7 @@ RenderMode::WhichColorMode	which_color_mode_;
 RenderMode::RenderType which_render_mode;
 bool isShowNoraml = false;
 static QPoint currenMousePos; 
-Manipulator g_manipulator( Manipulator::OBJECT ,struct SelectedObj() );
+//Manipulator g_manipulator( Manipulator::OBJECT ,struct SelectedObj() );
 
 using namespace Depth_peeling;
 
@@ -246,8 +246,8 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, int type, QWidget *parent,QWid
 	{
 		//pApp = new BasicDemo(this);
 		//pApp = new RigidbodyDemo(this,"bullet/teddy.obj");
-		//pApp = new RigidbodyDemo(this,"resource/meshes/keg3/keg_skinning.obj");
-		pApp = new RigidbodyDemo(this,"resource/bulletoutput/bunny.obj");
+		pApp = new RigidbodyDemo(this,"resource/meshes/keg3/keg_skinning.obj");
+		//pApp = new RigidbodyDemo(this,"resource/bulletoutput/bunny.obj");
 		//pApp = new RigidbodyDemo(this,"resource/bulletoutput/cube.obj");
 	}
 	//m_peeler = new Peeler();
@@ -312,7 +312,7 @@ void PaintCanvas::draw()
 
 	if(_draw_gizmo)
 	{
-		g_manipulator.draw();
+//		g_manipulator.draw();
 		//_io->update_frame_gizmo();
 		//_gizmo->draw(_cam);
 	}
@@ -388,7 +388,7 @@ void PaintCanvas::init()
 
 	//setGridIsDrawn();//²Î¿¼Æ½Ãæ2014-12-16
 	//camera()->frame()->setSpinningSensitivity(100.f);
-	setMouseTracking(true);
+//	setMouseTracking(true);
 	// light0
 	GLfloat	light_position[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
@@ -507,26 +507,10 @@ void PaintCanvas::mousePressEvent(QMouseEvent *e)
 	currenMousePos.setX( e->pos().x());
 	currenMousePos.setY( e->pos().y());
 
-	g_manipulator.mousePressEvent( e ,camera());
-	if(m_io)
-		m_io->mousePressEvent( e);
-
-	switch (e->button())
-	{
-	case  Qt::LeftButton:
-		if(pApp)
-			pApp->Mouse( 0, 0, e->pos().x(), e->pos().y());
-		break;
-	case Qt::RightButton:
-		if(pApp)
-			pApp->Mouse( 2, 0, e->pos().x(), e->pos().y());
-
-	default:
-		break;
-	}
 
 
-	if (single_operate_tool_!=nullptr && 
+	/*select mode*/
+	if (single_operate_tool_!=nullptr &&    
 		single_operate_tool_->tool_type()==Tool::SELECT_TOOL)
 	{
 		if(!(QApplication::keyboardModifiers() == Qt::AltModifier))
@@ -537,8 +521,37 @@ void PaintCanvas::mousePressEvent(QMouseEvent *e)
 		else
 			single_operate_tool_->press(e);
 	}
+	else if (single_operate_tool_ != nullptr &&
+		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+		if (QApplication::keyboardModifiers() == Qt::AltModifier)
+		{
+
+			QGLViewer::mousePressEvent(e);
+		}
+		else
+			single_operate_tool_->press(e ,camera());
+	}
 	else
 	{	
+//		g_manipulator.mousePressEvent(e, camera());  //handle,use qglviewer
+		if (m_io)    //handle ,derived from impricit skinning
+			m_io->mousePressEvent(e);
+
+		switch (e->button()) // bullet callback
+		{
+		case  Qt::LeftButton:
+			if (pApp)
+				pApp->Mouse(0, 0, e->pos().x(), e->pos().y());
+			break;
+		case Qt::RightButton:
+			if (pApp)
+				pApp->Mouse(2, 0, e->pos().x(), e->pos().y());
+
+		default:
+			break;
+		}
+
 //		if( !e->isAccepted())
 			QGLViewer::mousePressEvent(e);
 	}
@@ -553,23 +566,11 @@ void PaintCanvas::mouseMoveEvent(QMouseEvent *e)
 	currenMousePos.setY( e->pos().y());
 
 
-	if(_heuristic->_type == Tbx::Selection::CIRCLE   && _is_mouse_in )
-	{
-		updateGL();
-	}
-	if(pApp)
-		pApp->Motion( e->pos().x(), e->pos().y());
-
-	g_manipulator.mouseMoveEvent( e ,camera());
-
-	if(m_io)
-		m_io->mouseMoveEvent(e);
-	updateGL();
 
 	main_window_->showCoordinateAndIndexUnderMouse( e->pos() );
-
+	/*select mode*/
 	if (single_operate_tool_!=nullptr && 
-		single_operate_tool_->tool_type()==Tool::SELECT_TOOL)
+		single_operate_tool_->tool_type()==Tool::SELECT_TOOL )
 	{
 
 		if(!(QApplication::keyboardModifiers() == Qt::AltModifier))
@@ -579,8 +580,35 @@ void PaintCanvas::mouseMoveEvent(QMouseEvent *e)
 		}else
 			single_operate_tool_->move(e);
 	}
+	else if (single_operate_tool_ != nullptr &&
+		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+		if (QApplication::keyboardModifiers() == Qt::AltModifier)
+		{
+
+			QGLViewer::mouseMoveEvent(e);
+		}
+		else
+			single_operate_tool_->move(e ,camera());
+		updateGL();
+
+	}
 	else
 	{ 
+		//handle ,derived from impricit skinning
+		if (_heuristic->_type == Tbx::Selection::CIRCLE   && _is_mouse_in)
+		{
+			updateGL();
+		}
+		if (pApp)  // bullet callback
+			pApp->Motion(e->pos().x(), e->pos().y());
+
+//		g_manipulator.mouseMoveEvent(e, camera());  //handle,use qglviewer
+
+		if (m_io)  //handle ,derived from impricit skinning
+			m_io->mouseMoveEvent(e);
+		updateGL();
+
 //		if( !e->isAccepted())
 			QGLViewer::mouseMoveEvent(e);
 	}
@@ -593,25 +621,8 @@ void PaintCanvas::mouseReleaseEvent(QMouseEvent *e)
 	currenMousePos.setX( -10); //clear
 	currenMousePos.setY( -10);
 
-	g_manipulator.mouseReleaseEvent( e ,camera());
-	if(m_io)
-		m_io->mouseReleaseEvent( e);
 
-	switch (e->button())
-	{
-	case  Qt::LeftButton:
-		if(pApp)
-			pApp->Mouse( 0, 1, e->pos().x(), e->pos().y());
-		break;
-	case Qt::RightButton:
-		if(pApp)
-			pApp->Mouse( 2, 1, e->pos().x(), e->pos().y());
-
-	default:
-		break;
-	}
-
-
+	/*select mode*/
 	if (single_operate_tool_!=nullptr && 
 		single_operate_tool_->tool_type()==Tool::SELECT_TOOL
 		)
@@ -623,8 +634,39 @@ void PaintCanvas::mouseReleaseEvent(QMouseEvent *e)
 		}else
 			single_operate_tool_->release(e);
 	}
+	else if (single_operate_tool_ != nullptr &&
+		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+		if (QApplication::keyboardModifiers() == Qt::AltModifier)
+		{
+
+			QGLViewer::mouseReleaseEvent(e);
+		}
+		else
+			single_operate_tool_->release(e ,camera());
+			updateGL();
+
+	}
 	else
 	{
+		//handle,use qglviewer
+//		g_manipulator.mouseReleaseEvent(e, camera());
+		if (m_io)  //handle ,derived from impricit skinning
+			m_io->mouseReleaseEvent(e);
+
+		switch (e->button())   // bullet callback
+		{
+		case  Qt::LeftButton:
+			if (pApp)
+				pApp->Mouse(0, 1, e->pos().x(), e->pos().y());
+			break;
+		case Qt::RightButton:
+			if (pApp)
+				pApp->Mouse(2, 1, e->pos().x(), e->pos().y());
+
+		default:
+			break;
+		}
 //		if( !e->isAccepted())
 			QGLViewer::mouseReleaseEvent(e);
 	}
@@ -1391,7 +1433,7 @@ void PaintCanvas::savePLY(SavePlySetting& ss)
 	}
 	for( int i = ss.startframe ; i <= ss.endframe;++i)
 	{
-		sprintf( fullPath ,"%s%s%s%.3d%s",ss.outdir.toStdString().c_str() ,"/",ss.basename.toStdString().c_str(), i ,".obj");  
+		sprintf( fullPath ,"%s%s%s%.3d%s",std::string(ss.outdir.toLocal8Bit().constData()).c_str() ,"/", std::string(ss.basename.toLocal8Bit().constData()).c_str(), i ,".obj");
 		FileIO::saveFile(std::string(fullPath),ftype , i);
 	}
 	
@@ -1560,6 +1602,27 @@ bool PaintCanvas::raytrace() const
 	return m_render_ctx->_raytrace;
 }
 
+
+void PaintCanvas::drawWithNames()
+{
+	Logger << "PaintCanvas::drawWithNames()" << std::endl;
+}
+
+void PaintCanvas::postSelection(const QPoint& point)
+{
+
+	QGLViewer::postSelection(point);
+	if (single_operate_tool_ != nullptr &&
+		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+
+		single_operate_tool_->postSelection();
+		updateGL();
+
+	}
+
+
+}
 
 static Tbx::Vec3 cog_selection(bool skel_mode)
 {

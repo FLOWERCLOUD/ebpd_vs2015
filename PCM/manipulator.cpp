@@ -90,13 +90,13 @@ void Manipulator::drawAxis(qreal length)
 
 void Manipulator::mousePressEvent(QMouseEvent* const event,qglviewer::Camera* const camera)
 {
-	if( Global_SampleSet->size())
-	{
-		setGrabsMouse(true);
-	}else
-	{
-		setGrabsMouse(false);
-	}
+	//if( Global_SampleSet->size())
+	//{
+	//	setGrabsMouse(true);
+	//}else
+	//{
+	//	setGrabsMouse(false);
+	//}
 
 	ManipulatedFrame::mousePressEvent(event , camera);
 //	event->ignore();
@@ -111,14 +111,14 @@ void Manipulator::mouseReleaseEvent(QMouseEvent* const event,qglviewer::Camera* 
 void Manipulator::mouseMoveEvent(QMouseEvent* const event, qglviewer::Camera* const camera)
 {
 	
-	if( Global_SampleSet->size())
-	{
-		m_sample =   &(*Global_SampleSet)[0];
-		setGrabsMouse(true);
-	}else
-	{
-		m_sample = NULL;
-	}
+	//if( Global_SampleSet->size())
+	//{
+	//	m_sample =   &(*Global_SampleSet)[0];
+	//	setGrabsMouse(true);
+	//}else
+	//{
+	//	m_sample = NULL;
+	//}
 	ManipulatedFrame::mouseMoveEvent(event , camera);
 //	event->ignore();
 	if(!m_sample)

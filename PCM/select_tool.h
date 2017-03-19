@@ -17,10 +17,10 @@ public:
 							select_buffer_size_(0){}
 	~SelectTool(){}
 
-	virtual void move(QMouseEvent *e);
-	virtual void drag(QMouseEvent *e);
-	virtual void release(QMouseEvent *e);
-	virtual void press(QMouseEvent* e);
+	virtual void move(QMouseEvent *e, qglviewer::Camera* camera = NULL);
+	virtual void drag(QMouseEvent *e, qglviewer::Camera* camera = NULL);
+	virtual void release(QMouseEvent *e, qglviewer::Camera* camera = NULL);
+	virtual void press(QMouseEvent* e, qglviewer::Camera* camera = NULL);
 	virtual void draw();
 	
 	const std::vector<IndexType>& get_selected_vertex_idx()
@@ -34,11 +34,11 @@ protected:
 	inline void begin_select();
 	inline void end_select();
 
-private:
+protected:
 	void draw_rectangle();
 	inline void initialize_select_buffer();
 
-private:
+protected:
 
 	QPoint	mouse_pressed_pos_;
 	QPoint	mouse_move_pos_;

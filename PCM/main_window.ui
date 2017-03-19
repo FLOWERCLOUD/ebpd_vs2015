@@ -2738,6 +2738,7 @@ This is a post process step.</string>
     <addaction name="actionScene_Mode"/>
     <addaction name="actionSelect_Mode"/>
     <addaction name="actionPaint_Mode"/>
+    <addaction name="actionEbpd_hand_mode"/>
    </widget>
    <widget class="QMenu" name="menuAlgorithm">
     <property name="title">
@@ -3439,6 +3440,11 @@ This is a post process step.</string>
   <action name="actionLoad_exampleMesh">
    <property name="text">
     <string>Load exampleMesh</string>
+   </property>
+  </action>
+  <action name="actionEbpd_hand_mode">
+   <property name="text">
+    <string>ebpd hand mode</string>
    </property>
   </action>
  </widget>

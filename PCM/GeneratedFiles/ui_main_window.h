@@ -125,6 +125,7 @@ public:
     QAction *actionSetting;
     QAction *actionSave_keyframes;
     QAction *actionLoad_exampleMesh;
+    QAction *actionEbpd_hand_mode;
     QWidget *centralWidget;
     QSplitter *splitter;
     QToolBox *toolBoxMenu;
@@ -675,6 +676,8 @@ public:
         actionSave_keyframes->setObjectName(QStringLiteral("actionSave_keyframes"));
         actionLoad_exampleMesh = new QAction(main_windowClass);
         actionLoad_exampleMesh->setObjectName(QStringLiteral("actionLoad_exampleMesh"));
+        actionEbpd_hand_mode = new QAction(main_windowClass);
+        actionEbpd_hand_mode->setObjectName(QStringLiteral("actionEbpd_hand_mode"));
         centralWidget = new QWidget(main_windowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setEnabled(true);
@@ -2439,6 +2442,7 @@ public:
         menuSelect->addAction(actionScene_Mode);
         menuSelect->addAction(actionSelect_Mode);
         menuSelect->addAction(actionPaint_Mode);
+        menuSelect->addAction(actionEbpd_hand_mode);
         menuAlgorithm->addAction(actionClustering);
         menuAlgorithm->addAction(actionRegister);
         menuAlgorithm->addAction(actionSpectral_Cluster);
@@ -2584,6 +2588,7 @@ public:
         actionSetting->setText(QApplication::translate("main_windowClass", "Settings", 0));
         actionSave_keyframes->setText(QApplication::translate("main_windowClass", "Save keyframes", 0));
         actionLoad_exampleMesh->setText(QApplication::translate("main_windowClass", "Load exampleMesh", 0));
+        actionEbpd_hand_mode->setText(QApplication::translate("main_windowClass", "ebpd hand mode", 0));
         box_camera->setTitle(QApplication::translate("main_windowClass", "Camera", 0));
         lbl_camera_aperture->setText(QApplication::translate("main_windowClass", "fov: ", 0));
         lbl_near_plane->setText(QApplication::translate("main_windowClass", "Near: ", 0));

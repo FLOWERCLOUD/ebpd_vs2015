@@ -186,6 +186,13 @@ void Gizmo_trans::draw(const Camera& cam)
 	const Vec3 org = _frame.get_translation();
 	const float dist_cam =  !cam.is_ortho() ? (org-cam.get_pos()).norm() : cam.get_ortho_zoom() * _ortho_factor;
 
+	/// Linear matrix storage with Transfo rows first (i.e row major) 
+	/// Using this with OpenGL can be done by transposing first:
+	/// @code
+	///     Transfo tr;
+	///     // OpenGL is column major !
+	///     glMultMatrixf( (GLfloat)(tr.transpose().m) );
+	/// @endcode
 	glMultMatrixf(_frame.transpose().m);
 	glScalef(dist_cam, dist_cam, dist_cam);
 

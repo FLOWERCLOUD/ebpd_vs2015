@@ -4,14 +4,17 @@
 #include <QMouseEvent>
 
 class PaintCanvas;
-
+namespace qglviewer
+{
+	class Camera;
+}
 
 
 class Tool
 {
 public:
 
-	enum ToolType{ EMPTY_TOOL, SELECT_TOOL };
+	enum ToolType { EMPTY_TOOL, SELECT_TOOL, MANIPULATE_TOOL };
 
 	Tool( PaintCanvas* canvas ):canvas_(canvas),
 								left_mouse_button_(false),
@@ -19,10 +22,11 @@ public:
 	virtual ~Tool(){}
 
 public:
-	virtual void press(QMouseEvent *e) = 0;
-	virtual void move(QMouseEvent *e) = 0;
-	virtual void release(QMouseEvent *e) = 0;
-	virtual void drag(QMouseEvent *e) = 0;
+	virtual void postSelection() {}
+	virtual void press(QMouseEvent *e ,qglviewer::Camera* camera = NULL) = 0;
+	virtual void move(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
+	virtual void release(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
+	virtual void drag(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
 	virtual void draw() = 0;
 	ToolType	tool_type () const { return tool_type_; }
 	void	set_tool_type( ToolType type ){ tool_type_ = type; }

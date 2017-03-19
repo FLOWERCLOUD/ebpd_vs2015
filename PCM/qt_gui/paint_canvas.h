@@ -259,6 +259,17 @@ public:
 	/// @return true if raytracing enable
 	bool raytrace() const;
 
+	virtual void beginSelection(const QPoint& point)
+	{
+		QGLViewer::beginSelection(point);
+	}
+	virtual void drawWithNames();
+	virtual void endSelection(const QPoint& point)
+	{
+		QGLViewer::endSelection(point);
+	}
+	virtual void postSelection(const QPoint& point);
+
 
 };
 

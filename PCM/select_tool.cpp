@@ -11,7 +11,7 @@
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE 0x809D
 #endif
-void SelectTool::move(QMouseEvent *e)
+void SelectTool::move(QMouseEvent *e, qglviewer::Camera* camera )
 {
 	if (left_mouse_button_ == true)
 	{
@@ -20,7 +20,7 @@ void SelectTool::move(QMouseEvent *e)
 
 }
 
-void SelectTool::drag(QMouseEvent *e)
+void SelectTool::drag(QMouseEvent *e, qglviewer::Camera* camera )
 {
 
 	rectangle_.setBottomRight( e->pos() );
@@ -28,7 +28,7 @@ void SelectTool::drag(QMouseEvent *e)
 
 }
 
-void SelectTool::release(QMouseEvent *e)
+void SelectTool::release(QMouseEvent *e, qglviewer::Camera* camera )
 {
 	if (left_mouse_button_ == true)
 	{
@@ -44,7 +44,7 @@ void SelectTool::release(QMouseEvent *e)
 
 }
 
-void SelectTool::press(QMouseEvent* e)
+void SelectTool::press(QMouseEvent* e, qglviewer::Camera* camera )
 {
 	if (e->button() == Qt::LeftButton)
 	{
