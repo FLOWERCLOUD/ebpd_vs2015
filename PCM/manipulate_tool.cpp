@@ -8,7 +8,11 @@
 #include "vertex.h"
 #include <QMenu>
 #include <QAction>
-
+#include "control/example_mesh_ctrl.h"
+#include "control/cuda_ctrl.hpp"
+namespace Cuda_ctrl {
+	extern Example_mesh_ctrl  _example_mesh;
+}
 
 using namespace qglviewer;
 
@@ -658,12 +662,14 @@ ManipulateTool::ManipulateTool(PaintCanvas* canvas,
 	rotate_circle_radius = 0.5f;
 	selected_name = NONE_OBJECT;
 	activeConstraint = Local_Constraint;
+	isManipultedFrameChanged = false;
 //	cur_constraint = new LocalConstraint();
 	//activeConstraint = World_Constraint;
 	cur_constraint = new ManipulatedFrameSetLocalConstraint();
 	manipulatedFrame()->setConstraint(cur_constraint);
 	//manipulatedFrame()->setConstraint(new ManipulatedFrameSetConstraint());
 	connect(&select_tool, SIGNAL(postSelect()), this, SLOT(postSelect()));
+	connect(manipulatedFrame(), SIGNAL(modified()), this, SLOT(afterManipulate()));
 }
 
 void ManipulateTool::move(QMouseEvent *e , qglviewer::Camera* camera)
@@ -748,6 +754,18 @@ void ManipulateTool::release(QMouseEvent *e , qglviewer::Camera* camera)
 
 	}
 	this->mouseReleaseEvent(e, camera);
+	if (isManipultedFrameChanged)
+	{
+		isManipultedFrameChanged = false;
+		afterManipulate();
+	}
+	else
+	{
+
+	}
+		
+
+
 	selected_name = NONE_OBJECT;
 	setTranslationConstraintType(qglviewer::AxisPlaneConstraint::FREE);
 //	setTranslationConstraintDirection(name);
@@ -1087,6 +1105,20 @@ void ManipulateTool::startManipulation()
 //	ManipulatedFrameSetConstraint* mfsc = (ManipulatedFrameSetConstraint*)(manipulatedFrame()->constraint());
 	if (select_tool.m_selected_objs_.size() > 0)
 		manipulatedFrame()->setPosition(averagePosition / select_tool.m_selected_objs_.size());
+}
+
+void ManipulateTool::afterManipulate()
+{
+	switch (select_tool.manipulateObjectType_)
+	{
+		case  ManipulatedObject::VERTEX:
+		{
+			Cuda_ctrl::_example_mesh.processCollide((*Global_SampleSet), select_tool.m_selected_objs_);
+		}
+	}
+
+//	_example_mesh.genertateVertices(inputVertices, faces, vertex_idex, impulses, mass, delta_t, belta);
+
 }
 
 void ManipulateTool::changeToConstraint(EnumConstraint curstraint)

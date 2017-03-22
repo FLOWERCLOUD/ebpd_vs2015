@@ -108,10 +108,14 @@ public:
 		vertex_idx_ = vertex_idx;
 		smp_idx_ = frame_idx;
 	}
-private:
-	inline qglviewer::Vec getPosition() //local pos
+public:
+	inline qglviewer::Vec getLocalPosition() //local pos
 	{
-		return position_;
+		SampleSet& set = (*Global_SampleSet);
+		Sample& smp = set[smp_idx_];
+		Vertex& vtx = smp[vertex_idx_];
+		qglviewer::Vec local_pos(vtx.x(), vtx.y(), vtx.z());
+		return local_pos;
 	}
 	inline qglviewer::Vec getNormal()
 	{
@@ -121,9 +125,12 @@ private:
 	{
 		return color_;
 	}
-	inline void setPosition(qglviewer::Vec position) //local pos
+	inline void setLocalPosition(qglviewer::Vec position) //local pos
 	{
-		this->position_ = position;
+		SampleSet& set = (*Global_SampleSet);
+		Sample& smp = set[smp_idx_];
+		Vertex& vtx = smp[vertex_idx_];
+		vtx.set_position(pcm::PointType(position.x, position.y, position.z));
 	}
 	inline void setNormal(qglviewer::Vec normal)
 	{
@@ -132,6 +139,10 @@ private:
 	inline void setColor(qglviewer::Vec color)
 	{
 		this->color_ = color;
+	}
+	inline int getVertexIdx()
+	{
+		return vertex_idx_;
 	}
 private:
 	int vertex_idx_;

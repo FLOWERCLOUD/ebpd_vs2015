@@ -48,7 +48,8 @@ Example_mesh_ctrl  _example_mesh;
 
 void genertateVertices(std::string _file_paths,std::string name)
 {
-	_example_mesh.genertateVertices(_file_paths,name);
+//	_example_mesh.genertateVertices(_file_paths,name);
+	_example_mesh.load_example(_file_paths, name);
 }
 
 void load_mesh(const std::string file_name)

@@ -63,6 +63,10 @@ public :
 	}
 protected slots:
 	void startManipulation();
+	/*
+		when frame is manipulate and mouse release
+	*/
+	void afterManipulate();
 protected:
 	
 	
@@ -87,6 +91,7 @@ protected:
 	qglviewer::AxisPlaneConstraint* cur_constraint;
 	EnumConstraint activeConstraint;
 	SelectTool select_tool;
+	bool isManipultedFrameChanged;
 protected slots:
 	void slot_action_LocalConstraint()
 	{

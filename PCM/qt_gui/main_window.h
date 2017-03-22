@@ -250,9 +250,8 @@ private:
 		void setup_toolbar_frame();
 		void createStatusBar();
 		void setup_viewports();
-		void resetSampleSet();
-
 public:
+	void resetSampleSet();
 	PaintCanvas* getActivedCanvas();
 	LayerDialog* getLayerdialog()
 	{

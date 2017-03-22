@@ -393,14 +393,20 @@ void main_window::on_actionLoad_exampleMesh_triggered()
 		tr("*.rig") );
 
 	QFileInfo fi(fileName);
-
+	resetSampleSet();
 	if( fileName.size() != 0)
 	{
 		Cuda_ctrl::genertateVertices(
 			(fi.canonicalPath() + "/").toLocal8Bit().constData(),
 			fi.completeBaseName().toLocal8Bit().constData());
 	}
-
+	createTreeWidgetItems();
+	m_layer->updateTable();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//textEdit->setPlainText(in.readAll());
+	QApplication::restoreOverrideCursor();
+	//	setCurrentFile(fileName);
+	statusBar()->showMessage(tr("File loaded"), 2000);
 }
 
 

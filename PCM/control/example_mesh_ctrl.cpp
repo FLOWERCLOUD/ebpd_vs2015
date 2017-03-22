@@ -6,6 +6,14 @@
 #include "toolbox/maths/quat_cu.hpp"
 #include "toolbox/maths/vec3.hpp"
 #include "toolbox/maths/color.hpp"
+#include "main_window.h"
+#include "sample_set.h"
+#include "sample.h"
+#include "triangle.h"
+#include "file_io.h"
+#include "color_table.h"
+#include "GlobalObject.h"
+#include "manipulate_object.h"
 #include <sstream>
 
 #define  Debug_Time true; 
@@ -226,9 +234,9 @@ bool genetatedVertice( std::vector<float>& OutputVetices , const std::vector<flo
 	return true;
 }
 
-typedef Tbx::Vec3 ColorType;
-typedef Tbx::Vec3 PointType;
-typedef Tbx::Vec3 NormalType;
+typedef Tbx::Vec3 ColorType2;
+typedef Tbx::Vec3 PointType2;
+typedef Tbx::Vec3 NormalType2;
 static void skip_this_line(FILE* fd)
 {
 	int ret =0;
@@ -251,9 +259,9 @@ static bool importObj(std::vector<float>& inputVertice ,std::vector<int>&  faces
 	if(fd)
 	{
 		float vx,vy,vz,nx,ny,nz,cx,cy,cz;
-		std::vector<PointType> v;
-		std::vector<ColorType> cv;
-		std::vector<NormalType> nv;
+		std::vector<PointType2> v;
+		std::vector<ColorType2> cv;
+		std::vector<NormalType2> nv;
 		std::vector<int> ttv;
 		while( fscanf(fd ,"%2s",pref) != EOF)
 		{
@@ -261,11 +269,11 @@ static bool importObj(std::vector<float>& inputVertice ,std::vector<int>&  faces
 			{
 
 				fscanf(fd, "%f %f %f",&vx,&vy,&vz);
-				v.push_back( PointType(vx,vy,vz));
+				v.push_back( PointType2(vx,vy,vz));
 			}else if(strcmp(pref,"vn") ==0)
 			{
 				fscanf(fd,"%f %f %f",&(nx),&(ny),&(nz));
-				nv.push_back( NormalType(nx,ny,nz));
+				nv.push_back( NormalType2(nx,ny,nz));
 			}else if( strcmp(pref,"f")==0)
 			{   
 
@@ -293,7 +301,8 @@ static bool importObj(std::vector<float>& inputVertice ,std::vector<int>&  faces
 						{
 							//while((char)get(fd) ==" ");
 							ungetc(pref[0],fd);
-							fscanf(fd ,"%d");
+							int nouse;
+							fscanf(fd ,"%d",&nouse);
 							if( (pref[0] = (char)getc(fd))!='/')
 							{
 								fscanf(fd,"%d",&i_temp_n);
@@ -723,6 +732,85 @@ void Example_mesh_ctrl::genertateVertices(std::string _file_paths,std::string na
 
 }
 
+// load mesh and its exmaple files into scene for manipulation in the future
+void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
+{
+	std::string input_mesh_path = _file_paths + name + ".obj";
+	std::string output_mesh_path = _file_paths + name + "init_out.obj";
+	std::string rig_path = _file_paths + name + ".rig";
+	std::string file_paths;
+	using namespace std;
+	//load first example
+	importObj(g_inputVertices, g_faces, input_mesh_path);
+	Sample* new_sample = FileIO::load_point_cloud_file(input_mesh_path, FileIO::OBJ);
+	int sample_idx = 0;
+	if (new_sample != nullptr)
+	{
+		new_sample->setLoaded(true);
+		new_sample->set_color(Color_Utility::span_color_from_table(sample_idx));
+		SampleSet& smpset = (*Global_SampleSet);
+		smpset.push_back(new_sample);
+		new_sample->smpId = sample_idx;
+		sample_idx++;
+	}
+
+	//load other example
+
+	GetRigFromFile(g_transfos,
+		g_boneWightIdx, g_boneWeights, g_numVertices, g_numBone, g_numExample, g_numIndices,
+		rig_path);
+
+
+	std::vector<float> OutputVetices;
+	if (!g_exampleWeights.size())
+	{
+		g_exampleWeights.resize(g_numVertices*g_numExample, 0.0f);
+		for (int i = 0; i < g_numVertices; i++)
+		{
+			g_exampleWeights[i + 0 * g_numVertices] = 1.0f;
+			g_exampleWeights[i + 1 * g_numVertices] = 0.0f;
+			g_exampleWeights[i + 2 * g_numVertices] = 0.0f;
+		}
+	}
+	//assume the last sample to be what we will manipulate
+	genetatedVertice(OutputVetices, g_inputVertices, g_numVertices,
+		g_transfos, g_numBone, g_numExample, g_numIndices,
+		g_boneWeights,
+		g_boneWightIdx,
+		g_exampleWeights);
+	Sample* sample_manipulate = new Sample();
+	if (sample_manipulate != nullptr)
+	{
+		for (int i = 0; i < OutputVetices.size() / 3; ++i)
+		{
+			sample_manipulate->add_vertex(
+				pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
+				pcm::NormalType(),
+				pcm::ColorType());
+			TriangleType* tt =  new TriangleType(*sample_manipulate);
+			tt->set_i_vetex(0,g_faces[3 * i + 0]);
+			tt->set_i_vetex(1,g_faces[3 * i + 1]);
+			tt->set_i_vetex(2,g_faces[3 * i + 2]);
+			tt->set_i_normal(0, g_faces[3 * i + 0]);
+			tt->set_i_normal(1, g_faces[3 * i + 1]);
+			tt->set_i_normal(2, g_faces[3 * i + 2]);
+			sample_manipulate->add_triangle(*tt);
+			delete tt;
+		}
+		sample_manipulate->setLoaded(true);
+		sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
+		sample_manipulate->build_kdtree();
+		Box box = sample_manipulate->getBox();
+		ScalarType dia_distance = box.diag();
+		SampleSet& smpset = (*Global_SampleSet);
+		smpset.push_back(sample_manipulate);
+		sample_manipulate->smpId = sample_idx;
+		sample_idx++;
+	}
+
+
+	rebuildExampleSover();
+}
 void Example_mesh_ctrl::setupExample(std::string _file_paths,std::string name)
 {
 	std::string input_mesh_path = _file_paths+name+".obj";
@@ -861,3 +949,94 @@ void Example_mesh_ctrl::genertateVertices(std::vector<float>& inputVertices ,std
 	faces = g_faces;
 }
 
+void Example_mesh_ctrl::processCollide(SampleSet& smpset, std::vector<ManipulatedObject*>& selected_obj)
+{
+	int idx_to_manipulate = smpset.size()-1;
+	if (idx_to_manipulate < 0)return;
+
+	std::vector<float> vertices_beforCollide;
+	genetatedVertice(vertices_beforCollide, g_inputVertices, g_numVertices,
+		g_transfos, g_numBone, g_numExample, g_numIndices,
+		g_boneWeights,
+		g_boneWightIdx,
+		g_exampleWeights);
+
+	std::map<int, std::vector<float> > delta_exampleWeightsOfVertex;
+	std::map<int, std::vector<float> > ori_exampleWeights;
+	for (int i_vertex = 0; i_vertex < g_numVertices; i_vertex++)
+	{
+		ori_exampleWeights[i_vertex] = std::vector<float>(g_numExample);
+		for (int i_example = 0; i_example < g_numExample; i_example++)
+		{
+			ori_exampleWeights[i_vertex][i_example] = g_exampleWeights[i_vertex + i_example*g_numVertices];
+		}
+	}
+
+	std::map<int, Tbx::Vec3> delta_xi;
+	for (ManipulatedObject* obj : selected_obj)
+	{
+		if (obj->getType() == ManipulatedObject::VERTEX)
+		{
+			ManipulatedObjectIsVertex* vtxobj = (ManipulatedObjectIsVertex*)obj;
+			int idx = vtxobj->getVertexIdx();
+			qglviewer::Vec manipulate_pos = vtxobj->getLocalPosition();
+			qglviewer::Vec ori_pos(vertices_beforCollide[3 * idx + 0], vertices_beforCollide[3 * idx + 1], vertices_beforCollide[3 * idx + 2]);
+			qglviewer::Vec delta = manipulate_pos - ori_pos;
+			delta_xi[idx] = Tbx::Vec3(delta.x, delta.y, delta.z);
+		}
+		
+
+	}
+
+	if (exampleSolver)
+		exampleSolver->SolveVertices(delta_xi, delta_exampleWeightsOfVertex, ori_exampleWeights);
+	std::vector<float> delta_exampleWeights;
+	propagateExampleWeight(delta_exampleWeightsOfVertex, delta_exampleWeights);
+
+	float lamda = 0.1f;
+	int fade_count = 1;
+	std::vector<float> vertices_afterCollide;
+	for (int i = 0; i < fade_count; i++)
+	{
+		for (int i_vertex = 0; i_vertex < g_numVertices; i_vertex++)
+		{
+			float weight_sum = 0.0f;
+			for (int i_example = 0; i_example < g_numExample; i_example++)
+			{
+				g_exampleWeights[i_vertex + i_example*g_numVertices] += (1 - lamda)* delta_exampleWeights[i_vertex + i_example*g_numVertices];
+				weight_sum += g_exampleWeights[i_vertex + i_example*g_numVertices];
+			}
+			for (int i_example = 0; i_example < g_numExample; i_example++)
+			{
+				g_exampleWeights[i_vertex + i_example*g_numVertices] /= weight_sum; //clamp example between 0 to 1;
+
+			}
+		}
+		for (int i_vertex = 0; i_vertex < g_numVertices; i_vertex++)
+		{
+			for (int i_example = 0; i_example < g_numExample; i_example++)
+			{
+				delta_exampleWeights[i_vertex + i_example*g_numVertices] *= lamda;
+			}
+		}
+
+		genetatedVertice(vertices_afterCollide, g_inputVertices, g_numVertices,
+			g_transfos, g_numBone, g_numExample, g_numIndices,
+			g_boneWeights,
+			g_boneWightIdx,
+			g_exampleWeights);
+		//
+		Sample& smp= smpset[idx_to_manipulate];
+		for ( int i = 0 ; i <smp.num_vertices() ; ++i)
+		{
+			Vertex& vtx = smp[i];
+			vtx.set_position(pcm::PointType(vertices_afterCollide[3 * i + 0],
+				vertices_afterCollide[3 * i + 1],
+				vertices_afterCollide[3 * i + 2]));
+		}
+		
+	}
+
+
+
+}

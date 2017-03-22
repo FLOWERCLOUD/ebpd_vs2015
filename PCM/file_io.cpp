@@ -197,6 +197,7 @@ namespace FileIO
 							tt->set_i_normal(i ,tt->get_i_vertex(i));  //tricky
 						}
 						new_sample->add_triangle(*tt);
+						delete tt;
 						//					ttv.push_back(tt);
 					}else if(pref[0] =='#')
 					{
