@@ -408,6 +408,7 @@ void Sample::draw_with_name()
 	glPushMatrix();
 	glMultMatrixd(m_frame.matrix());
 	Matrix44 mat = matrix_to_scene_coord();
+//	Matrix44 mat = Matrix44::Identity();
 	for( unsigned int idx = 0; idx < vertices_.size(); idx++ )
 	{
 		vertices_[idx]->draw_with_name(idx,mat);
@@ -445,21 +446,45 @@ void Sample::build_kdtree()
 
 }
 
-IndexType Sample::closest_vtx( const PointType& query_point ) const
+IndexType Sample::closest_vtx( const PointType& query_point ) 
 {
-	ScalarType	qp[3] = { query_point(0), query_point(1), query_point(2) };
+	qglviewer::Vec query_vec(query_point(0), query_point(1), query_point(2));
 
-	if (kd_tree_should_rebuild_)
+	float min_distance = 10000.0f;
+	IndexType short_idx = 0;
+	for (int i = 0; i < vertices_.size(); ++i)
 	{
-		return -1;
-	}
+//		qreal x, y, z;
+		//m_input_objs[i]->frame.getPosition(x, y, z);
+		
+		Matrix44 mat = matrix_to_scene_coord();
+		Vec4	tmp(vertices_[i]->x(), vertices_[i]->y(), vertices_[i]->z(), 1.);
+		Vec4	point_to_show = mat * tmp;
+		qglviewer::Vec cur_point(point_to_show(0), point_to_show(1), point_to_show(2));
+		qglviewer::Vec world_pos = m_frame.inverseCoordinatesOf(cur_point);
+		//qglviewer::Vec cur_point(x, y, z);
+		float distance = (query_vec - world_pos).squaredNorm();
+		if (distance < min_distance)
+		{
+			min_distance = distance;
+			short_idx = i;
 
-	return kd_tree_->closest( qp );
-	
+		}
+
+	}
+	return short_idx;
+
+	//if (kd_tree_should_rebuild_)
+	//{
+	//	return -1;
+	//}
+
+	//return kd_tree_->closest( qp );
+	//
 
 }
 
-Matrix44 Sample::matrix_to_scene_coord( )
+Matrix44 Sample::matrix_to_scene_coord()
 {
 	Matrix44 mat;
 
@@ -473,6 +498,21 @@ Matrix44 Sample::matrix_to_scene_coord( )
 
 	return mat;
 						
+}
+Matrix44 Sample::inverse_matrix_to_scene_coord()
+{
+	Matrix44 mat;
+
+	const ScalarType scale_factor = box_.diag();
+	const PointType	 box_center = box_.center();
+
+	mat << scale_factor, 0, 0, box_center(0),
+		0, scale_factor, 0, box_center(1),
+		0, 0, scale_factor, box_center(2),
+		0, 0, 0, 1;
+
+	return mat;
+
 }
 
 bool Sample::neighbours(const IndexType query_point_idx, const IndexType num_closet, IndexType* out_indices)

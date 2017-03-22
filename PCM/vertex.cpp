@@ -36,15 +36,19 @@ void  Vertex::draw( const Matrix44& adjust_matrix )
 void  Vertex::draw_without_color( const Matrix44& adjust_matrix)
 {
 
-	//glNormal3f( normal_(0), normal_(1), normal_(2));
-	//Vec4	tmp(position_(0), position_(1), position_(2),1.);
-	//Vec4	point_to_show = adjust_matrix * tmp;
-	//glVertex3f( point_to_show(0), point_to_show(1), point_to_show(2) );
+
 
 	if (!visible_)
 	{
 		return;
 	}
+
+	glNormal3f( normal_(0), normal_(1), normal_(2));
+	Vec4	tmp2(position_(0), position_(1), position_(2),1.);
+	Vec4	point_to_show2 = adjust_matrix * tmp2;
+	glVertex3f( point_to_show2(0), point_to_show2(1), point_to_show2(2) );
+	return;
+
 	ColorType color;
 	ScalarType r = 0.0f;
 	ScalarType g = 1.0f;
@@ -52,14 +56,14 @@ void  Vertex::draw_without_color( const Matrix44& adjust_matrix)
 	color = ColorType(r,g,b,1.);
 
 	// Set material properties
-	GLfloat qaBlack[] = {0.0, 0.0, 0.0, 1.0};
-	GLfloat qaGreen[] = {0.0, 1.0, 0.0, 1.0};
-	GLfloat qaRed[] = {1.0, 0.0, 0.0, 1.0};
-	GLfloat qaBlue[] = {0.0, 0.0, 1.0, 1.0};
-	GLfloat qaWhite[] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat qaLowAmbient[] = {0.2, 0.2, 0.2, 1.0};
-	GLfloat qaFullAmbient[] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat emission[] = {0.0 ,0.3 ,0.3 ,1.0};
+	GLfloat qaBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat qaGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
+	GLfloat qaRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat qaBlue[] = {0.0f, 0.0f, 1.0f, 1.0f};
+	GLfloat qaWhite[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat qaLowAmbient[] = {0.2f, 0.2f, 0.2f, 1.0f};
+	GLfloat qaFullAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat emission[] = {0.0f ,0.3f ,0.3f ,1.0f};
 	//glLightfv(GL_LIGHT0, GL_AMBIENT, qaLowAmbient);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, qaBlack);
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, qaBlack);
@@ -250,14 +254,14 @@ void Vertex::draw_with_sphere( const Matrix44& adjust_matrix , const Vec3& bias)
 
 
 	// Set material properties
-	GLfloat qaBlack[] = {0.0, 0.0, 0.0, 1.0};
-	GLfloat qaGreen[] = {0.0, 1.0, 0.0, 1.0};
-	GLfloat qaRed[] = {1.0, 0.0, 0.0, 1.0};
-	GLfloat qaBlue[] = {0.0, 0.0, 1.0, 1.0};
-	GLfloat qaWhite[] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat qaLowAmbient[] = {0.2, 0.2, 0.2, 1.0};
-	GLfloat qaFullAmbient[] = {1.0, 1.0, 1.0, 1.0};
-	GLfloat emission[] = {0.0 ,0.3 ,0.3 ,1.0};
+	GLfloat qaBlack[] = {0.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat qaGreen[] = {0.0f, 1.0f, 0.0f, 1.0f};
+	GLfloat qaRed[] = {1.0f, 0.0f, 0.0f, 1.0f};
+	GLfloat qaBlue[] = {0.0f, 0.0f, 1.0f, 1.0f};
+	GLfloat qaWhite[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat qaLowAmbient[] = {0.2f, 0.2f, 0.2f, 1.0f};
+	GLfloat qaFullAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+	GLfloat emission[] = {0.0f ,0.3f ,0.3f ,1.0f};
 	//Set, ambient, diffuse and specular lighting. Set ambient to 20%.
 	//glMaterialfv(GL_FRONT, GL_AMBIENT, qaRed);
 	//glMaterialfv(GL_FRONT, GL_DIFFUSE, qaRed);

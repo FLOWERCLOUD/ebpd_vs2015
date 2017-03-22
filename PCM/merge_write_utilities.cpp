@@ -47,7 +47,7 @@ void writePovray(char* _file_in ,char* _file_out)
 	ScalarType x ,y  ,z , n1 ,n2 ,n3 ,r ,g , b;
 	while(true){
 
-		int stat = fscanf(in_file,"%f %f %f %d %d %d %d %d %d\n",  &x, &y,&z ,&n1 ,&n2 ,&n3 ,&r ,&g ,&b);	 
+		int stat = fscanf(in_file,"%f %f %f %f %f %f %f %f %f\n",  &x, &y,&z ,&n1 ,&n2 ,&n3 ,&r ,&g ,&b);	 
 		if(stat==EOF)break;
 		fprintf(outfile, "sphere{\n <%f,%f,%f>,%f\ntexture{texture%d}}\n",  x/maxscale - xmean ,y/maxscale -ymean ,z/maxscale -zmean ,pointsize ,3*(label%3+2) );
 		++label;

@@ -6,15 +6,15 @@
 #include "ui_main_window.h"
 //#include "paint_canvas.h"
 #include "globals.h"
+#include "CustomGL/glew.h"
+#include "tool.h"
+#include "maching_state.h"
+#include "dlg_propagate.h"
+#include "LayerDialog.h"
 #include <string>
 #include <map>
 #include <QLabel>
 #include <QFileInfoList>
-#include "select_tool.h"
-#include "maching_state.h"
-#include "dlg_propagate.h"
-#include "LayerDialog.h"
-
 //#include "dlg_fitPlan.h"
 
 using namespace std;

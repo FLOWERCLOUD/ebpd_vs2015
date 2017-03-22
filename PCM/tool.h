@@ -13,7 +13,7 @@ namespace qglviewer
 class Tool
 {
 public:
-
+	Tool(){}
 	enum ToolType { EMPTY_TOOL, SELECT_TOOL, MANIPULATE_TOOL };
 
 	Tool( PaintCanvas* canvas ):canvas_(canvas),
@@ -22,16 +22,18 @@ public:
 	virtual ~Tool(){}
 
 public:
-	virtual void postSelection() {}
+	virtual void postManipulateToolSelection() {}
 	virtual void press(QMouseEvent *e ,qglviewer::Camera* camera = NULL) = 0;
 	virtual void move(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
 	virtual void release(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
 	virtual void drag(QMouseEvent *e, qglviewer::Camera* camera = NULL) = 0;
+	virtual void keyPressEvent(QKeyEvent *e){ }
 	virtual void draw() = 0;
-	ToolType	tool_type () const { return tool_type_; }
-	void	set_tool_type( ToolType type ){ tool_type_ = type; }
-	unsigned int	cur_sample_to_operate() const { return cur_sample_to_operate_; }
-	void set_cur_smaple_to_operate( unsigned int sample_idx )
+public:
+	virtual ToolType	tool_type () const { return tool_type_; }
+	virtual void	set_tool_type( ToolType type ){ tool_type_ = type; }
+	virtual unsigned int	cur_sample_to_operate() const { return cur_sample_to_operate_; }
+	virtual void set_cur_smaple_to_operate( unsigned int sample_idx )
 	{
 		cur_sample_to_operate_ = sample_idx;
 	}

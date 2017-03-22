@@ -1,5 +1,7 @@
+
 #include "main_window.h"
 #include "paint_canvas.h"
+#include "manipulate_tool.h"
 #include "toolbars/widget_selection.hpp"
 #include "toolbars/widget_viewports.hpp"
 #include "toolbars/widget_gizmo.hpp"
@@ -15,7 +17,6 @@
 #include "color_table.h"
 #include "time.h"
 #include "tracer.h"
-#include "manipulate_tool.h"
 #include "sample_properity.h"
 #include "maching_state.h"
 #include "saveSnapshotDialog.h"
@@ -318,8 +319,8 @@ void main_window::setSelectToolMode()
 		delete _viewports->active_viewport()->single_operate_tool_;
 	}
 	_viewports->active_viewport()->single_operate_tool_ = new SelectTool(_viewports->active_viewport());
-	_viewports->active_viewport()->single_operate_tool_->set_tool_type(Tool::SELECT_TOOL);
-	_viewports->active_viewport()->single_operate_tool_->set_cur_smaple_to_operate(cur_select_sample_idx_);
+	((SelectTool*)_viewports->active_viewport()->single_operate_tool_)->set_tool_type(Tool::SELECT_TOOL);
+	((SelectTool*)_viewports->active_viewport()->single_operate_tool_)->set_cur_smaple_to_operate(cur_select_sample_idx_);
 
 	updateGL();
 
@@ -348,8 +349,8 @@ void main_window::setEbpd_hand_Mode()
 		delete _viewports->active_viewport()->single_operate_tool_;
 	}
 	_viewports->active_viewport()->single_operate_tool_ = new ManipulateTool(_viewports->active_viewport());
-	_viewports->active_viewport()->single_operate_tool_->set_tool_type(Tool::MANIPULATE_TOOL);
-	_viewports->active_viewport()->single_operate_tool_->set_cur_smaple_to_operate(cur_select_sample_idx_);
+	((ManipulateTool*)_viewports->active_viewport()->single_operate_tool_)->set_tool_type(Tool::MANIPULATE_TOOL);
+	((ManipulateTool*)_viewports->active_viewport()->single_operate_tool_)->set_cur_smaple_to_operate(cur_select_sample_idx_);
 	updateGL();
 
 }
@@ -473,6 +474,10 @@ void main_window::selectedSampleChanged(QTreeWidgetItem * item, int column)
 	{
 		(*Global_SampleSet)[cur_select_sample_idx_].set_selected(true);
 	}
+	if (cur_select_sample_idx_ != -1)
+	{
+		setSampleSelectedIndex(cur_select_sample_idx_);
+	}		
 	updateGL();
 
 }
@@ -525,6 +530,10 @@ void main_window::setSampleSelectedIndex(int i)
 	if ( cur_select_sample_idx_ != -1)
 	{
 		(*Global_SampleSet)[cur_select_sample_idx_].set_selected(true);
+	}
+	if (_viewports->active_viewport()->single_operate_tool_ != NULL &&_viewports->active_viewport()->single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+		((ManipulateTool*)_viewports->active_viewport()->single_operate_tool_)->set_cur_smaple_to_operate(cur_select_sample_idx_);
 	}
 	updateGL();
 }

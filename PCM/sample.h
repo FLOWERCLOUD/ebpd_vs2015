@@ -10,7 +10,7 @@
 #include "file_io.h"
 #include <QMutex>
 #include <set>
-class Vertex;
+#include <vertex.h>
 class TriangleType;
 class LinkNode;
 
@@ -91,7 +91,7 @@ public:
 	//Every time vertex change, the kdtree should rebuild
 	void	build_kdtree();
 
-	IndexType closest_vtx( const PointType& query_point ) const;
+	IndexType closest_vtx( const PointType& query_point );
 	bool		neighbours(const IndexType query_point_idx, const IndexType num_closet, IndexType* out_indices);
 	/* 
 		Get matrix for transforming world-sample space to 
@@ -99,7 +99,7 @@ public:
 		no matter what original coordinates it is
 	*/
 	inline Matrix44 matrix_to_scene_coord(  );
-
+	Matrix44 inverse_matrix_to_scene_coord();
 	/* Green channel to get all vertex position information */
 	inline  Matrix3X&	vertices_matrix()
 	{	
@@ -129,6 +129,19 @@ public:
 	{
 		return m_frame;
 	}
+	inline qglviewer::Vec getGlobalPosition(int vtx_idx)
+	{
+		Vertex* vetex = vertices_[vtx_idx];
+		qglviewer::Vec pos(vetex->x(), vetex->y(), vetex->z());
+		return m_frame.inverseCoordinatesOf(pos); //convert  frame coordinate to world coordinate 
+	}
+	inline void setGlobalPosition(int vtx_idx)
+	{
+		Vertex* vetex = vertices_[vtx_idx];
+		qglviewer::Vec pos =  m_frame.coordinatesOf(pos);  //convert world coordinate to frame coordinate
+		vetex->set_position(PointType(pos.x, pos.y, pos.z));
+	}
+
 	bool load();
 	bool unload();
 	bool isLoaded(){ return isload_;}

@@ -146,7 +146,8 @@ namespace FileIO
 					}else if(strcmp(pref,"vn") ==0)
 					{
 						fscanf(fd,"%f %f %f",&(nx),&(ny),&(nz));
-						nv.push_back( NormalType(nx,ny,nz));
+						ScalarType square_num = sqrt(nx*nx + ny*ny + nz*nz);
+						nv.push_back( NormalType(nx/square_num,ny/square_num,nz/square_num));
 					}else if( strcmp(pref,"f")==0)
 					{   
 						TriangleType* tt = new TriangleType(*new_sample);
@@ -174,7 +175,8 @@ namespace FileIO
 								{
 									//while((char)get(fd) ==" ");
 									ungetc(pref[0],fd);
-									fscanf(fd ,"%d");
+									int nouse;
+									fscanf(fd ,"%d", &nouse);
 									if( (pref[0] = (char)getc(fd))!='/')
 									{
 										fscanf(fd,"%d",&i_temp_n);

@@ -7,14 +7,13 @@
 #include "toolbars/OGL_widget_enum.hpp"
 #include "toolbox/maths/selection_heuristic.hpp"
 #include "toolbox/maths/vec3.hpp"
-
-//#include "select_tool.h"
+#include "select_tool.h"
 
 
 class SnapshotSetting;
 class SavePlySetting;
 class main_window;
-class Tool;
+class SelectTool;
 
 class BulletOpenGLApplication;
 class GLInstancingRenderer;

@@ -15,7 +15,7 @@
 #include "globals.h"
 #include "GlobalObject.h"
 #include "render_types.h"
-#include "tool.h"
+#include "select_tool.h"
 extern bool isShowNoraml;
 extern RenderMode::WhichColorMode	which_color_mode_;
 extern RenderMode::RenderType which_render_mode;
@@ -481,18 +481,16 @@ void drawSampleSet( PaintCanvas* _curCanvas)
 {
 	using namespace pcm;
 	using namespace RenderMode;
+
+
+
 	glEnable(GL_MULTISAMPLE);
 
 	//setView();
 
 	if(!_curCanvas->istakeSnapTile()) _curCanvas->drawCornerAxis();
 
-	//tool mode
-	if (_curCanvas->single_operate_tool_!=nullptr && _curCanvas->single_operate_tool_->tool_type()!=Tool::EMPTY_TOOL)
-	{
-		_curCanvas->single_operate_tool_->draw();
-		return;
-	}
+
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);	
 	SampleSet& set = (*Global_SampleSet);
@@ -737,6 +735,13 @@ void drawSampleSet( PaintCanvas* _curCanvas)
 	}
 
 	glPopAttrib();
+
+	glDisable(GL_MULTISAMPLE);
+	//tool mode
+	if (_curCanvas->single_operate_tool_ != nullptr && _curCanvas->single_operate_tool_->tool_type() != Tool::EMPTY_TOOL)
+	{
+		_curCanvas->single_operate_tool_->draw();
+	}
 }
 
 

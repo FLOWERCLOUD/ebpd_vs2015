@@ -1,11 +1,9 @@
 #pragma once
-
+#include <QGLViewer/qglviewer.h>
 #include "select_tool.h"
 #include "basic_types.h"
 #include "manipulate_object.h"
 #include "QGLViewer/manipulatedFrame.h"
-#include <QGLViewer/qglviewer.h>
-
 #include <vector>
 namespace qglviewer
 {
@@ -31,40 +29,50 @@ enum EnumConstraintObj
 void drawAxisWithNames(qreal length, int select = -1, bool isWithName = false);
 
 /*	click select ,Rectangle Select Tool ,and manipulate the select things	*/
-class ManipulateTool : public SelectTool,public qglviewer::ManipulatedFrame
+class ManipulateTool :public qglviewer::ManipulatedFrame,public Tool
 {
+	Q_OBJECT
 public:
 
 
-	ManipulateTool(PaintCanvas* canvas);
+	ManipulateTool(PaintCanvas* canvas,ManipulatedObject::ManipulatedObjectType _manipulateObjectType = ManipulatedObject::OBJECT);
 	~ManipulateTool() {
-		for (ManipulatedObject* obj : m_input_objs)
+		for (ManipulatedObject* obj : select_tool.m_selected_objs_)
 		{
 			delete obj;
 		}
-		m_input_objs.clear();
-		m_selected_objs.clear();	
+		select_tool.m_selected_objs_.clear();
 	}
 
 	virtual void move(QMouseEvent *e, qglviewer::Camera* camera = NULL);
 	virtual void drag(QMouseEvent *e,  qglviewer::Camera* camera = NULL);
 	virtual void release(QMouseEvent *e,  qglviewer::Camera* camera = NULL);
 	virtual void press(QMouseEvent* e,  qglviewer::Camera* camera = NULL);
+	virtual void keyPressEvent(QKeyEvent *e);
 	virtual void draw();
-	void postSelection();
-protected:
-	void getKCloestPoint(qglviewer::Vec point, int k, std::vector<int>& selected_idx, std::vector<float>* selected_idx_distance = NULL );
+public slots:
+	virtual void postSelect();
+	void postManipulateToolSelection();
+public :
+	ToolType	tool_type() const { return select_tool.tool_type_; }
+	void	set_tool_type(ToolType type) { select_tool.tool_type_ = type; }
+	unsigned int	cur_sample_to_operate() const { return select_tool.cur_sample_to_operate_; }
+	void set_cur_smaple_to_operate(unsigned int sample_idx)
+	{
+		select_tool.cur_sample_to_operate_ = sample_idx;
+	}
+protected slots:
 	void startManipulation();
+protected:
+	
+	
 	ManipulatedFrame* manipulatedFrame()
 	{
 		return this;
 	}
-	std::vector<ManipulatedObject*> m_selected_objs;
-	std::vector<ManipulatedObject*> m_input_objs;
-	std::vector<int> m_selected_idx;
-	std::vector<float> m_selected_idx_distance;
+
 //	qglviewer::ManipulatedFrame manipulated_frame;
-	void changeConstraint(EnumConstraint curstraint);
+	void changeToConstraint(EnumConstraint curstraint);
 	void setTranslationConstraintType(qglviewer::AxisPlaneConstraint::Type type);
 	void setRotationConstraintType(qglviewer::AxisPlaneConstraint::Type type);
 	void setTranslationConstraintDirection(int transDir);
@@ -78,7 +86,20 @@ protected:
 	EnumConstraintObj selected_name;
 	qglviewer::AxisPlaneConstraint* cur_constraint;
 	EnumConstraint activeConstraint;
-
+	SelectTool select_tool;
+protected slots:
+	void slot_action_LocalConstraint()
+	{
+		changeToConstraint(Local_Constraint);
+	}
+	void slot_action_WorldConstraint()
+	{
+		changeToConstraint(World_Constraint);
+	}
+	void slot_action_CameraConstraint()
+	{
+		changeToConstraint(Camera_Constraint);
+	}
 
 
 };

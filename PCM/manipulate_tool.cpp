@@ -6,8 +6,10 @@
 #include "sample_set.h"
 #include "sample.h"
 #include "vertex.h"
+#include <QMenu>
+#include <QAction>
 
-#include <deque>
+
 using namespace qglviewer;
 
 const int SLICE = 60;
@@ -202,7 +204,7 @@ void drawRotateAxisWithNames(qreal length, int select = -1, bool isWithName = fa
 
 	if (5 == select) //z 
 	{
-		glLineWidth(2.0f);
+		glLineWidth(5.0f);
 		color[0] = 1.0f;  color[1] = 1.0f;  color[2] = 0.0f;  color[3] = 1.0f;
 		glColor4dv(color);
 //		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
@@ -215,13 +217,19 @@ void drawRotateAxisWithNames(qreal length, int select = -1, bool isWithName = fa
 //		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
 	}
 	if (isWithName)glPushName(5);
-	drawEllipse(length);
+	if (isWithName)
+	{
+		glLineWidth(10.0f);
+		drawEllipse(length);
+	}		
+	else
+		drawEllipse(length);
 	if (isWithName)glPopName();
 
 
 	if (3 == select) //x 
 	{
-		glLineWidth(2.0f);
+		glLineWidth(5.0f);
 		color[0] = 1.0f;  color[1] = 1.0f;  color[2] = 0.0f;  color[3] = 1.0f;
 		glColor4dv(color);
 		//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
@@ -236,13 +244,19 @@ void drawRotateAxisWithNames(qreal length, int select = -1, bool isWithName = fa
 	glPushMatrix();
 	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
 	if (isWithName)glPushName(3);
-	drawEllipse(length);
+	if (isWithName)
+	{
+		glLineWidth(10.0f);
+		drawEllipse(length);
+	}
+	else
+		drawEllipse(length);
 	if (isWithName)glPopName();
 	glPopMatrix();
 
 	if (4 == select) //y 
 	{
-		glLineWidth(2.0f);
+		glLineWidth(5.0f);
 		color[0] = 1.0f;  color[1] = 1.0f;  color[2] = 0.0f;  color[3] = 1.0f;
 		glColor4dv(color);
 		//glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
@@ -257,7 +271,13 @@ void drawRotateAxisWithNames(qreal length, int select = -1, bool isWithName = fa
 	glPushMatrix();
 	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
 	if (isWithName)glPushName(4);
-	drawEllipse(length);
+	if (isWithName)
+	{
+		glLineWidth(10.0f);
+		drawEllipse(length);
+	}
+	else
+		drawEllipse(length);
 	if (isWithName)glPopName();
 	glPopMatrix();
 
@@ -629,34 +649,29 @@ void draw_quadsWithNames(qreal length, int select = -1, bool isWithName = false)
 }
 
 
-ManipulateTool::ManipulateTool(PaintCanvas* canvas) :SelectTool(canvas)
+ManipulateTool::ManipulateTool(PaintCanvas* canvas, 
+	ManipulatedObject::ManipulatedObjectType _manipulateObjectType) :
+	select_tool(canvas, _manipulateObjectType)
 {
-	SampleSet& set = (*Global_SampleSet);
-	Sample& sample = set[cur_sample_to_operate_];
-	LOCK(sample);
 
-	for (int i = 0; i < sample.num_vertices(); ++i)
-	{
-		ManipulatedObject* obj = new ManipulatedObject();
-		obj->idx = i;
-		obj->setPosition( qglviewer::Vec(sample[i].x(), sample[i].y(), sample[i].z()) );
-		obj->setNormal(qglviewer::Vec(sample[i].nx(), sample[i].ny(), sample[i].nz()));
-		m_input_objs.push_back(obj);
-	}
-	UNLOCK(sample);
 	axis_length = 0.5f;
 	rotate_circle_radius = 0.5f;
 	selected_name = NONE_OBJECT;
-//	activeConstraint = Local_Constraint;
+	activeConstraint = Local_Constraint;
 //	cur_constraint = new LocalConstraint();
-	activeConstraint = World_Constraint;
-	cur_constraint = new WorldConstraint();
+	//activeConstraint = World_Constraint;
+	cur_constraint = new ManipulatedFrameSetLocalConstraint();
 	manipulatedFrame()->setConstraint(cur_constraint);
 	//manipulatedFrame()->setConstraint(new ManipulatedFrameSetConstraint());
+	connect(&select_tool, SIGNAL(postSelect()), this, SLOT(postSelect()));
 }
 
 void ManipulateTool::move(QMouseEvent *e , qglviewer::Camera* camera)
 {
+	if (select_tool.left_mouse_button_ == true)
+	{
+		select_tool.move(e, camera);
+	}
 	this->mouseMoveEvent(e, camera);
 	//for (std::vector<int>::const_iterator it = m_selected_idx.begin(), end = m_selected_idx.end(); it != end; ++it)
 	//{
@@ -668,6 +683,8 @@ void ManipulateTool::move(QMouseEvent *e , qglviewer::Camera* camera)
 
 void ManipulateTool::drag(QMouseEvent *e, qglviewer::Camera* camera)
 {
+	select_tool.drag(e, camera);
+
 
 	this->mouseMoveEvent(e, camera);
 
@@ -676,6 +693,60 @@ void ManipulateTool::drag(QMouseEvent *e, qglviewer::Camera* camera)
 
 void ManipulateTool::release(QMouseEvent *e , qglviewer::Camera* camera)
 {
+
+	select_tool.release(e, camera);
+
+	if (e->button() == Qt::RightButton)
+	{
+		qglviewer::Vec release_pos(e->pos().x(), e->pos().y(), 0.0f);
+		if (qglviewer::Vec(release_pos - select_tool.right_mouse_pressed_pos_).norm() < 0.001)
+		{
+		
+
+			QAction* action_1 = new QAction("&Local Constraint", select_tool.popupMenu);
+			QAction* action_2 = new QAction("&World Constraint", select_tool.popupMenu);
+			QAction* action_3 = new QAction("&Camera Constraint", select_tool.popupMenu);
+			action_1->setCheckable(true);
+			action_2->setCheckable(true);
+			action_3->setCheckable(true);
+			switch (activeConstraint)
+			{
+			case  Local_Constraint:
+			{
+				action_1->setChecked(true);
+			}
+			break;
+			case  World_Constraint:
+			{
+				action_2->setChecked(true);
+			}
+			break;
+			case  Camera_Constraint:
+			{
+				action_3->setChecked(true);
+			}
+			break;
+
+			}
+			select_tool.popupMenu->addAction(action_1);
+			select_tool.popupMenu->addAction(action_2);
+			select_tool.popupMenu->addAction(action_3);
+
+			QObject*b = (QObject*)this;
+			connect(action_1, SIGNAL(triggered()), b, SLOT(slot_action_LocalConstraint()));
+			connect(action_2, SIGNAL(triggered()), b, SLOT(slot_action_WorldConstraint()));
+			connect(action_3, SIGNAL(triggered()), b, SLOT(slot_action_CameraConstraint()));
+
+			QPoint& point = e->globalPos();
+			point.setX(point.x() - 50);
+			select_tool.popupMenu->exec(point);
+		}
+		delete select_tool.popupMenu;
+		select_tool.popupMenu = NULL;
+		select_tool.canvas_->updateGL();
+		select_tool.right_mouse_button_ = false;
+
+	}
 	this->mouseReleaseEvent(e, camera);
 	selected_name = NONE_OBJECT;
 	setTranslationConstraintType(qglviewer::AxisPlaneConstraint::FREE);
@@ -685,66 +756,12 @@ void ManipulateTool::release(QMouseEvent *e , qglviewer::Camera* camera)
 
 void ManipulateTool::press(QMouseEvent* e, qglviewer::Camera* camera)
 {
-	GLdouble		model[16];
-	glGetDoublev(GL_MODELVIEW_MATRIX, model);
 
-	GLdouble proj[16];
-	glGetDoublev(GL_PROJECTION_MATRIX, proj);
-
-	GLint view[4];
-	glGetIntegerv(GL_VIEWPORT, view);
-
-	int winX = e->x();
-	int winY = view[3] - 1 - e->y();
-
-	float zValue;
-	glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &zValue);
-
-	GLubyte stencilValue;
-	glReadPixels(winX, winY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &stencilValue);
-
-	//GLdouble worldX, worldY, worldZ;
-	//gluUnProject(winX, winY, zValue, model, proj, view, &worldX, &worldY, &worldZ);
-
+	
 	QPoint targetpoint((float)e->x(), (float)e->y());
-	bool isFound;
-	qglviewer::Vec target3dVec = camera->pointUnderPixel(targetpoint, isFound);
 	select(targetpoint);
-	if (isFound)
-	{
-		select(targetpoint);
-		if (selected_name == NONE_OBJECT)
-		{
-			Logger << "qglviewer click" << target3dVec.x << target3dVec.y << target3dVec.z << std::endl;
-			//Logger << "clicked point" << worldX << worldY << worldZ << std::endl;
-			//if (stencilValue == 1)
-			//{
-			mouse_pressed_pos_.setX(e->x());
-			mouse_pressed_pos_.setY(e->y());
-			qglviewer::Vec queryPos(target3dVec.x, target3dVec.y, target3dVec.z);
-			getKCloestPoint(target3dVec, 1, m_selected_idx, &m_selected_idx_distance);
-			//}
-			m_selected_objs.clear();
-			for (int i : m_selected_idx)
-			{
-				m_selected_objs.push_back(m_input_objs[i]);
-			}
-			for (float distance : m_selected_idx_distance)
-			{
-				Logger << "distance " << distance << std::endl;
 
-			}
-			startManipulation();
-
-		}
-
-
-	}
-
-
-	//if (e->modifiers() == Qt::ControlModifier)
-	//{
-	switch(selected_name)
+	switch (selected_name)
 	{
 	case X_AXIS:
 		this->startAction(QGLViewer::TRANSLATE, true);
@@ -776,35 +793,96 @@ void ManipulateTool::press(QMouseEvent* e, qglviewer::Camera* camera)
 	case SCREEN_PLAIN:
 		this->startAction(QGLViewer::TRANSLATE, true);
 		break;
-	default:
-		this->startAction(QGLViewer::TRANSLATE, true);
-
-
 	}
 	this->mousePressEvent(e, camera);
+	if(NONE_OBJECT == selected_name)
+		select_tool.press(e, camera);
+
+
+	//GLdouble		model[16];
+	//glGetDoublev(GL_MODELVIEW_MATRIX, model);
+
+	//GLdouble proj[16];
+	//glGetDoublev(GL_PROJECTION_MATRIX, proj);
+
+	//GLint view[4];
+	//glGetIntegerv(GL_VIEWPORT, view);
+
+	//int winX = e->x();
+	//int winY = view[3] - 1 - e->y();
+
+	//float zValue;
+	//glReadPixels(winX, winY, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &zValue);
+
+	//GLubyte stencilValue;
+	//glReadPixels(winX, winY, 1, 1, GL_STENCIL_INDEX, GL_UNSIGNED_BYTE, &stencilValue);
+
+	////GLdouble worldX, worldY, worldZ;
+	////gluUnProject(winX, winY, zValue, model, proj, view, &worldX, &worldY, &worldZ);
+
+	
+	//bool isFound;
+	//qglviewer::Vec target3dVec = camera->pointUnderPixel(targetpoint, isFound);
+
+
+
+
+
+
+
+	//if (e->modifiers() == Qt::ControlModifier)
+	//{
+
 	//}
 
 
 
 }
 
+void ManipulateTool::keyPressEvent(QKeyEvent *e)
+{
+	switch (e->key())
+	{
+
+	case Qt::Key_Space:
+	{
+ 		if (Local_Constraint == activeConstraint)
+		{
+			changeToConstraint(World_Constraint);
+		}
+		else if (World_Constraint == activeConstraint)
+		{
+			changeToConstraint(Camera_Constraint);
+		}
+		else if (Camera_Constraint == activeConstraint)
+		{
+			changeToConstraint(Local_Constraint);
+		}
+		break;
+	}
+
+	}
+
+
+}
 void ManipulateTool::draw()
 {
-	glEnable(GL_DEPTH_TEST);  // 必须开启深度测试才能使用 unproject 方式选点
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//	drawAxis(3,-1);
-	// Draws all the objects. Selected ones are not repainted because of GL depth test.
-	glColor3f(0.8f, 0.8f, 0.8f);
-	glPointSize(5.0f);
-	for (int i = 0; i<int( m_input_objs.size()); i++)
-		m_input_objs[i]->draw();
-
-	// Draws selected objects only.
-	glPointSize(20.0f);
-	glColor3f(0.9f, 0.0f, 0.0f);
-	for (auto it = m_selected_objs.begin(), end = m_selected_objs.end(); it != end; ++it)
+	select_tool.draw();
+//	glEnable(GL_DEPTH_TEST);  // 必须开启深度测试才能使用 unproject 方式选点
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+////	drawAxis(3,-1);
+//	// Draws all the objects. Selected ones are not repainted because of GL depth test.
+//	glColor3f(0.8f, 0.8f, 0.8f);
+//	glPointSize(5.0f);
+//	for (int i = 0; i<int( m_input_objs_.size()); i++)
+//		m_input_objs_[i]->draw();
+//
+//	// Draws selected objects only.
+//	glPointSize(20.0f);
+//	glColor3f(0.9f, 0.0f, 0.0f);
+	for (auto it = select_tool.m_selected_objs_.begin(), end = select_tool.m_selected_objs_.end(); it != end; ++it)
 		(*it)->draw();
-	glDisable(GL_DEPTH_TEST);
+//	glDisable(GL_DEPTH_TEST);
 	// Draws manipulatedFrame (the set's rotation center)
 	//if (manipulatedFrame()->isManipulated())
 	//{
@@ -815,7 +893,7 @@ void ManipulateTool::draw()
 	//	drawSelectionRectangle();
 
 	//这里是为了让控制器大小不随照相机改变而改变
-	camera_dist =  canvas_->camera()->type() == Camera::PERSPECTIVE ? (manipulatedFrame()->position() - canvas_->camera()->position()).norm() : 1;  //注意是norm 不是square norm
+	camera_dist = select_tool.canvas_->camera()->type() == Camera::PERSPECTIVE ? (manipulatedFrame()->position() - select_tool.canvas_->camera()->position()).norm() : 1;  //注意是norm 不是square norm
 	camera_dist *= 0.3;
 
 	//Logger << "zNearCoefficient() " << canvas_->camera()->zNearCoefficient() << std::endl;
@@ -846,7 +924,7 @@ void ManipulateTool::draw()
 
 
 
-	screen_quas(manipulatedFrame()->position(), canvas_, selected_name);
+	screen_quas(manipulatedFrame()->position(), select_tool.canvas_, selected_name);
 
 	glPushMatrix();
 
@@ -897,11 +975,19 @@ void ManipulateTool::draw()
 
 }
 
-
-
-void ManipulateTool::postSelection()
+void ManipulateTool::postSelect()
 {
-	int name = canvas_->selectedName();
+	if (selected_name == NONE_OBJECT)
+	{
+		startManipulation();
+
+	}
+}
+
+
+void ManipulateTool::postManipulateToolSelection()
+{
+	int name = select_tool.canvas_->selectedName();
 	selected_name = (EnumConstraintObj)name;
 	Logger << "select " << name << std::endl;
 	switch (selected_name)
@@ -955,160 +1041,91 @@ void ManipulateTool::postSelection()
 	}
 }
 
-void ManipulateTool::getKCloestPoint(qglviewer::Vec point ,int k, std::vector<int>& selected_idx, std::vector<float>* selected_idx_distance)
-{
 
-	float min_distance = 10000.0f;
-	for (int i = 0; i < m_input_objs.size(); ++i)
-	{
-		qreal x, y, z;
-		//m_input_objs[i]->frame.getPosition(x, y, z);
-		qglviewer::Vec cur_point = m_input_objs[i]->getWorldPosition();
-		//qglviewer::Vec cur_point(x, y, z);
-		float distance = (point - cur_point).squaredNorm();
-		if (distance < min_distance)
-		{
-			min_distance = distance;
-			selected_idx.clear();
-			selected_idx.push_back(i);
-			if (selected_idx_distance)
-			{
-				selected_idx_distance->clear();
-				selected_idx_distance->push_back(min_distance);
-			}
-			
-		}
-
-	}
-	return;
-
-
-	if ( k <=0)
-		return;
-	std::deque<float> k_small;
-	std::deque<int> k_small_idx;
-
-	SampleSet& set = (*Global_SampleSet);
-	Sample& sample = set[cur_sample_to_operate_];
-	LOCK(sample);
-	
-	for (int i = 0; i < m_input_objs.size(); ++i)
-	{
-		qreal x, y, z;
-		qglviewer::Vec cur_point = m_input_objs[i]->getWorldPosition();
-//		m_input_objs[i]->frame.getPosition(x, y, z);
-//		qglviewer::Vec cur_point( x,y,z );
-		float distance = (point - cur_point).squaredNorm();
-		if (k_small.size() < k)
-		{
-			if (k_small.size() && distance <= k_small.front())
-			{
-				k_small.push_front(distance);
-				k_small_idx.push_front(i);
-
-			}
-			else if( k_small.size() && distance >= k_small.back())
-			{
-				k_small.push_back(distance);
-				k_small_idx.push_back(i);
-			}else if( !k_small.size())
-			{ 
-				k_small.push_front(distance);
-				k_small_idx.push_front(i);			
-			}
-
-		}
-		else
-		{
-			if (k_small.size() && distance <= k_small.front())
-			{
-				k_small.push_front(distance);
-				k_small_idx.push_front(i);
-				k_small.pop_back();
-				k_small_idx.pop_back();
-
-			}
-			else if (k_small.size() && distance < k_small.back())
-			{
-
-				k_small.pop_back();
-				k_small_idx.pop_back();
-				k_small.push_back(distance);
-				k_small_idx.push_back(i);
-
-				for (int m = k_small.size() -1;m < k_small.size(); ++m)
-				{
-					float tmp = k_small[m];
-					int tmp_idx = k_small_idx[m];
-					int n = m - 1;
-					while (n > -1 && tmp < k_small[n])
-					{
-						k_small[n+1] = k_small[n];
-						k_small_idx[n+1] = k_small_idx[n];
-						n--;
-					}
-					k_small[n + 1] = tmp;
-					k_small_idx[n + 1] = tmp_idx;
-				}
-
-			}
-
-
-		}
-
-
-	}
-	selected_idx.clear();
-	if (selected_idx_distance)
-		selected_idx_distance->clear();
-	while( k_small.size())
-	{
-		selected_idx.push_back(k_small_idx.front());
-		if (selected_idx_distance)
-			selected_idx_distance->push_back(k_small.front());
-		k_small_idx.pop_front();
-		k_small.pop_front();
-	}
-	UNLOCK(sample);
-}
 
 void ManipulateTool::startManipulation()
 {
-	qglviewer::Vec averagePosition;
-	ManipulatedFrameSetConstraint* mfsc = (ManipulatedFrameSetConstraint*)(manipulatedFrame()->constraint());
-	mfsc->clearSet();
 
-	for (std::vector<int>::const_iterator it = m_selected_idx.begin(), end = m_selected_idx.end(); it != end; ++it)
+	qglviewer::Vec averagePosition;
+	switch (activeConstraint)
 	{
-		mfsc->addObjectToSet(m_input_objs[*it]);
-		averagePosition += m_input_objs[*it]->getWorldPosition();
+	case Local_Constraint:
+	{
+		ManipulatedFrameSetLocalConstraint* mfsc = (ManipulatedFrameSetLocalConstraint*)(manipulatedFrame()->constraint());
+		mfsc->clearSet();
+		for (ManipulatedObject* obj : select_tool.m_selected_objs_)
+		{
+			mfsc->addObjectToSet(obj);
+			averagePosition += obj->getWorldPosition();
+		}
+		break;
+	}
+	case World_Constraint:
+	{
+		ManipulatedFrameSetWorldConstraint* mfsc = (ManipulatedFrameSetWorldConstraint*)(manipulatedFrame()->constraint());
+		mfsc->clearSet();
+		for ( ManipulatedObject* obj: select_tool.m_selected_objs_)
+		{
+			mfsc->addObjectToSet(obj);
+			averagePosition += obj->getWorldPosition();
+		}
+		break;
+	}
+	case Camera_Constraint:
+	{
+		ManipulatedFrameSetCameraConstraint* mfsc = (ManipulatedFrameSetCameraConstraint*)(manipulatedFrame()->constraint());
+		mfsc->clearSet();
+		for (ManipulatedObject* obj : select_tool.m_selected_objs_)
+		{
+			mfsc->addObjectToSet(obj);
+			averagePosition += obj->getWorldPosition();
+		}
+		break;
 	}
 
-	if (m_selected_idx.size() > 0)
-		manipulatedFrame()->setPosition(averagePosition / m_selected_idx.size());
+	}
+//	ManipulatedFrameSetConstraint* mfsc = (ManipulatedFrameSetConstraint*)(manipulatedFrame()->constraint());
+	if (select_tool.m_selected_objs_.size() > 0)
+		manipulatedFrame()->setPosition(averagePosition / select_tool.m_selected_objs_.size());
 }
 
-void ManipulateTool::changeConstraint(EnumConstraint curstraint)
+void ManipulateTool::changeToConstraint(EnumConstraint curstraint)
 {
 	EnumConstraint previous = activeConstraint;
 	AxisPlaneConstraint* previousConstraint = cur_constraint;
-
+	std::vector<ManipulatedObject*> manipulateObjs;
+	if (Local_Constraint == previous)
+	{
+		manipulateObjs = ((ManipulatedFrameSetLocalConstraint*)previousConstraint)->getManipulateObjs();
+	}
+	else if (World_Constraint == previous)
+	{
+		manipulateObjs = ((ManipulatedFrameSetWorldConstraint*)previousConstraint)->getManipulateObjs();
+	}
+	else if (Camera_Constraint == previous)
+	{
+		manipulateObjs = ((ManipulatedFrameSetCameraConstraint*)previousConstraint)->getManipulateObjs();
+	}
 	switch(curstraint)
 	{
 	case Local_Constraint:
-		cur_constraint = new qglviewer::LocalConstraint();
+		cur_constraint = new ManipulatedFrameSetLocalConstraint();
+		((ManipulatedFrameSetLocalConstraint*)cur_constraint)->setManipulateObjs(manipulateObjs);
 		activeConstraint = Local_Constraint;
 		break;
 	case World_Constraint:
-		cur_constraint = new qglviewer::WorldConstraint();
+		cur_constraint = new ManipulatedFrameSetWorldConstraint();
+		((ManipulatedFrameSetWorldConstraint*)cur_constraint)->setManipulateObjs(manipulateObjs);
 		activeConstraint = World_Constraint;
 		break;
 	case Camera_Constraint:
-		cur_constraint = new qglviewer::CameraConstraint(canvas_->camera());
+		cur_constraint = new ManipulatedFrameSetCameraConstraint(select_tool.canvas_->camera());
+		((ManipulatedFrameSetCameraConstraint*)cur_constraint)->setManipulateObjs(manipulateObjs);
 		activeConstraint = Camera_Constraint;
 		break;
 	default:
-		cur_constraint = new qglviewer::LocalConstraint();
+		cur_constraint = new ManipulatedFrameSetLocalConstraint();
+		((ManipulatedFrameSetLocalConstraint*)cur_constraint)->setManipulateObjs(manipulateObjs);
 		activeConstraint = Local_Constraint;
 	}
 	cur_constraint->setTranslationConstraintType(previousConstraint->translationConstraintType());
@@ -1150,7 +1167,7 @@ void ManipulateTool::setRotationConstraintDirection(int rotDir)
 void ManipulateTool::select(const QPoint& point)
 {
 
-	canvas_->beginSelection(point);
+	select_tool.canvas_->beginSelection(point);
 	switch (activeConstraint)
 	{
 	case Local_Constraint:
@@ -1160,7 +1177,7 @@ void ManipulateTool::select(const QPoint& point)
 		drawAxisWithNames(axis_length, selected_name, true);
 		drawRotateAxisWithNames(rotate_circle_radius, selected_name, true);
 		draw_quadsWithNames(axis_length, selected_name, true);
-		screen_quas(manipulatedFrame()->position(), canvas_,-1, true, point);
+		screen_quas(manipulatedFrame()->position(), select_tool.canvas_,-1, true, point);
 		glPopMatrix();
 		break;
 	case World_Constraint:
@@ -1173,7 +1190,7 @@ void ManipulateTool::select(const QPoint& point)
 		drawAxisWithNames(axis_length, selected_name, true);
 		drawRotateAxisWithNames(rotate_circle_radius, selected_name, true);
 		draw_quadsWithNames(axis_length, selected_name, true);
-		screen_quas(manipulatedFrame()->position(), canvas_, -1, true, point);
+		screen_quas(manipulatedFrame()->position(), select_tool.canvas_, -1, true, point);
 		glPopMatrix();
 		break;
 	}
@@ -1184,14 +1201,14 @@ void ManipulateTool::select(const QPoint& point)
 		drawAxisWithNames(axis_length, selected_name, true);
 		drawRotateAxisWithNames(rotate_circle_radius, selected_name, true);
 		draw_quadsWithNames(axis_length, selected_name, true);
-		screen_quas(manipulatedFrame()->position(), canvas_, selected_name, true,point);
+		screen_quas(manipulatedFrame()->position(), select_tool.canvas_, selected_name, true,point);
 		glPopMatrix();
 		break;
 	default:
 		drawAxisWithNames(3*axis_length, -1, true);
 	}
-	canvas_->endSelection(point);
-	canvas_->postSelection(point);
+	select_tool.canvas_->endSelection(point);
+	select_tool.canvas_->postSelection(point);
 
 
 }

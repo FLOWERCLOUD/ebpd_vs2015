@@ -197,7 +197,7 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, int type, QWidget *parent,QWid
 	Cuda_ctrl::init_opengl_cuda();
 
 	setCamera( new StandardCamera());
-	setAxisIsDrawn(false);
+	setAxisIsDrawn(true);
 	setGridIsDrawn(false);
 
 
@@ -778,6 +778,22 @@ void PaintCanvas::wheelEvent(QWheelEvent *e)
 void PaintCanvas::keyPressEvent(QKeyEvent * e)
 {
 	makeCurrent();
+
+	if (single_operate_tool_ != nullptr &&
+		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
+	{
+		if (QApplication::keyboardModifiers() == Qt::AltModifier)
+		{
+
+			QGLViewer::keyPressEvent(e);
+		}
+		else
+			single_operate_tool_->keyPressEvent(e);
+		updateGL();
+
+	}
+
+
 
 	if(m_io)
 		m_io->keyPressEvent(e);
@@ -1616,7 +1632,7 @@ void PaintCanvas::postSelection(const QPoint& point)
 		single_operate_tool_->tool_type() == Tool::MANIPULATE_TOOL)
 	{
 
-		single_operate_tool_->postSelection();
+		single_operate_tool_->postManipulateToolSelection();
 		updateGL();
 
 	}
