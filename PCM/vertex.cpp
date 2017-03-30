@@ -299,7 +299,7 @@ void Vertex::drawNormal( const Matrix44& adjust_matrix , const Vec3& bias)
 		return;
 	}
 	glColor3f( 0.0f , 0.0f ,1.0f );
-	PointType point_end = position_ + 0.01*normal_;
+	PointType point_end = position_ + 0.5*normal_;
 	Vec4	tmp(position_(0), position_(1), position_(2),1.);
 	Vec4	point_to_show = adjust_matrix * tmp;
 	Vec4	tmp1(point_end(0),point_end(1), point_end(2),1.);

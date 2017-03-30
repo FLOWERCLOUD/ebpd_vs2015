@@ -42,6 +42,7 @@ public:
 
 protected:
 	void getKCloestPoint(qglviewer::Vec point, int k, std::vector<int>& selected_idx, std::vector<float>* selected_idx_distance = NULL);
+	void getCloestHandle(qglviewer::Vec point, std::vector<int>& selected_handle_idx, int frame_idx);
 	inline void select();
 	inline void begin_select();
 	inline void end_select();

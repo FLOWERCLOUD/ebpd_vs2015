@@ -67,6 +67,7 @@ protected slots:
 		when frame is manipulate and mouse release
 	*/
 	void afterManipulate();
+	void manipulatedFrameHasChanged();
 protected:
 	
 	

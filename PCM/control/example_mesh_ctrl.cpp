@@ -14,6 +14,7 @@
 #include "color_table.h"
 #include "GlobalObject.h"
 #include "manipulate_object.h"
+#include "LBS_Control.h"
 #include <sstream>
 
 #define  Debug_Time true; 
@@ -21,9 +22,11 @@
 std::vector<float> g_inputVertices;
 std::vector<int> g_faces;
 std::vector<Tbx::Transfo> g_transfos;
+std::vector<std::vector<TransAndRotation>> g_transfos_2;
 std::vector<int> g_boneWightIdx;
 std::vector<float> g_boneWeights;
-std::vector<float> g_exampleWeights;
+std::vector<float> g_exampleWeights; //frist sort example all of the weight of vertex,then next example
+std::vector<MeshControl*> g_MeshControl;
 
 int g_numExample =0;
 int g_numBone = 0;
@@ -735,6 +738,11 @@ void Example_mesh_ctrl::genertateVertices(std::string _file_paths,std::string na
 // load mesh and its exmaple files into scene for manipulation in the future
 void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 {
+	for (int i = 0; i < g_MeshControl.size(); i++)
+	{
+		delete  g_MeshControl[i];
+	}
+	g_MeshControl.clear();
 	std::string input_mesh_path = _file_paths + name + ".obj";
 	std::string output_mesh_path = _file_paths + name + "init_out.obj";
 	std::string rig_path = _file_paths + name + ".rig";
@@ -744,35 +752,124 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 	importObj(g_inputVertices, g_faces, input_mesh_path);
 	Sample* new_sample = FileIO::load_point_cloud_file(input_mesh_path, FileIO::OBJ);
 	int sample_idx = 0;
+	qglviewer::Vec translate(0.0f,0.0f,-1.4f);
+	qglviewer::Vec translate_interval(0.0f,0.0f,1.0f);
+
+	//load other example
+	GetRigFromFile(g_transfos,
+		g_boneWightIdx, g_boneWeights, g_numVertices, g_numBone, g_numExample, g_numIndices,
+		rig_path);
+
+	//convert format
+	g_transfos_2.clear();
+	g_transfos_2.resize(g_numExample);
+	for (int i_example = 0; i_example < g_numExample; ++i_example)
+	{
+		for (int i = 0; i < g_numBone; ++i)
+		{
+			Tbx::Vec3 translate = g_transfos[i_example * g_numBone +i].get_translation();
+			Tbx::Mat3 rotation = g_transfos[i_example * g_numBone + i].get_mat3();
+			Tbx::Quat_cu rotate_quat(rotation);
+			TransAndRotation translate_and_rotate;
+			translate_and_rotate.translation_ = qglviewer::Vec(translate.x, translate.y, translate.z);
+			translate_and_rotate.rotation_ = qglviewer::Quaternion(rotate_quat.i(), rotate_quat.j(), rotate_quat.k(), rotate_quat.w());
+			g_transfos_2[i_example].push_back(translate_and_rotate);
+		}
+
+	}
+
+	
 	if (new_sample != nullptr)
 	{
+		new_sample->getFrame().translate(translate + sample_idx*translate_interval);
 		new_sample->setLoaded(true);
 		new_sample->set_color(Color_Utility::span_color_from_table(sample_idx));
 		SampleSet& smpset = (*Global_SampleSet);
 		smpset.push_back(new_sample);
 		new_sample->smpId = sample_idx;
+		MeshControl* p_mesh_control = new MeshControl(*new_sample);
+		p_mesh_control->bindControl(g_inputVertices , g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
+		g_MeshControl.push_back(p_mesh_control);
 		sample_idx++;
+
 	}
-
-	//load other example
-
-	GetRigFromFile(g_transfos,
-		g_boneWightIdx, g_boneWeights, g_numVertices, g_numBone, g_numExample, g_numIndices,
-		rig_path);
-
 
 	std::vector<float> OutputVetices;
-	if (!g_exampleWeights.size())
+	if (1)
 	{
+		g_exampleWeights.clear();
 		g_exampleWeights.resize(g_numVertices*g_numExample, 0.0f);
-		for (int i = 0; i < g_numVertices; i++)
+
+		for (int j = 1; j < g_numExample; ++j)
 		{
-			g_exampleWeights[i + 0 * g_numVertices] = 1.0f;
-			g_exampleWeights[i + 1 * g_numVertices] = 0.0f;
-			g_exampleWeights[i + 2 * g_numVertices] = 0.0f;
+			g_exampleWeights.clear();
+			g_exampleWeights.resize(g_numVertices*g_numExample, 0.0f);
+			for (int i = 0; i < g_numVertices; i++)
+			{
+				g_exampleWeights[i + j * g_numVertices] = 1.0f;
+			}
+			//assume the last sample to be what we will manipulate
+			genetatedVertice(OutputVetices, g_inputVertices, g_numVertices,
+				g_transfos, g_numBone, g_numExample, g_numIndices,
+				g_boneWeights,
+				g_boneWightIdx,
+				g_exampleWeights);
+			Sample* sample_manipulate = new Sample();
+			if (sample_manipulate != nullptr)
+			{
+				sample_manipulate->getFrame().translate(translate+ sample_idx*translate_interval);
+				for (int i = 0; i < OutputVetices.size() / 3; ++i)
+				{
+					pcm::NormalType normal; normal << 1.0f, 0.0f, 0.0f;						
+					pcm::ColorType  color = Color_Utility::span_color_from_table(sample_idx);
+					sample_manipulate->add_vertex(
+						pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
+						normal,
+						color);
+
+				}
+				for (int i = 0; i < g_faces.size() / 3; ++i)
+				{
+					TriangleType* tt = new TriangleType(*sample_manipulate);
+					tt->set_i_vetex(0, g_faces[3 * i + 0]);
+					tt->set_i_vetex(1, g_faces[3 * i + 1]);
+					tt->set_i_vetex(2, g_faces[3 * i + 2]);
+					tt->set_i_normal(0, g_faces[3 * i + 0]);
+					tt->set_i_normal(1, g_faces[3 * i + 1]);
+					tt->set_i_normal(2, g_faces[3 * i + 2]);
+					sample_manipulate->add_triangle(*tt);
+					delete tt;
+				}
+
+
+				sample_manipulate->setLoaded(true);
+				sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
+				sample_manipulate->build_kdtree();
+				Box box = sample_manipulate->getBox();
+				ScalarType dia_distance = box.diag();
+				SampleSet& smpset = (*Global_SampleSet);
+				smpset.push_back(sample_manipulate);
+				sample_manipulate->smpId = sample_idx;
+				MeshControl* p_mesh_control = new MeshControl(*sample_manipulate);
+				p_mesh_control->bindControl(g_inputVertices, g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx,
+					g_numIndices, g_numBone, g_numVertices, true);
+				g_MeshControl.push_back(p_mesh_control);
+				sample_idx++;
+			}
 		}
 	}
-	//assume the last sample to be what we will manipulate
+
+
+	//assume the last sample to be what we will manipulate,set the weight to be initial
+	g_exampleWeights.clear();
+	g_exampleWeights.resize(g_numVertices*g_numExample, 0.0f);
+	for (int j = 0; j < 1; ++j)
+	{
+		for (int i = 0; i < g_numVertices; i++)
+		{
+			g_exampleWeights[i + j * g_numVertices] = 1.0f;
+		}
+	}
 	genetatedVertice(OutputVetices, g_inputVertices, g_numVertices,
 		g_transfos, g_numBone, g_numExample, g_numIndices,
 		g_boneWeights,
@@ -781,22 +878,31 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 	Sample* sample_manipulate = new Sample();
 	if (sample_manipulate != nullptr)
 	{
+		sample_manipulate->getFrame().translate(translate + sample_idx*translate_interval);
 		for (int i = 0; i < OutputVetices.size() / 3; ++i)
 		{
+			pcm::NormalType normal; normal << 1.0f, 0.0f, 0.0f;
+			pcm::ColorType  color = Color_Utility::span_color_from_table(sample_idx);
 			sample_manipulate->add_vertex(
 				pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
-				pcm::NormalType(),
-				pcm::ColorType());
-			TriangleType* tt =  new TriangleType(*sample_manipulate);
-			tt->set_i_vetex(0,g_faces[3 * i + 0]);
-			tt->set_i_vetex(1,g_faces[3 * i + 1]);
-			tt->set_i_vetex(2,g_faces[3 * i + 2]);
+				normal,
+				color);
+
+		}
+		for (int i = 0; i < g_faces.size() / 3; ++i)
+		{
+			TriangleType* tt = new TriangleType(*sample_manipulate);
+			tt->set_i_vetex(0, g_faces[3 * i + 0]);
+			tt->set_i_vetex(1, g_faces[3 * i + 1]);
+			tt->set_i_vetex(2, g_faces[3 * i + 2]);
 			tt->set_i_normal(0, g_faces[3 * i + 0]);
 			tt->set_i_normal(1, g_faces[3 * i + 1]);
 			tt->set_i_normal(2, g_faces[3 * i + 2]);
 			sample_manipulate->add_triangle(*tt);
 			delete tt;
 		}
+
+
 		sample_manipulate->setLoaded(true);
 		sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
 		sample_manipulate->build_kdtree();
@@ -807,7 +913,10 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 		sample_manipulate->smpId = sample_idx;
 		sample_idx++;
 	}
-
+	for (int i = 0; i < g_MeshControl.size(); ++i)
+	{
+		g_MeshControl[i]->updateSample();
+	}
 
 	rebuildExampleSover();
 }

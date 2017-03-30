@@ -10,10 +10,11 @@
 #include <QAction>
 #include "control/example_mesh_ctrl.h"
 #include "control/cuda_ctrl.hpp"
+#include "LBS_Control.h"
 namespace Cuda_ctrl {
 	extern Example_mesh_ctrl  _example_mesh;
 }
-
+extern std::vector<MeshControl*> g_MeshControl;
 using namespace qglviewer;
 
 const int SLICE = 60;
@@ -669,7 +670,7 @@ ManipulateTool::ManipulateTool(PaintCanvas* canvas,
 	manipulatedFrame()->setConstraint(cur_constraint);
 	//manipulatedFrame()->setConstraint(new ManipulatedFrameSetConstraint());
 	connect(&select_tool, SIGNAL(postSelect()), this, SLOT(postSelect()));
-	connect(manipulatedFrame(), SIGNAL(modified()), this, SLOT(afterManipulate()));
+	connect(manipulatedFrame(), SIGNAL(modified()), this, SLOT(manipulatedFrameHasChanged()));
 }
 
 void ManipulateTool::move(QMouseEvent *e , qglviewer::Camera* camera)
@@ -886,6 +887,10 @@ void ManipulateTool::keyPressEvent(QKeyEvent *e)
 void ManipulateTool::draw()
 {
 	select_tool.draw();
+
+
+
+
 //	glEnable(GL_DEPTH_TEST);  // 必须开启深度测试才能使用 unproject 方式选点
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 ////	drawAxis(3,-1);
@@ -989,7 +994,7 @@ void ManipulateTool::draw()
 	}
 	glPopMatrix();
 
-
+	
 
 }
 
@@ -1065,6 +1070,7 @@ void ManipulateTool::startManipulation()
 {
 
 	qglviewer::Vec averagePosition;
+	qglviewer::Quaternion averageOrientation;
 	switch (activeConstraint)
 	{
 	case Local_Constraint:
@@ -1075,6 +1081,7 @@ void ManipulateTool::startManipulation()
 		{
 			mfsc->addObjectToSet(obj);
 			averagePosition += obj->getWorldPosition();
+			averageOrientation = obj->getWorldOrientation();
 		}
 		break;
 	}
@@ -1086,6 +1093,7 @@ void ManipulateTool::startManipulation()
 		{
 			mfsc->addObjectToSet(obj);
 			averagePosition += obj->getWorldPosition();
+			averageOrientation = obj->getWorldOrientation();
 		}
 		break;
 	}
@@ -1097,6 +1105,7 @@ void ManipulateTool::startManipulation()
 		{
 			mfsc->addObjectToSet(obj);
 			averagePosition += obj->getWorldPosition();
+			averageOrientation = obj->getWorldOrientation();
 		}
 		break;
 	}
@@ -1104,22 +1113,52 @@ void ManipulateTool::startManipulation()
 	}
 //	ManipulatedFrameSetConstraint* mfsc = (ManipulatedFrameSetConstraint*)(manipulatedFrame()->constraint());
 	if (select_tool.m_selected_objs_.size() > 0)
+	{
 		manipulatedFrame()->setPosition(averagePosition / select_tool.m_selected_objs_.size());
+		manipulatedFrame()->setOrientation(averageOrientation);
+	}
+		
+	isManipultedFrameChanged = false;
 }
 
 void ManipulateTool::afterManipulate()
 {
 	switch (select_tool.manipulateObjectType_)
 	{
+		// this is to run the ebpd algorithom
 		case  ManipulatedObject::VERTEX:
 		{
+			if (!select_tool.m_selected_objs_.size())
+				break;
 			Cuda_ctrl::_example_mesh.processCollide((*Global_SampleSet), select_tool.m_selected_objs_);
+			//update the new position of the manipulator
+			qglviewer::Vec averagePosition;
+			for (ManipulatedObject* obj : select_tool.m_selected_objs_)
+			{
+				averagePosition += obj->getWorldPosition();
+			}
+			if (select_tool.m_selected_objs_.size() > 0)
+				manipulatedFrame()->setPosition(averagePosition / select_tool.m_selected_objs_.size());
+			break;
+		}
+		case  ManipulatedObject::HANDLE:
+		{
+			g_MeshControl[select_tool.cur_sample_to_operate_]->updateSample();
+			break;
 		}
 	}
 
 //	_example_mesh.genertateVertices(inputVertices, faces, vertex_idex, impulses, mass, delta_t, belta);
 
 }
+
+void ManipulateTool::manipulatedFrameHasChanged()
+{
+	if (!isManipultedFrameChanged)
+		isManipultedFrameChanged = true;
+	Logger <<" manipulatedFrameHasChanged() "<< std::endl;
+}
+
 
 void ManipulateTool::changeToConstraint(EnumConstraint curstraint)
 {

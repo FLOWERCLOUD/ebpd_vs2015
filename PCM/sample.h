@@ -135,12 +135,25 @@ public:
 		qglviewer::Vec pos(vetex->x(), vetex->y(), vetex->z());
 		return m_frame.inverseCoordinatesOf(pos); //convert  frame coordinate to world coordinate 
 	}
-	inline void setGlobalPosition(int vtx_idx)
+	inline void setGlobalPosition(int vtx_idx , qglviewer::Vec _pos)
 	{
 		Vertex* vetex = vertices_[vtx_idx];
-		qglviewer::Vec pos =  m_frame.coordinatesOf(pos);  //convert world coordinate to frame coordinate
+		qglviewer::Vec pos =  m_frame.coordinatesOf(_pos);  //convert world coordinate to frame coordinate
 		vetex->set_position(PointType(pos.x, pos.y, pos.z));
 	}
+	inline qglviewer::Vec getLocalPosition(int vtx_idx)
+	{
+		Vertex* vetex = vertices_[vtx_idx];
+		qglviewer::Vec pos(vetex->x(), vetex->y(), vetex->z());
+		return pos; 
+	}
+
+	inline void setLocalPosition(int vtx_idx , qglviewer::Vec _pos)
+	{
+		Vertex* vetex = vertices_[vtx_idx];
+		vetex->set_position(PointType(_pos.x, _pos.y, _pos.z));
+	}
+
 
 	bool load();
 	bool unload();

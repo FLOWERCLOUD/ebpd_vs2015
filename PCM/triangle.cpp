@@ -63,7 +63,7 @@ void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType&
 				//	(float)vs[this->i_norm[i]]->nz()<<std::endl;
 
 			}
-			ColorType color2 = Color_Utility::span_color_from_table(sample_[this->i_vertex[i]].label()); 
+			ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
 			glColor3f( color2(0) ,color2(1) ,color2(2)
 				/*				(GLfloat) vs[this->i_vertex[i]]->r(),
 				(GLfloat) vs[this->i_vertex[i]]->g(),

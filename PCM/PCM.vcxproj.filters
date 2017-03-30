@@ -606,6 +606,9 @@
     <ClCompile Include="GeneratedFiles\Release\moc_manipulate_tool.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="LBS_Control.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -1235,6 +1238,9 @@
       <Filter>Tools</Filter>
     </ClInclude>
     <ClInclude Include="sample.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="LBS_Control.h">
       <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>

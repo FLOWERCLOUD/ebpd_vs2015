@@ -16,6 +16,8 @@
 #include "GlobalObject.h"
 #include "render_types.h"
 #include "select_tool.h"
+#include "LBS_Control.h"
+
 extern bool isShowNoraml;
 extern RenderMode::WhichColorMode	which_color_mode_;
 extern RenderMode::RenderType which_render_mode;
@@ -31,6 +33,7 @@ extern Tbx::Prim_id g_grid_vbo;
 extern Tbx::Prim_id g_cylinder_vbo;
 extern Tbx::Prim_id g_cylinder_cage_vbo;
 extern Tbx::Prim_id g_cube_vbo;
+extern std::vector<MeshControl*> g_MeshControl;
 
 static void draw_junction_sphere(bool rest_pose)
 {
@@ -742,7 +745,16 @@ void drawSampleSet( PaintCanvas* _curCanvas)
 	{
 		_curCanvas->single_operate_tool_->draw();
 	}
-}
+	if (1)
+	{
+		for (int i = 0; i < g_MeshControl.size(); ++i)
+		{
+			g_MeshControl[i]->draw();
+		}
+
+	}
+
+;}
 
 
 

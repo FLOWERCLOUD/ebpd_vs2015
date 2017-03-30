@@ -231,6 +231,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="global_datas\cuda_globals.cpp" />
+    <ClCompile Include="LBS_Control.cpp" />
     <ClCompile Include="main_window_display.cpp" />
     <ClCompile Include="main_window_swithces.cpp" />
     <ClCompile Include="manipulatedFrameSetConstraint.cpp" />
@@ -765,6 +766,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
       </AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="LBS_Control.h" />
     <ClInclude Include="sample.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Command>

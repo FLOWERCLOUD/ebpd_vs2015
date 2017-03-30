@@ -124,7 +124,10 @@ void ManipulatedFrameSetLocalConstraint::constrainTranslation(qglviewer::Vec &tr
 		break;
 		case  ManipulatedObject::HANDLE:
 		{
-			(*it)->getFrame().translate(translation);
+			qglviewer::Vec prevPos =  ((ManipulatedObjectIsHANDLE*)(*it))->getWorldPosition();
+			prevPos += translation;
+			((ManipulatedObjectIsHANDLE*)(*it))->setWorldPosition(prevPos);
+//			(*it)->getFrame().translate(translation);
 		}
 		break;
 
@@ -139,20 +142,60 @@ void ManipulatedFrameSetLocalConstraint::constrainRotation(qglviewer::Quaternion
 	LocalConstraint::constrainRotation(rotation, frame);
 	// A little bit of math. Easy to understand, hard to guess (tm).
 	// rotation is expressed in the frame local coordinates system. Convert it back to world coordinates.
-	const Vec worldAxis = frame->inverseTransformOf(rotation.axis());
-	const Vec pos = frame->position();
-	const float angle = rotation.angle();
-
-	for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+	for (auto it = objects_.begin(), end = objects_.end(); it != end; ++it)
 	{
-		// Rotation has to be expressed in the object local coordinates system.
-		Quaternion qObject((*it)->getFrame().transformOf(worldAxis), angle);
-		(*it)->getFrame().rotate(qObject);
+		switch ((*it)->getType())
+		{
+		case  ManipulatedObject::VERTEX:
+		{
 
-		// Comment these lines only rotate the objects
-		Quaternion qWorld(worldAxis, angle);
-		// Rotation around frame world position (pos)
-		(*it)->getFrame().setPosition(pos + qWorld.rotate((*it)->getFrame().position() - pos));
+
+		}
+		break;
+		case  ManipulatedObject::EDGE:
+		{
+
+		}
+		break;
+		case  ManipulatedObject::FACE:
+		{
+
+		}
+		break;
+		case  ManipulatedObject::OBJECT:
+		{
+			const Vec worldAxis = frame->inverseTransformOf(rotation.axis());
+			const Vec pos = frame->position();
+			const float angle = rotation.angle();
+
+			for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+			{
+				// Rotation has to be expressed in the object local coordinates system.
+				Quaternion qObject((*it)->getFrame().transformOf(worldAxis), angle);
+				(*it)->getFrame().rotate(qObject);
+
+				// Comment these lines only rotate the objects
+				Quaternion qWorld(worldAxis, angle);
+				// Rotation around frame world position (pos)
+				(*it)->getFrame().setPosition(pos + qWorld.rotate((*it)->getFrame().position() - pos));
+			}
+		}
+		break;
+		case  ManipulatedObject::HANDLE:
+		{
+
+			for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+			{
+				qglviewer::Quaternion local_rotate = ((ManipulatedObjectIsHANDLE*)(*it))->handle_frame_->rotation();
+				qglviewer::Quaternion new_local_rotate = local_rotate*rotation;
+				((ManipulatedObjectIsHANDLE*)(*it))->handle_frame_->setRotation(new_local_rotate);
+			}
+		}
+		break;
+
+		}
+
+
 	}
 }
 
@@ -199,7 +242,9 @@ void ManipulatedFrameSetWorldConstraint::constrainTranslation(qglviewer::Vec &tr
 		break;
 		case  ManipulatedObject::HANDLE:
 		{
-			(*it)->getFrame().translate(translation);
+			qglviewer::Vec prevPos = ((ManipulatedObjectIsHANDLE*)(*it))->getWorldPosition();
+			prevPos += translation;
+			((ManipulatedObjectIsHANDLE*)(*it))->setWorldPosition(prevPos);
 		}
 		break;
 
@@ -214,21 +259,65 @@ void ManipulatedFrameSetWorldConstraint::constrainRotation(qglviewer::Quaternion
 	WorldConstraint::constrainRotation(rotation, frame);
 	// A little bit of math. Easy to understand, hard to guess (tm).
 	// rotation is expressed in the frame local coordinates system. Convert it back to world coordinates.
-	const Vec worldAxis = frame->inverseTransformOf(rotation.axis());
-	const Vec pos = frame->position();
-	const float angle = rotation.angle();
 
-	for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+	for (auto it = objects_.begin(), end = objects_.end(); it != end; ++it)
 	{
-		// Rotation has to be expressed in the object local coordinates system.
-		Quaternion qObject((*it)->getFrame().transformOf(worldAxis), angle);
-		(*it)->getFrame().rotate(qObject);
+		switch ((*it)->getType())
+		{
+		case  ManipulatedObject::VERTEX:
+		{
 
-		// Comment these lines only rotate the objects
-		Quaternion qWorld(worldAxis, angle);
-		// Rotation around frame world position (pos)
-		(*it)->getFrame().setPosition(pos + qWorld.rotate((*it)->getFrame().position() - pos));
+
+		}
+		break;
+		case  ManipulatedObject::EDGE:
+		{
+
+		}
+		break;
+		case  ManipulatedObject::FACE:
+		{
+
+		}
+		break;
+		case  ManipulatedObject::OBJECT:
+		{
+			const Vec worldAxis = frame->inverseTransformOf(rotation.axis());
+			const Vec pos = frame->position();
+			const float angle = rotation.angle();
+
+			for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+			{
+				// Rotation has to be expressed in the object local coordinates system.
+				Quaternion qObject((*it)->getFrame().transformOf(worldAxis), angle);
+				(*it)->getFrame().rotate(qObject);
+
+				// Comment these lines only rotate the objects
+				Quaternion qWorld(worldAxis, angle);
+				// Rotation around frame world position (pos)
+				(*it)->getFrame().setPosition(pos + qWorld.rotate((*it)->getFrame().position() - pos));
+			}
+		}
+		break;
+		case  ManipulatedObject::HANDLE:
+		{
+
+			for (std::vector<ManipulatedObject*>::iterator it = objects_.begin(), end = objects_.end(); it != end; ++it)
+			{
+				qglviewer::Quaternion local_rotate = ((ManipulatedObjectIsHANDLE*)(*it))->handle_frame_->rotation();
+				qglviewer::Quaternion new_local_rotate = local_rotate*rotation;
+				((ManipulatedObjectIsHANDLE*)(*it))->handle_frame_->setRotation(new_local_rotate);
+			}
+		}
+		break;
+
+		}
+
+
 	}
+
+
+
 }
 
 ManipulatedFrameSetCameraConstraint::ManipulatedFrameSetCameraConstraint(const qglviewer::Camera* const camera)
@@ -280,7 +369,9 @@ void ManipulatedFrameSetCameraConstraint::constrainTranslation(qglviewer::Vec &t
 		break;
 		case  ManipulatedObject::HANDLE:
 		{
-			(*it)->getFrame().translate(translation);
+			qglviewer::Vec prevPos = ((ManipulatedObjectIsHANDLE*)(*it))->getWorldPosition();
+			prevPos += translation;
+			((ManipulatedObjectIsHANDLE*)(*it))->setWorldPosition(prevPos);
 		}
 		break;
 

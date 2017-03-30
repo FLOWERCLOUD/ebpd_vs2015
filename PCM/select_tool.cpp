@@ -11,6 +11,10 @@
 #include <QMenu>
 #include <QAction>
 #include <deque>
+#include "LBS_Control.h"
+extern std::vector<MeshControl*> g_MeshControl;
+
+
 #ifndef GL_MULTISAMPLE
 #define GL_MULTISAMPLE 0x809D
 #endif
@@ -129,6 +133,38 @@ void SelectTool::getKCloestPoint(qglviewer::Vec point, int k, std::vector<int>& 
 	}
 	UNLOCK(sample);
 }
+
+void SelectTool::getCloestHandle(qglviewer::Vec point, std::vector<int>& selected_handle_idx ,int frame_idx)
+{
+	if ( frame_idx < g_MeshControl.size() )
+	{
+
+
+		MeshControl* p_mesh_ctrl = g_MeshControl[frame_idx];
+		auto handles = p_mesh_ctrl->handles_;
+		float min_distance = 1000;
+		int handle_idx = -1;
+		for (int i = 0; i < handles.size(); ++i)
+		{
+			Handle* handle = handles[i];
+			qglviewer::Vec position = handle->getWorldPosition();
+
+			float cur_dis = (point - position).norm();
+			if (cur_dis < min_distance)
+			{
+				min_distance = cur_dis;
+				handle_idx = i;
+			}
+
+		}
+		if (handle_idx != -1)
+			selected_handle_idx.push_back(handle_idx);
+	}
+	
+
+
+}
+
 void SelectTool::click(QMouseEvent *e, qglviewer::Camera* camera /*= NULL*/)
 {
 ///	Logger << "SelectTool click" << e->pos().x() << e->pos().y() << e->pos().z() << std::endl;
@@ -212,7 +248,20 @@ void SelectTool::click(QMouseEvent *e, qglviewer::Camera* camera /*= NULL*/)
 		break;
 		case  ManipulatedObject::HANDLE:
 		{
-
+			for (auto iter = m_selected_objs_.begin(); iter != m_selected_objs_.end(); ++iter)
+			{
+				delete *iter;
+			}
+			std::vector<int> selected_handle;
+			getCloestHandle(target3dVec, selected_handle, cur_sample_to_operate_);
+			m_selected_objs_.clear();
+			if (selected_handle.size())
+			{
+				ManipulatedObject* obj = new ManipulatedObjectIsHANDLE(
+					g_MeshControl, selected_handle[0], cur_sample_to_operate_, 
+					&smp.getFrame());
+				m_selected_objs_.push_back(obj);
+			}
 		}
 		break;
 
@@ -322,6 +371,7 @@ void SelectTool::press(QMouseEvent* e, qglviewer::Camera* camera )
 void SelectTool::draw()
 {
 	draw_rectangle();
+
 //	Sample& sample = (*Global_SampleSet)[cur_sample_to_operate_];	
 //	LOCK(sample);
 //	glPushMatrix();
