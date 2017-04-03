@@ -104,7 +104,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_XML_LIB;GLEW_STATIC;NCUDA;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master/;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -118,7 +118,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Debug;$(QTDIR_64_12)\lib;$(PCL_ROOT)\3rdParty\FLANN\lib;$(PCL_ROOT)\3rdParty\OpenNI\lib;$(PCL_ROOT)\3rdParty\Qhull\lib;$(PCL_ROOT)\3rdParty\VTK\lib;$(PCL_ROOT)\lib;$(SolutionDir)fbxsdk\lib\vs2012\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>pcl_features_debug.lib;pcl_kdtree_debug.lib;pcl_search_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;pcl_common_debug.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -153,7 +153,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_XML_LIB;GLEW_STATIC;NCUDA;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(CUDA_PATH)\include;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(CUDA_PATH)\include;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -164,7 +164,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Release;$(QTDIR_64_12)\lib;$(PCL_ROOT)\3rdParty\FLANN\lib;$(PCL_ROOT)\3rdParty\OpenNI\lib;$(PCL_ROOT)\3rdParty\Qhull\lib;$(PCL_ROOT)\3rdParty\VTK\lib;$(PCL_ROOT)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)fbxsdk\lib\vs2012\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>pcl_features_release.lib;pcl_kdtree_release.lib;pcl_search_release.lib;pcl_io_release.lib;pcl_io_ply_release.lib;pcl_common_release.lib</IgnoreSpecificDefaultLibraries>
     </Link>
@@ -474,6 +474,7 @@
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="vertex.cpp" />
+    <ClCompile Include="WeightGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="qt_gui\main_window.h">
@@ -496,6 +497,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="WeightGenerator.h" />
     <CustomBuild Include="..\ICP\ICP.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </Command>
@@ -2228,6 +2230,9 @@
     <ProjectReference Include="..\VTP_source_code\vtp.vcxproj">
       <Project>{80340f2b-13cb-47f2-87d0-e45317d59ffe}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\eigen.natvis" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

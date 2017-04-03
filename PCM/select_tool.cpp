@@ -12,6 +12,7 @@
 #include <QAction>
 #include <deque>
 #include "LBS_Control.h"
+#include "LBS_Control.h"
 extern std::vector<MeshControl*> g_MeshControl;
 
 
@@ -165,6 +166,31 @@ void SelectTool::getCloestHandle(qglviewer::Vec point, std::vector<int>& selecte
 
 }
 
+static ColorType heat_color(float w)
+{
+	ColorType c(0.5f, 0.f, 1.f, 1.f);
+	if (w < 0.25f) {
+		w *= 4.f;
+		c= ColorType(0.f, w, 1.f, 1.f);
+	}
+	else if (w < 0.5f) {
+		w = (w - 0.25f) * 4.f;
+		c = ColorType(0.f, 1.f, 1.f - w, 1.f);
+	}
+	else if (w < 0.75f) {
+		w = (w - 0.5f) * 4.f;
+		c = ColorType(w, 1.f, 0.f, 1.f);
+	}
+	else {
+		w = (w - 0.75f) * 4.f;
+		c = ColorType(1.f, 1.f - w, 0.f, 1.f);
+	}
+	return c;
+}
+
+
+
+
 void SelectTool::click(QMouseEvent *e, qglviewer::Camera* camera /*= NULL*/)
 {
 ///	Logger << "SelectTool click" << e->pos().x() << e->pos().y() << e->pos().z() << std::endl;
@@ -257,11 +283,37 @@ void SelectTool::click(QMouseEvent *e, qglviewer::Camera* camera /*= NULL*/)
 			m_selected_objs_.clear();
 			if (selected_handle.size())
 			{
+				for (int i = 0; i < smpset.size(); ++i)
+				{
+					smpset[i].colors_.clear();
+				}
 				ManipulatedObject* obj = new ManipulatedObjectIsHANDLE(
 					g_MeshControl, selected_handle[0], cur_sample_to_operate_, 
 					&smp.getFrame());
 				m_selected_objs_.push_back(obj);
+				//caculte color for render
+				g_MeshControl[cur_sample_to_operate_]->handles_[selected_handle[0]];
+				std::vector<float>& boneWeights = g_MeshControl[cur_sample_to_operate_]->boneWeights_;
+				std::vector<int>& boneWeights_idxs = g_MeshControl[cur_sample_to_operate_]->boneWightIdx_;
+				int num_indices = g_MeshControl[cur_sample_to_operate_]->numIndices_;
+				smp.colors_.resize(smp.num_vertices());
+				for (int i = 0; i < smp.num_vertices(); ++i)
+				{
+					ColorType color = heat_color(0.0f);
+					for (size_t j = 0; j < num_indices; ++j)
+					{
+						if (boneWeights_idxs[i*num_indices+j] == selected_handle[0])
+						{
+							color = heat_color(boneWeights[i*num_indices + j]);
+							break;
+						}
+					}
+					smp.colors_[i] = color;
+
+				}
 			}
+
+
 		}
 		break;
 
@@ -587,4 +639,35 @@ void SelectTool::initialize_select_buffer()
 
 
 	select_buffer_ = new unsigned int[select_buffer_size_];
+}
+
+void SelectTool::slot_action_OBJECT()
+{
+	manipulateObjectType_ = ManipulatedObject::OBJECT;
+	SampleSet& set = (*Global_SampleSet);
+	for (int i = 0; i<set.size(); ++i)
+	{
+		set[i].color_mode = Sample::OBJECT;;
+	}
+}
+
+void SelectTool::slot_action_VERTEX()
+{
+	manipulateObjectType_ = ManipulatedObject::VERTEX;
+	SampleSet& set = (*Global_SampleSet);
+	for (int i = 0 ;i<set.size(); ++i)
+	{
+		set[i].color_mode = Sample::VERTEX;
+	}
+	
+}
+
+void SelectTool::slot_action_HANDLE()
+{
+	manipulateObjectType_ = ManipulatedObject::HANDLE;
+	SampleSet& set = (*Global_SampleSet);
+	for (int i = 0; i<set.size(); ++i)
+	{
+		set[i].color_mode = Sample::HANDLE;
+	}
 }

@@ -69,18 +69,9 @@ protected:
 	std::vector<float> m_selected_idx_distance_;
 	ManipulatedObject::ManipulatedObjectType manipulateObjectType_;
 protected slots:
-	void slot_action_OBJECT()
-	{
-		manipulateObjectType_ = ManipulatedObject::OBJECT;
-	}
-	void slot_action_VERTEX()
-	{
-		manipulateObjectType_ = ManipulatedObject::VERTEX;
-	}
-	void slot_action_HANDLE()
-	{
-		manipulateObjectType_ = ManipulatedObject::HANDLE;
-	}
+	void slot_action_OBJECT();
+	void slot_action_VERTEX();
+	void slot_action_HANDLE();
 protected:
 	QMenu* popupMenu;
 };

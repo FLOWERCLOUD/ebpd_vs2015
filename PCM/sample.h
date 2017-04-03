@@ -166,6 +166,16 @@ public:
 	IndexType smpId;  //added by huayun
 	FileIO::FILE_TYPE file_type;
 	std::string file_path;
+	enum WeightColorMode
+	{
+		VERTEX,
+		EDGE,
+		FACE,
+		OBJECT,
+		HANDLE
+	};
+	WeightColorMode color_mode;
+	std::vector<ColorType> colors_;
 	
 private:
 	qglviewer::Frame m_frame;

@@ -17,6 +17,7 @@ Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 {
 	file_type = FileIO::NONE;
 	isload_ = false;
+	color_mode = OBJECT;
 }
 
 Sample::~Sample()

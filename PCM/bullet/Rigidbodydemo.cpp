@@ -120,7 +120,8 @@ static bool importObj( GLInstanceGraphicsShape*& const glmesh ,std::string file_
 						{
 							//while((char)get(fd) ==" ");
 							ungetc(pref[0],fd);
-							fscanf(fd ,"%d");
+							int a;
+							fscanf(fd ,"%d",&a);
 							if( (pref[0] = (char)getc(fd))!='/')
 							{
 								fscanf(fd,"%d",&i_temp_n);

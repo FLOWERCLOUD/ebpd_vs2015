@@ -44,13 +44,39 @@ public:
 
 	qglviewer::Vec getLocalPosition()
 	{
-		return frame_.position();
+		return frame_.translation();
 	}
 	void setLocalPosition(qglviewer::Vec& position)
 	{
 		frame_.setTranslation(position);
 	}
 	void draw(const Matrix44& adjust_matrix , bool isWithName = false);
+
+	float get_wi()
+	{
+		return handle_idx_;
+	}
+
+	bool is_root()
+	{
+		return is_root_;
+	}
+	const Handle * get_parent() const
+	{
+		return this->parent;
+	}
+	const std::vector<Handle*> & get_children() const
+	{
+		return children;
+	}
+	Eigen::Vector3d rest_tip()
+	{
+		return Eigen::Vector3d();
+	}
+	// Parent Bone, NULL only if this bone is a root
+	Handle * parent;
+	std::vector<Handle*> children;
+	bool is_root_;
 	int handle_idx_;
 	bool isSelected;
 	bool isShowFrame;

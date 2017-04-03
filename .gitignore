@@ -27,6 +27,8 @@ eigen_3_3_2
 QGLViewer
 fbxsdk
 toolbox
+igl
+tetgen-master
 *.rar
 
 # Visual Studio 2015 cache/options directory
@@ -308,3 +310,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+PCM/Keg.mesh
+PCM/keg.weight

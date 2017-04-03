@@ -15,6 +15,7 @@
 #include "GlobalObject.h"
 #include "manipulate_object.h"
 #include "LBS_Control.h"
+#include "WeightGenerator.h"
 #include <sstream>
 
 #define  Debug_Time true; 
@@ -580,7 +581,7 @@ static void propagateExampleWeight(std::map<int, std::vector<float> >& delta_exa
 		}
 		targetVertexIdx.push_back(i_vertex);
 	}
-	int depth =100;
+	int depth =3000;
 	float kernelRadius = 1.5f; //control radius of the kernel
 	std::map<int,std::map<int,float> > distanceOfVertex;
 	{
@@ -778,7 +779,7 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 
 	}
 
-	
+	std::vector<std::vector<float>> new_wieghts;
 	if (new_sample != nullptr)
 	{
 		new_sample->getFrame().translate(translate + sample_idx*translate_interval);
@@ -790,10 +791,12 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 		MeshControl* p_mesh_control = new MeshControl(*new_sample);
 		p_mesh_control->bindControl(g_inputVertices , g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
 		g_MeshControl.push_back(p_mesh_control);
+		//caculate biharmonic weight once
+//		computeWeights(new_sample, p_mesh_control->handles_, new_wieghts);
 		sample_idx++;
 
 	}
-
+	
 	std::vector<float> OutputVetices;
 	if (1)
 	{

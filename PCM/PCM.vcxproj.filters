@@ -609,6 +609,9 @@
     <ClCompile Include="LBS_Control.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="WeightGenerator.cpp">
+      <Filter>Algorithm</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -1243,6 +1246,9 @@
     <ClInclude Include="LBS_Control.h">
       <Filter>Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="WeightGenerator.h">
+      <Filter>Algorithm</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PCM.rc" />
@@ -1251,5 +1257,8 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="qt_gui\main_window_menu_load_save" />
     <None Include="animation\animesh_projection" />
+  </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="..\eigen.natvis" />
   </ItemGroup>
 </Project>

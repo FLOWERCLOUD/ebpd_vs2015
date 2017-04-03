@@ -63,11 +63,45 @@ void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType&
 				//	(float)vs[this->i_norm[i]]->nz()<<std::endl;
 
 			}
-			ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
-			glColor3f( color2(0) ,color2(1) ,color2(2)
-				/*				(GLfloat) vs[this->i_vertex[i]]->r(),
-				(GLfloat) vs[this->i_vertex[i]]->g(),
-				(GLfloat) vs[this->i_vertex[i]]->b()*/ );
+			switch (sample_.color_mode)
+			{
+			case Sample::VERTEX:
+			{
+				ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
+				glColor3f(color2(0), color2(1), color2(2));
+				break;
+			}
+			case Sample::HANDLE:
+			{
+				if (i < sample_.colors_.size())
+				{
+					if (this->i_norm[i] != -1)
+					{
+						ColorType color2 = sample_.colors_[i_norm[i]];
+						glColor3f(color2(0), color2(1), color2(2));
+					}
+				}
+				else
+				{
+					ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
+					glColor3f(color2(0), color2(1), color2(2));
+				}
+
+				break;
+			}
+			case Sample::OBJECT:
+			{
+				ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
+				glColor3f(color2(0), color2(1), color2(2)
+					/*				(GLfloat) vs[this->i_vertex[i]]->r(),
+					(GLfloat) vs[this->i_vertex[i]]->g(),
+					(GLfloat) vs[this->i_vertex[i]]->b()*/);
+				break;
+			}
+
+
+			}
+
 			//Logger<<"COLOR: "<<vs[this->i_vertex[i]]->r()<<" "<<
 			//	vs[this->i_vertex[i]]->g()<<" "<<
 			//	vs[this->i_vertex[i]]->b()<<std::endl;

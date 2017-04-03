@@ -197,7 +197,7 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, int type, QWidget *parent,QWid
 	Cuda_ctrl::init_opengl_cuda();
 
 	setCamera( new StandardCamera());
-	setAxisIsDrawn(true);
+	setAxisIsDrawn(false);
 	setGridIsDrawn(false);
 
 

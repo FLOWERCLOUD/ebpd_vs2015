@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 	geodesic::GeodesicAlgorithmExact algorithm(&mesh);
 
 	// Propagation
-	algorithm.propagate(source_vertex_index);	//cover the whole mesh
+	algorithm.propagate(source_vertex_index,300000);	//cover the whole mesh
 
 	// Print Statistics
 	std::cout << endl;

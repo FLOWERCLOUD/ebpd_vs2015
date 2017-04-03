@@ -645,7 +645,7 @@ namespace geodesic {
 	}
 
 	//-------------------------- main entry --------------------------
-	inline void GeodesicAlgorithmExact::propagate(unsigned source,int propagate_depth = 100,void* drawbackback,int drawback_index)
+	inline void GeodesicAlgorithmExact::propagate(unsigned source,int propagate_depth,void* drawbackback,int drawback_index)
 	{
 		// initialization
 		m_source = source;
