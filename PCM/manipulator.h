@@ -1,6 +1,6 @@
 #ifndef _MANIPULATOR
 #define  _MANIPULATOR
-#include "QGLViewer//manipulatedFrame.h"
+#include "QGLViewer/manipulatedFrame.h"
 #include "QGLViewer/camera.h"
 #include <vector>
 class Sample;
@@ -12,7 +12,7 @@ namespace qglviewer
 class Manipulator : qglviewer::ManipulatedFrame
 {
 public:
-	static enum SelectType{ VERTEX , FACE ,OBJECT };
+	enum SelectType{ VERTEX , FACE ,OBJECT };
 	Manipulator( SelectType st ,SelectedObj& _so );
 	~Manipulator();
 	void draw();

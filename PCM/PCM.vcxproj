@@ -237,6 +237,7 @@
     <ClCompile Include="manipulatedFrameSetConstraint.cpp" />
     <ClCompile Include="manipulate_object.cpp" />
     <ClCompile Include="manipulate_tool.cpp" />
+    <ClCompile Include="MeshOpenGL.cpp" />
     <ClCompile Include="parsers\fbx_loader.cpp" />
     <ClCompile Include="parsers\fbx_utils.cpp" />
     <ClCompile Include="qt_gui\cameraViewer.cpp" />
@@ -471,6 +472,7 @@
     <ClCompile Include="qt_gui\toolbars\toolbar.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar_frames.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar_painting.cpp" />
+    <ClCompile Include="shader.cpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="vertex.cpp" />
@@ -497,6 +499,8 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MeshOpenGL.h" />
+    <ClInclude Include="shader.h" />
     <ClInclude Include="WeightGenerator.h" />
     <CustomBuild Include="..\ICP\ICP.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

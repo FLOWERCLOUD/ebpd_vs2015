@@ -1,3 +1,4 @@
+#include <CustomGL/glew.h>
 #include "manipulator.h"
 #include "sample_set.h"
 #include "GlobalObject.h"

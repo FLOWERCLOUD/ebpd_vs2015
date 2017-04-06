@@ -3,6 +3,7 @@
 
 #include "toolbars/gizmo/gizmo.hpp"
 #include "qt_gui/toolbars/OGL_widget_enum.hpp"
+#include "GlobalObject.h"
 #include <QFrame>
 #include <vector>
 #include <QLayout>
@@ -74,7 +75,9 @@ public:
     void set_alpha_strength(float a);
 
     /// @return the active frame
-    PaintCanvas* active_viewport(){ 
+    PaintCanvas* active_viewport(){
+
+		setGlobalCanvas(_current_viewport);
 		return _current_viewport; 
 	}
 	PaintCanvas* prev_viewport()

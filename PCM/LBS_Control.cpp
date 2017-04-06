@@ -1,6 +1,6 @@
 #include "toolbox/gl_utils/glsave.hpp"
 #include "LBS_Control.h"
-
+using namespace pcm;
 
 void Handle::draw(const Matrix44& adjust_matrix, bool isWithName /*= false*/)
 {
@@ -123,6 +123,13 @@ void MeshControl::draw(bool isWithName /*= false*/)
 
 void MeshControl::bindControl(std::vector<float>& _inputVertices,/*ori points*/ /*std::vector<qglviewer::Frame>& _bind_frame,*/ std::vector<TransAndRotation>& _transfo, std::vector<float>& _boneWeights, std::vector<int>& _boneWightIdx, int numIndices, int numBone, int numVertices, bool _isQlerp)
 {
+	for (size_t i = 0; i < handles_.size(); i++)
+	{
+		delete handles_[i];
+	}
+	handles_.clear();
+	bind_frame_.clear();
+	transfo_.clear();
 	inputVertices_ = _inputVertices;
 	//		bind_frame_		= _bind_frame;
 	transfo_ = _transfo;

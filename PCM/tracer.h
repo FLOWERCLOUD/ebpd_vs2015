@@ -36,7 +36,7 @@ public:
 	void draw();
 
 	//-------draw a  plan
-	void drawPlan(PointType center,NormalType planNorm);
+	void drawPlan(pcm::PointType center, pcm::NormalType planNorm);
 
 private:
 	Tracer();

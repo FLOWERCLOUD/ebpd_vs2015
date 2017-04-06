@@ -1,7 +1,7 @@
 #pragma once
+#include "basic_types.h"
 #include <QGLViewer/qglviewer.h>
 #include "select_tool.h"
-#include "basic_types.h"
 #include "manipulate_object.h"
 #include "QGLViewer/manipulatedFrame.h"
 #include <vector>

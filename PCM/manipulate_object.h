@@ -1,5 +1,5 @@
 #pragma once
-
+#include <CustomGL\glew.h>
 #include "QGLViewer/frame.h"
 #include "GlobalObject.h"
 #include "sample_set.h"

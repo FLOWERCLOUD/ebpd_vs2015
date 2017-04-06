@@ -125,6 +125,7 @@ namespace pcm
 	typedef Eigen::Matrix<ScalarType, 3, 1, Eigen::DontAlign> PointType;
 	typedef Eigen::Matrix<ScalarType, 3, 1, Eigen::DontAlign> NormalType;
 	typedef Eigen::Matrix<ScalarType, 4, 1, Eigen::DontAlign> ColorType;
+	typedef Eigen::Matrix<ScalarType, 2, 1, Eigen::DontAlign> TextureType;
 #endif 
 
 }
@@ -138,13 +139,15 @@ using pcm::IndexType;
 using pcm::ScalarType;
 using pcm::Vec3;
 using pcm::Vec4;
-using pcm::PointType;
-using pcm::NormalType;
-using pcm::ColorType;
-#define  NULL_POINT PointType(0.,0.,0.)
-#define  NULL_NORMAL NormalType(0.,0.,0.)
-#define	 NULL_COLOR	 ColorType(0.,0.,0.,1.)
+
+
+#define  NULL_POINT pcm::PointType(0.,0.,0.)
+#define  NULL_NORMAL pcm::NormalType(0.,0.,0.)
+#define	 NULL_COLOR	 pcm::ColorType(0.,0.,0.,1.)
+#define	 NULL_TEXTURE	 pcm::TextureType(0.,0.)
 #include <iostream>
 #define Logger std::cout
+
+#include <CustomGL\glew.h>
 
 #endif

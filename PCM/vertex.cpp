@@ -3,6 +3,7 @@
 #include "globals.h"
 #include "color_table.h"
 #include "glut.h"
+using namespace pcm;
 void Vertex::draw(){
 	if (!visible_)
 	{

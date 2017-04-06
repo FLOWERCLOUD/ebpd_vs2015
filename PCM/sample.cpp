@@ -11,18 +11,26 @@
 #include "file_io.h"
 #include <set>
 #include <algorithm>
+#include "MeshOpenGL.h"
+using namespace pcm;
 Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 	kd_tree_should_rebuild_(true),
 	mutex_(QMutex::NonRecursive),clayerDepth_(0)
 {
 	file_type = FileIO::NONE;
 	isload_ = false;
-	color_mode = OBJECT;
+	color_mode = RenderMode::OBJECT;
+	isOpenglMeshUpdated = false;
+	isUsingProgramablePipeLine = true;
+	opengl_mesh_ = new MyOpengl::MeshOpengl(*this);
 }
 
 Sample::~Sample()
 { 
 	clear();
+	if(opengl_mesh_)
+		delete opengl_mesh_;
+	opengl_mesh_ = NULL;
 }
 void Sample::clear()
 {
@@ -30,10 +38,12 @@ void Sample::clear()
 	vertices_.clear();
 	triangle_array.clear();
 	allocator_.free_all(); 
-	delete	kd_tree_;
+	if(kd_tree_)
+		delete	kd_tree_;
 	kd_tree_ = NULL;
 	lb_wrapbox_.clear();
 	wrap_box_link_.clear();
+	
 }
 Vertex* Sample::add_vertex(const PointType& pos = NULL_POINT,
 						const NormalType& n = NULL_NORMAL, 
@@ -76,41 +86,48 @@ void Sample::draw(ColorMode::ObjectColorMode&, const Vec3& bias )
 	{
 		return;
 	}
-	
-	glPointSize(Paint_Param::g_point_size);
-	//glEnable(GL_POINT_SMOOTH);
-
-	glEnable(GL_POINT_SMOOTH);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glEnable(GL_DEPTH_TEST);
-	
-
-	ColorType c;
-
-	if ( selected_ )
+	if (isUsingProgramablePipeLine)
 	{
-		c = HIGHTLIGHTED_COLOR;
-		//glColor4f(c(0), c(1), c(2),c(3));
-		glColor4f(c(0), c(1), c(2),0.1);
+
 	}
-	else{
-		glColor4f(c(0), c(1), c(2),0.1);
-	}
+	else
+	{
+		glPointSize(Paint_Param::g_point_size);
+		//glEnable(GL_POINT_SMOOTH);
+
+		glEnable(GL_POINT_SMOOTH);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
+
+
+		ColorType c;
+
+		if (selected_)
+		{
+			c = HIGHTLIGHTED_COLOR;
+			//glColor4f(c(0), c(1), c(2),c(3));
+			glColor4f(c(0), c(1), c(2), 0.1);
+		}
+		else {
+			glColor4f(c(0), c(1), c(2), 0.1);
+		}
 		//glColor4f( color_(0), color_(1), color_(2), color_(3) );
-	glPushMatrix();
-	glMultMatrixd(m_frame.matrix());
-	glBegin(GL_POINTS);
+		glPushMatrix();
+		glMultMatrixd(m_frame.matrix());
+		glBegin(GL_POINTS);
 
-	Matrix44 mat = matrix_to_scene_coord();
-	for ( IndexType i = 0; i < vertices_.size(); i++ )
-	{
-		vertices_[i]->draw_without_color(mat, bias);
+		Matrix44 mat = matrix_to_scene_coord();
+		for (IndexType i = 0; i < vertices_.size(); i++)
+		{
+			vertices_[i]->draw_without_color(mat, bias);
+		}
+		glEnd();
+		glDisable(GL_DEPTH_TEST);
+
+		glPopMatrix();
 	}
-	glEnd();
-	glDisable(GL_DEPTH_TEST);
 
-	glPopMatrix();
 }
 
 void Sample::draw(ColorMode::VertexColorMode&, const Vec3& bias)
@@ -119,24 +136,32 @@ void Sample::draw(ColorMode::VertexColorMode&, const Vec3& bias)
 	{
 		return;
 	}
-	glEnable(GL_DEPTH_TEST);
-	glPointSize(Paint_Param::g_point_size);
-	glEnable(GL_POINT_SMOOTH);
-
-	glPushMatrix();
-	glMultMatrixd(m_frame.matrix());
-
-	glBegin(GL_POINTS);
-
-	Matrix44 mat = matrix_to_scene_coord();
-	for ( IndexType i = 0; i < vertices_.size(); i++ )
+	if (isUsingProgramablePipeLine)
 	{
-		vertices_[i]->draw(mat,bias);
-	}
-	glEnd();
 
-	glPopMatrix();
-	glDisable(GL_DEPTH_TEST);
+	}
+	else
+	{
+		glEnable(GL_DEPTH_TEST);
+		glPointSize(Paint_Param::g_point_size);
+		glEnable(GL_POINT_SMOOTH);
+
+		glPushMatrix();
+		glMultMatrixd(m_frame.matrix());
+
+		glBegin(GL_POINTS);
+
+		Matrix44 mat = matrix_to_scene_coord();
+		for (IndexType i = 0; i < vertices_.size(); i++)
+		{
+			vertices_[i]->draw(mat, bias);
+		}
+		glEnd();
+
+		glPopMatrix();
+		glDisable(GL_DEPTH_TEST);
+	}
+
 }
 
 void Sample::draw(ColorMode::LabelColorMode&, const Vec3& bias)
@@ -145,26 +170,36 @@ void Sample::draw(ColorMode::LabelColorMode&, const Vec3& bias)
 	{
 		return;
 	}
-	//if ( selected_ )
+	if (isUsingProgramablePipeLine)
 	{
-		//glDisable(GL_LIGHTING);
-		glEnable(GL_DEPTH_TEST);
-		glPointSize(Paint_Param::g_point_size);
-		glEnable(GL_POINT_SMOOTH);
-		glPushMatrix();
-		glMultMatrixd(m_frame.matrix());
-		glBegin(GL_POINTS);
-		Matrix44 mat = matrix_to_scene_coord();
-		for ( IndexType i = 0; i < vertices_.size(); i++ )
-		{
-			vertices_[i]->draw_with_label(mat,bias);
-		}
-		glEnd();
-		glPopMatrix();
-		glDisable(GL_POINT_SMOOTH);
-		glDisable(GL_DEPTH_TEST);
-		//glEnable(GL_LIGHTING);
+
 	}
+	else
+	{
+		//if ( selected_ )
+		{
+			//glDisable(GL_LIGHTING);
+			glEnable(GL_DEPTH_TEST);
+			glPointSize(Paint_Param::g_point_size);
+			glEnable(GL_POINT_SMOOTH);
+			glPushMatrix();
+			glMultMatrixd(m_frame.matrix());
+			glBegin(GL_POINTS);
+			Matrix44 mat = matrix_to_scene_coord();
+			for (IndexType i = 0; i < vertices_.size(); i++)
+			{
+				vertices_[i]->draw_with_label(mat, bias);
+			}
+			glEnd();
+			glPopMatrix();
+			glDisable(GL_POINT_SMOOTH);
+			glDisable(GL_DEPTH_TEST);
+			//glEnable(GL_LIGHTING);
+		}
+	}
+
+
+
 
 }
 
@@ -174,23 +209,31 @@ void Sample::draw(ColorMode::WrapBoxColorMode&,const Vec3& bias)
 	{
 		return;
 	}
-	//if ( selected_ )
+	if (isUsingProgramablePipeLine)
 	{
-		//glDisable(GL_LIGHTING);
-		glPointSize(Paint_Param::g_point_size);
-		glEnable(GL_POINT_SMOOTH);
-		glPushMatrix();
-		glMultMatrixd(m_frame.matrix());
-		glBegin(GL_POINTS);
-		Matrix44 mat = matrix_to_scene_coord();
-		for ( IndexType i = 0; i < vertices_.size(); i++ )
-		{
-			vertices_[i]->draw_with_Graph_wrapbox(mat ,bias);
-		}
-		glPopMatrix();
-		glEnd();
-		//glEnable(GL_LIGHTING);
+
 	}
+	else
+	{
+		//if ( selected_ )
+		{
+			//glDisable(GL_LIGHTING);
+			glPointSize(Paint_Param::g_point_size);
+			glEnable(GL_POINT_SMOOTH);
+			glPushMatrix();
+			glMultMatrixd(m_frame.matrix());
+			glBegin(GL_POINTS);
+			Matrix44 mat = matrix_to_scene_coord();
+			for (IndexType i = 0; i < vertices_.size(); i++)
+			{
+				vertices_[i]->draw_with_Graph_wrapbox(mat, bias);
+			}
+			glPopMatrix();
+			glEnd();
+			//glEnable(GL_LIGHTING);
+		}
+	}
+
 
 }
 void Sample::draw(ColorMode::EdgePointColorMode&,const Vec3& bias)
@@ -199,24 +242,32 @@ void Sample::draw(ColorMode::EdgePointColorMode&,const Vec3& bias)
 	{
 		return;
 	}
-	//if ( selected_ )
+	if (isUsingProgramablePipeLine)
 	{
-		//glDisable(GL_LIGHTING);
-		glPointSize(Paint_Param::g_point_size);
-		glEnable(GL_POINT_SMOOTH);
-		glPushMatrix();
-		glMultMatrixd(m_frame.matrix());
-		glBegin(GL_POINTS);
 
-		Matrix44 mat = matrix_to_scene_coord();
-		for ( IndexType i = 0; i < vertices_.size(); i++ )
-		{
-			vertices_[i]->draw_with_edgepoints(mat , bias);
-		}
-		glPopMatrix();
-		glEnd();
-		//glEnable(GL_LIGHTING);
 	}
+	else
+	{
+		//if ( selected_ )
+		{
+			//glDisable(GL_LIGHTING);
+			glPointSize(Paint_Param::g_point_size);
+			glEnable(GL_POINT_SMOOTH);
+			glPushMatrix();
+			glMultMatrixd(m_frame.matrix());
+			glBegin(GL_POINTS);
+
+			Matrix44 mat = matrix_to_scene_coord();
+			for (IndexType i = 0; i < vertices_.size(); i++)
+			{
+				vertices_[i]->draw_with_edgepoints(mat, bias);
+			}
+			glPopMatrix();
+			glEnd();
+			//glEnable(GL_LIGHTING);
+		}
+	}
+
 
 }
 //glLoadIdentity();  
@@ -232,20 +283,26 @@ void Sample::draw(ColorMode::SphereMode&,const Vec3& bias)
 	{
 		return;
 	}
-	glPushAttrib( GL_ALL_ATTRIB_BITS);
-	//if ( selected_ )
-	//glClearColor(0.0, 0.0, 0.0, 0.0);
-	//glViewport(0, 0, (GLsizei)1200, (GLsizei)600);
-	//glMatrixMode(GL_PROJECTION);
-	/*glPushMatrix();
-	glTranslatef(point_to_show(0)+bias(0),point_to_show(1)+bias(1), point_to_show(2)+bias(2));
+	if (isUsingProgramablePipeLine)
+	{
 
-	glColor3f( 1.0  ,0.0 ,0.0);
-	glutSolidSphere(0.001* Paint_Param::g_point_size, 10, 10);
-	glPopMatrix();
-*/
-	//glLoadIdentity();
-	//glOrtho(-1.0, 1.0, -1.0, 1.0, -30.0, 30.0);
+	}
+	else
+	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		//if ( selected_ )
+		//glClearColor(0.0, 0.0, 0.0, 0.0);
+		//glViewport(0, 0, (GLsizei)1200, (GLsizei)600);
+		//glMatrixMode(GL_PROJECTION);
+		/*glPushMatrix();
+		glTranslatef(point_to_show(0)+bias(0),point_to_show(1)+bias(1), point_to_show(2)+bias(2));
+
+		glColor3f( 1.0  ,0.0 ,0.0);
+		glutSolidSphere(0.001* Paint_Param::g_point_size, 10, 10);
+		glPopMatrix();
+		*/
+		//glLoadIdentity();
+		//glOrtho(-1.0, 1.0, -1.0, 1.0, -30.0, 30.0);
 
 		////glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -264,7 +321,7 @@ void Sample::draw(ColorMode::SphereMode&,const Vec3& bias)
 		//// Set the light position
 		//GLfloat qaLightPosition[]	= {0.0, 1.0, -.5, 0.0};
 		//glLightfv(GL_LIGHT0, GL_POSITION, qaLightPosition);
-	
+
 		////glDisable(GL_LIGHTING);
 		////glPointSize(Paint_Param::g_point_size);
 		////glEnable(GL_POINT_SMOOTH);
@@ -274,17 +331,19 @@ void Sample::draw(ColorMode::SphereMode&,const Vec3& bias)
 		glPushMatrix();
 		glMultMatrixd(m_frame.matrix());
 		Matrix44 mat = matrix_to_scene_coord();
-		for ( IndexType i = 0; i <  vertices_.size()/* vertices_.size()*/; i++ )
+		for (IndexType i = 0; i < vertices_.size()/* vertices_.size()*/; i++)
 		{
-			vertices_[i]->draw_with_sphere(mat ,bias);
-		//glEnd();
-		
+			vertices_[i]->draw_with_sphere(mat, bias);
+			//glEnd();
+
 		}
 		glPopMatrix();
 		//glDisable(GL_LIGHTING);
 		//glDisable(GL_LIGHT0);
 		glDisable(GL_DEPTH_TEST);
-	glPopAttrib();
+		glPopAttrib();
+	}
+
 }
 
 void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,const Vec3& bias)
@@ -293,28 +352,37 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 	{
 		return;
 	}
-	glPushMatrix();
-	glMultMatrixd(m_frame.matrix());
-	Matrix44 mat = matrix_to_scene_coord();
-	switch(r)
+
+	if (isUsingProgramablePipeLine)
 	{
-		case RenderMode::PointMode:{
+		if(!isOpenglMeshUpdated)
+			update_openglMesh();
+		opengl_mesh_->draw(wcm,r);
+	}
+	else
+	{
+		glPushMatrix();
+		glMultMatrixd(m_frame.matrix());
+		Matrix44 mat = matrix_to_scene_coord();
+		switch (r)
+		{
+		case RenderMode::PointMode: {
 			IndexType i_triangle;
 			IndexType n_triangel = this->num_triangles();
 			glEnable(GL_DEPTH_TEST);
-			for(i_triangle = 0; i_triangle < n_triangel;++i_triangle)
+			for (i_triangle = 0; i_triangle < n_triangel; ++i_triangle)
 			{
-	/*			const std::vector<NormalType>& m_norms = _model->normal_array;
+				/*			const std::vector<NormalType>& m_norms = _model->normal_array;
 				const std::vector<VertexType>& m_vtxs = _model->vertex_array;*/
-				TriangleType* m_triangle =  this->triangle_array[i_triangle];
+				TriangleType* m_triangle = this->triangle_array[i_triangle];
 				RenderMode::RenderType rt = RenderMode::PointMode;
-				m_triangle->draw( wcm,rt, mat, bias);
+				m_triangle->draw(wcm, rt, mat, bias);
 			}
-			glDisable(GL_DEPTH_TEST);	
+			glDisable(GL_DEPTH_TEST);
 			break;
-								   };
-		case RenderMode::FlatMode:{
-			
+		};
+		case RenderMode::FlatMode: {
+
 			IndexType i_triangle;
 			IndexType n_triangel = this->num_triangles();
 			glEnable(GL_DEPTH_TEST);
@@ -325,13 +393,13 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 			//glEnable(GL_LIGHT0);
 			//glShadeModel(GL_SMOOTH);
 			//SetMaterial(&material);
-			for(i_triangle = 0; i_triangle < n_triangel;++i_triangle)
+			for (i_triangle = 0; i_triangle < n_triangel; ++i_triangle)
 			{
-	/*			const std::vector<NormalType>& m_norms = _model->normal_array;
+				/*			const std::vector<NormalType>& m_norms = _model->normal_array;
 				const std::vector<VertexType>& m_vtxs = _model->vertex_array;*/
-				TriangleType* m_triangle =  this->triangle_array[i_triangle];
+				TriangleType* m_triangle = this->triangle_array[i_triangle];
 				RenderMode::RenderType rt = RenderMode::FlatMode;
-				m_triangle->draw( wcm, rt, mat, bias);
+				m_triangle->draw(wcm, rt, mat, bias);
 			}
 			//glDisable(GL_COLOR_MATERIAL);
 			//glDisable(GL_LIGHTING);
@@ -339,46 +407,48 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 
 			glDisable(GL_DEPTH_TEST);
 			break;
-								   };
-		case RenderMode::WireMode:{
+		};
+		case RenderMode::WireMode: {
 
 			IndexType i_triangle;
 			IndexType n_triangel = this->num_triangles();
 			glEnable(GL_DEPTH_TEST);
 			glEnable(GL_CULL_FACE);
-			for(i_triangle = 0; i_triangle < n_triangel;++i_triangle)
+			for (i_triangle = 0; i_triangle < n_triangel; ++i_triangle)
 			{
-				TriangleType* m_triangle =  this->triangle_array[i_triangle];
+				TriangleType* m_triangle = this->triangle_array[i_triangle];
 				RenderMode::RenderType rt = RenderMode::WireMode;
-				m_triangle->draw( wcm, rt, mat, bias);
+				m_triangle->draw(wcm, rt, mat, bias);
 			}
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_CULL_FACE);
 			break;
-								  };
-		case RenderMode::FlatWireMode:{
+		};
+		case RenderMode::FlatWireMode: {
 
 			IndexType i_triangle;
 			IndexType n_triangel = this->num_triangles();
 			glEnable(GL_DEPTH_TEST);
 
-			for(i_triangle = 0; i_triangle < n_triangel;++i_triangle)
+			for (i_triangle = 0; i_triangle < n_triangel; ++i_triangle)
 			{
-				TriangleType* m_triangle =  this->triangle_array[i_triangle];
+				TriangleType* m_triangle = this->triangle_array[i_triangle];
 				RenderMode::RenderType rt = RenderMode::FlatWireMode;
-				m_triangle->draw( wcm, rt, mat, bias);
+				m_triangle->draw(wcm, rt, mat, bias);
 			}
 			glDisable(GL_DEPTH_TEST);
 
 			break;
-								  };
-		case RenderMode::SmoothMode:{break;};
-		case RenderMode::TextureMode:{break;};
-		case RenderMode::SelectMode:{break;};
+		};
+		case RenderMode::SmoothMode: {break; };
+		case RenderMode::TextureMode: {break; };
+		case RenderMode::SelectMode: {break; };
 
 
+		}
+		glPopMatrix();
 	}
-	glPopMatrix();
+
 	
 }
 
@@ -388,16 +458,26 @@ void Sample::drawNormal(const Vec3& bias)
 	{
 		return;
 	}
-	glEnable(GL_DEPTH_TEST);
-	glPushMatrix();
-	glMultMatrixd(m_frame.matrix());
-	Matrix44 mat = matrix_to_scene_coord();
-	for( unsigned int idx = 0; idx < vertices_.size(); idx++ )
+	if (isUsingProgramablePipeLine)
 	{
-		vertices_[idx]->drawNormal(mat ,bias);
+		if (!isOpenglMeshUpdated)
+			update_openglMesh();
+		opengl_mesh_->drawNormal();
 	}
-	glPopMatrix();
-	glDisable(GL_DEPTH_TEST);
+	else
+	{
+		glEnable(GL_DEPTH_TEST);
+		glPushMatrix();
+		glMultMatrixd(m_frame.matrix());
+		Matrix44 mat = matrix_to_scene_coord();
+		for (unsigned int idx = 0; idx < vertices_.size(); idx++)
+		{
+			vertices_[idx]->drawNormal(mat, bias);
+		}
+		glPopMatrix();
+		glDisable(GL_DEPTH_TEST);
+	}
+
 }
 
 void Sample::draw_with_name()
@@ -406,15 +486,151 @@ void Sample::draw_with_name()
 	{
 		return;
 	}
-	glPushMatrix();
-	glMultMatrixd(m_frame.matrix());
-	Matrix44 mat = matrix_to_scene_coord();
-//	Matrix44 mat = Matrix44::Identity();
-	for( unsigned int idx = 0; idx < vertices_.size(); idx++ )
+	if (isUsingProgramablePipeLine)
 	{
-		vertices_[idx]->draw_with_name(idx,mat);
+
 	}
-	glPopMatrix();
+	else
+	{
+		glPushMatrix();
+		glMultMatrixd(m_frame.matrix());
+		Matrix44 mat = matrix_to_scene_coord();
+		//	Matrix44 mat = Matrix44::Identity();
+		for (unsigned int idx = 0; idx < vertices_.size(); idx++)
+		{
+			vertices_[idx]->draw_with_name(idx, mat);
+		}
+		glPopMatrix();
+	}
+
+}
+void Sample::caculateNorm(NormalType& baseline  )
+{
+	if (!this->num_triangles())  //only have points
+	{
+		const IndexType k = 36;
+		for (IndexType i = 0; i < this->num_vertices(); i++)
+		{
+
+			MatrixX3	k_nearest_verts(k, 3);
+			IndexType		neighbours[k];
+			ScalarType dist[k];
+			this->neighbours(i, k, neighbours, dist);
+			for (IndexType j = 0; j<k; j++)
+			{
+				IndexType neighbour_idx = neighbours[j];
+
+				k_nearest_verts.row(j) << (*this)[neighbour_idx].x(), (*this)[neighbour_idx].y(), (*this)[neighbour_idx].z();
+			}
+
+			MatrixX3 vert_mean = k_nearest_verts.colwise().mean();
+			MatrixX3 Q(k, 3);
+			for (IndexType j = 0; j<k; j++)
+			{
+				Q.row(j) = k_nearest_verts.row(j) - vert_mean;
+			}
+
+			Matrix33 sigma = Q.transpose() * Q;
+
+			Eigen::EigenSolver<Matrix33> eigen_solver(sigma, Eigen::ComputeFullU | Eigen::ComputeFullV);
+
+			auto ev = eigen_solver.eigenvectors();
+			auto eval = eigen_solver.eigenvalues();
+			ScalarType tmp[3] = { eval(0).real(),eval(1).real(),eval(2).real() };
+			IndexType min_idx = std::min_element(tmp, tmp + 3) - tmp;
+			NormalType nv;
+			nv(0) = (ev.col(min_idx))(0).real();
+			nv(1) = (ev.col(min_idx))(1).real();
+			nv(2) = (ev.col(min_idx))(2).real();
+
+			nv.normalize();
+			if ((baseline).dot(nv) < 0)
+			{
+				nv = -nv;
+			}
+
+			(*this)[i].set_normal(nv);
+
+		}
+
+	}
+	else
+	{ //has face
+	  //auto& m_triangles  = smp.triangle_array;
+		Sample& smp = *this;
+		for (IndexType i = 0; i < this->num_triangles(); ++i)
+		{
+			IndexType i_vetex1 = smp.getTriangle(i).get_i_vertex(0);
+			IndexType i_vetex2 = smp.getTriangle(i).get_i_vertex(1);
+			IndexType i_vetex3 = smp.getTriangle(i).get_i_vertex(2);
+			PointType vtx1(smp[i_vetex1].x(), smp[i_vetex1].y(), smp[i_vetex1].z());
+			PointType vtx2(smp[i_vetex2].x(), smp[i_vetex2].y(), smp[i_vetex2].z());
+			PointType vtx3(smp[i_vetex3].x(), smp[i_vetex3].y(), smp[i_vetex3].z());
+			PointType vector1 = vtx2 - vtx1;
+			PointType vector2 = vtx3 - vtx1;
+			vector1.normalize();
+			vector2.normalize();
+			PointType vector3 = vector1.cross(vector2); //get the normal of the triangle
+			vector3.normalize();
+			//Logger<<"vector1: "<<vector1(0)<<" "<<vector1(1)<<" "<<vector1(2)<<std::endl;
+			//Logger<<"vector2: "<<vector2(0)<<" "<<vector2(1)<<" "<<vector2(2)<<std::endl;
+			//Logger<<"vector3: "<<vector3(0)<<" "<<vector3(1)<<" "<<vector3(2)<<std::endl;
+			//assign the normal to all the vertex of the triangle
+			for (int x = 0; x<3; ++x)
+			{
+				IndexType i_normal = smp.getTriangle(i).get_i_normal(x);
+				//Logger<<"norm: "<<smp[i_normal].nx()<<" "<<smp[i_normal].ny()<<" "<<smp[i_normal].nz()<<std::endl;
+				smp[i_normal].set_normal(
+					NormalType(smp[i_normal].nx() + vector3(0), smp[i_normal].ny() + vector3(1), smp[i_normal].nz() + vector3(2)));
+			}
+
+
+		}
+		for (IndexType i = 0; i < smp.num_vertices(); i++)
+		{
+			NormalType norm(smp[i].nx(), smp[i].ny(), smp[i].nz());
+			norm.normalize();
+			//			Logger<<"norm: "<<norm(0)<<" "<<norm(1)<<" "<<norm(2)<<std::endl;
+			smp[i].set_normal(norm);
+		}
+
+	}
+	caculateTangent();
+	this->update_openglMesh();
+
+
+}
+void Sample::caculateTangent()
+{
+	Sample& smp = *this;
+	for (IndexType i = 0; i < this->num_vertices(); i++)
+	{
+
+		Vec3 tangent;
+		Vec3 normal(smp[i].nx(), smp[i].ny(), smp[i].nz());
+		Vec3 c1 = normal.cross(Vec3(0.0, 0.0, 1.0));
+		Vec3 c2 = 	normal.cross(Vec3(0.0, 1.0, 0.0));
+
+
+		if (c1.squaredNorm() > c2.squaredNorm())
+		{
+			tangent = c1;
+		}
+		else
+		{
+			tangent = c2;
+		}
+		tangent.normalize();
+		
+		Vec3 bitangent = tangent.cross(normal);
+		smp[i].set_tangent(tangent);
+		smp[i].set_bi_tangent(bitangent);
+
+	}
+
+
+
+
 }
 
 void Sample::build_kdtree()
@@ -570,6 +786,7 @@ void Sample::update()
 	}
 	kd_tree_should_rebuild_ = true;
 	build_kdtree();
+	update_openglMesh();
 }
 
 void Sample::delete_vertex_group(const std::vector<IndexType>& idx_grp )
@@ -602,7 +819,7 @@ void Sample::delete_vertex_group(const std::vector<IndexType>& idx_grp )
 	//kdtree dirty
 	kd_tree_should_rebuild_ = true;
 	build_kdtree();
-
+	update_openglMesh();
 }
 
 void Sample::set_vertex_label(const std::vector<IndexType>& idx_grp ,IndexType label)
@@ -691,6 +908,16 @@ void Sample::smoothLabel()
 	{
 		(*iter)->set_label( labelmap[(*iter)->label()]);
 	}
+
+}
+
+void Sample::update_openglMesh()
+{
+	if (!visible_)
+		return;
+	if (opengl_mesh_)
+		opengl_mesh_->updateMesh();
+	isOpenglMeshUpdated = true;
 
 }
 

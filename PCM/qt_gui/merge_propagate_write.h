@@ -27,7 +27,7 @@ class Proxy
 public:
 
 	virtual void run()=0;
-	virtual ColorType getLabelColor(void*);
+	virtual pcm::ColorType getLabelColor(void*);
 public:
 	void setContext( PropagateThread* _pt);
 protected:
@@ -41,7 +41,7 @@ public:
 	ProxyAjustViewPly( char* plyOutputDir ,char* _prefix );
 
 protected:
-	ColorType getLabelColor(void* pvtx);
+	pcm::ColorType getLabelColor(void* pvtx);
 
 	void getAllSampleCurrentViewMatrix();
 	void writePly();
@@ -50,9 +50,9 @@ protected:
 protected:
 	char* output_file_path_ ; // ply
 	char* prefix_;
-	std::vector< std::vector<PointType> > SmpSetcoodinates;
-	std::vector< std::vector<PointType> > SmpSetnorms;
-	std::vector< std::vector<ColorType> > SmpSetColors;
+	std::vector< std::vector<pcm::PointType> > SmpSetcoodinates;
+	std::vector< std::vector<pcm::PointType> > SmpSetnorms;
+	std::vector< std::vector<pcm::ColorType> > SmpSetColors;
 
 
 };
@@ -138,13 +138,13 @@ class ProxyPly : public virtual Proxy
 public: 
 	ProxyPly( char* plyOutputDir ,char* _prefix );
 protected:
-	ColorType getLabelColor(void* pvtx);
+	pcm::ColorType getLabelColor(void* pvtx);
 	
 	void generatePly();
 
 	
 
-	void generateStandaraPLY(std::vector< std::vector<PointType> >& SmpSetcoodinates ,std::vector< std::vector<PointType> >& SmpSetNorms ,std::vector< std::vector<ColorType> >& SmpSetColors);
+	void generateStandaraPLY(std::vector< std::vector<pcm::PointType> >& SmpSetcoodinates ,std::vector< std::vector<pcm::PointType> >& SmpSetNorms ,std::vector< std::vector<pcm::ColorType> >& SmpSetColors);
 	void generateStandaraPLY();
 
 	void generateSamplePly( char* _label_filename );
@@ -162,7 +162,7 @@ class ProxyOricolorPly : public  ProxyPly
 public: 
 	ProxyOricolorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 }; 
@@ -184,7 +184,7 @@ class ProxyRedColorPly : public ProxyPly
 public: 
 	ProxyRedColorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 };
@@ -194,7 +194,7 @@ class ProxyGrayColorPly : public ProxyPly
 public: 
 	ProxyGrayColorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 };
@@ -203,7 +203,7 @@ class ProxyStandaraGrayColorPly : public ProxyPly
 public: 
 	ProxyStandaraGrayColorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 };
@@ -213,7 +213,7 @@ class ProxyStandaraOriColorPly : public ProxyPly
 public: 
 	ProxyStandaraOriColorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 };
@@ -223,7 +223,7 @@ class ProxyStandaraAjustViewOriColorPly : public ProxyStandaraOriColorPly , publ
 public: 
 	ProxyStandaraAjustViewOriColorPly( char* plyOutputDir ,char* _prefix );
 public:
-	ColorType getLabelColor(void* vtx);
+	pcm::ColorType getLabelColor(void* vtx);
 	void run();
 
 };

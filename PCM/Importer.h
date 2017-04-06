@@ -15,7 +15,7 @@ namespace PCM{
 			virtual ~BaseImporter() {}
 
 			// add a vertex with coordinate \c _point
-			virtual VertexHandle add_vertex(const PointType& _point) = 0;
+			virtual VertexHandle add_vertex(const pcm::PointType& _point) = 0;
 
 			// add a face with indices _indices refering to vertices
 			typedef std::vector<VertexHandle> VHandles;
@@ -28,11 +28,11 @@ namespace PCM{
 			virtual void set_face_texindex( FaceHandle _fh, int _texId ) = 0;
 
 			// set vertex normal
-			virtual void set_normal(VertexHandle _vh, const NormalType& _normal) = 0;
+			virtual void set_normal(VertexHandle _vh, const pcm::NormalType& _normal) = 0;
 
 
 			// set vertex color
-			virtual void set_color(VertexHandle _vh, const ColorType& _color) = 0;
+			virtual void set_color(VertexHandle _vh, const pcm::ColorType& _color) = 0;
 
 			//// set edge color
 			//virtual void set_color(EdgeHandle _eh, const ColorType& _color) = 0;
@@ -77,9 +77,9 @@ namespace PCM{
 		class ImporterT: public BaseImporter{
 
 		public:
-			typedef PointType       Point;
-			typedef NormalType      Point;
-			typedef ColorType		Color;
+			typedef pcm::PointType       Point;
+			typedef pcm::NormalType      Point;
+			typedef pcm::ColorType		Color;
 			/*	typedef typename Mesh::Point       Point;
 			typedef typename Mesh::Normal      Normal;
 			typedef typename Mesh::Color       Color;
@@ -87,7 +87,7 @@ namespace PCM{
 			typedef std::vector<VertexHandle>  VHandles;
 			ImporterT(Mesh& _mesh) : mesh_(_mesh) {}
 
-			virtual VertexHandle add_vertex(const PointType& _point)
+			virtual VertexHandle add_vertex(const pcm::PointType& _point)
 			{
 				Vertex* vtx =mesh_.add_vertex( _point);
 				return   vtx->
@@ -137,13 +137,13 @@ namespace PCM{
 
 			// vertex attributes
 
-			virtual void set_normal(VertexHandle _vh, const NormalType& _normal)
+			virtual void set_normal(VertexHandle _vh, const pcm::NormalType& _normal)
 			{
 				if (mesh_.has_vertex_normals())
 					mesh_.set_normal(_vh, _normal);
 			}
 
-			virtual void set_color(VertexHandle _vh, const ColorType& _color)
+			virtual void set_color(VertexHandle _vh, const pcm::ColorType& _color)
 			{
 				if (mesh_.has_vertex_colors())
 					mesh_.set_color(_vh,_color);
@@ -151,7 +151,7 @@ namespace PCM{
 	
 
 
-			virtual void set_texcoord(VertexHandle _vh, const PointType& _texcoord)
+			virtual void set_texcoord(VertexHandle _vh, const pcm::PointType& _texcoord)
 			{
 				/*if (mesh_.has_vertex_texcoords2D())
 					mesh_.set_texcoord2D(_vh, vector_cast<TexCoord2D>(_texcoord));*/
@@ -192,7 +192,7 @@ namespace PCM{
 			//		mesh_.set_color(_fh, _color);
 			//}
 
-			virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<PointType>& _face_texcoords)
+			virtual void add_face_texcoords( FaceHandle _fh, VertexHandle _vh, const std::vector<pcm::PointType>& _face_texcoords)
 			{
 				//// get first halfedge handle
 				//HalfedgeHandle cur_heh   = mesh_.halfedge_handle(_fh);

@@ -1,8 +1,9 @@
+#include "sample.h"
 #include "triangle.h"
 #include "vertex.h"
 #include "rendering/render_types.h"
-#include <gl/gl.h>
-#include "sample.h"
+
+using namespace pcm;
 TriangleType::TriangleType(Sample& s):sample_(s)
 {
 	i_vertex[0] =i_vertex[1] = i_vertex[2] = 0;
@@ -65,13 +66,13 @@ void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType&
 			}
 			switch (sample_.color_mode)
 			{
-			case Sample::VERTEX:
+			case RenderMode::VERTEX:
 			{
 				ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
 				glColor3f(color2(0), color2(1), color2(2));
 				break;
 			}
-			case Sample::HANDLE:
+			case RenderMode::HANDLE:
 			{
 				if (i < sample_.colors_.size())
 				{
@@ -89,7 +90,7 @@ void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType&
 
 				break;
 			}
-			case Sample::OBJECT:
+			case RenderMode::OBJECT:
 			{
 				ColorType color2 = Color_Utility::span_color_from_table(sample_.smpId);
 				glColor3f(color2(0), color2(1), color2(2)

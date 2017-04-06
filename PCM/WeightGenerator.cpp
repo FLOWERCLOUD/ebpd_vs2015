@@ -11,7 +11,7 @@
 #include "GlobalObject.h"
 #include <iostream>
 #include <fstream>
-
+#include <deque>
 
 
 #ifndef NO_MOSEK
@@ -408,9 +408,7 @@ void computeWeights(Sample* sample, std::vector<Handle*>& _handles, std::vector<
 		bbw_data,
 		OW
 	);
-	// Normalize weights to sum to one
-	OW = (OW.array().colwise() /
-			OW.rowwise().sum().array()).eval();
+
 	if (!success)
 	{
 		return;
@@ -420,13 +418,13 @@ void computeWeights(Sample* sample, std::vector<Handle*>& _handles, std::vector<
 	{
 		for (size_t j = 0; j < OW.cols(); j++)
 		{
-			if (OW(i, j) < 0.01)
+			if (OW(i, j) < 0.0)
 				OW(i, j) = 0.0;
 		}
 	}
+	// Normalize weights to sum to one
 	OW = (OW.array().colwise() /
 		OW.rowwise().sum().array()).eval();
-
 	EW.resize(OW.rows(), 0);
 	_wieghts.clear();
 	_wieghts.resize(OW.rows());
@@ -438,11 +436,153 @@ void computeWeights(Sample* sample, std::vector<Handle*>& _handles, std::vector<
 		}		
 	}
 	writeWeightToFile(string("./keg.weight"), _wieghts);
+	verbose("Computing BBW weights done\n");
+}
+
+static void getKbiggest(std::vector<float>& _ori, std::vector<float>& out, std::vector<int>& out_idx ,int _numIndices)
+{
+	if (_ori.size() <= _numIndices)
+		return;
+	out.clear();
+	out_idx.clear();
+	std::deque<float> k_big;
+	std::deque<int> k_big_idx;
+	for (size_t j = 0; j < _ori.size(); j++)
+	{
+		if (k_big.size() < _numIndices)
+		{
+			if (k_big.size() && _ori[j] <= k_big.front())
+			{
+				k_big.push_front(_ori[j]);
+				k_big_idx.push_front(j);
+			}
+			else if (k_big.size() && _ori[j] >= k_big.back())
+			{
+				k_big.push_back(_ori[j]);
+				k_big_idx.push_back(j);
+			}
+			else if (k_big.size())
+			{
+				k_big.push_front(_ori[j]);
+				k_big_idx.push_front(j);
+				//排序，保持左边比右边小
+				//因为除了第一个，后面的已经有序，故使用插入排序,复杂度o(k)
+				int m = 0;
+				float tmp = k_big[m];
+				int tmp_idx = k_big_idx[m];
+				int n = m + 1;
+				while (n < k_big.size() && tmp > k_big[n])
+				{
+					k_big[n - 1] = k_big[n];
+					k_big_idx[n - 1] = k_big_idx[n];
+					n++;
+				}
+				k_big[n - 1] = tmp;
+				k_big_idx[n - 1] = tmp_idx;
+			}
+			else if (!k_big.size())
+			{
+				k_big.push_front(_ori[j]);
+				k_big_idx.push_front(j);
+			}
+
+		}
+		else
+		{
+			if (k_big.size() && _ori[j] >= k_big.back())
+			{
+				k_big.push_back(_ori[j]);
+				k_big_idx.push_back(j);
+				k_big.pop_front();
+				k_big_idx.pop_front();
+
+			}
+			else if (k_big.size() && _ori[j] > k_big.front())
+			{
+
+				k_big.pop_front();
+				k_big_idx.pop_front();
+				k_big.push_front(_ori[j]);
+				k_big_idx.push_front(j);
+				//排序，保持左边比右边小
+				//因为除了第一个，后面的已经有序，故使用插入排序,复杂度o(k)
+				int m = 0;
+				float tmp = k_big[m];
+				int tmp_idx = k_big_idx[m];
+				int n = m + 1;
+				while (n < k_big.size() && tmp > k_big[n])
+				{
+					k_big[n - 1] = k_big[n];
+					k_big_idx[n - 1] = k_big_idx[n];
+					n++;
+				}
+				k_big[n - 1] = tmp;
+				k_big_idx[n - 1] = tmp_idx;
+
+			}
+
+
+		}
+
+	}
+	while (k_big.size())
+	{
+		out.push_back(k_big.back());
+		out_idx.push_back(k_big_idx.back());
+		k_big.pop_back();
+		k_big_idx.pop_back();
+	}
+
+
+
+}
+
+
+
+void computeWeights(Sample* sample, std::vector<Handle*>& _handles, 
+	std::vector<float>& _wieghts,
+	std::vector<int>& _wieghts_idx, 
+	 int _numIndices)
+{
+	std::vector<std::vector<float>> weights;
+	if (0)
+		computeWeights(sample, _handles, weights);
+	else
+		getWeightFromFile(string("./keg.weight"), weights);
+	//
+	_wieghts.resize(weights.size() * _numIndices);
+	_wieghts_idx.resize(weights.size() * _numIndices);
+	for (size_t i = 0; i < weights.size(); i++)
+	{
+		std::vector<float>& bone_weight = weights[i];
+		vector<float> normalize_wieght;
+		vector<int> normalize_idx;
+		getKbiggest(bone_weight, normalize_wieght, normalize_idx, _numIndices);
+		float sum = 0.0f;
+		for (float weight : normalize_wieght)
+		{
+			sum += weight;
+		}
+		for (float& weight : normalize_wieght)
+		{
+			weight/=sum;
+		}
+
+		for (size_t m = 0; m < _numIndices; m++)
+		{
+			_wieghts[i * _numIndices + m] = normalize_wieght[m];
+			_wieghts_idx[i * _numIndices + m] = normalize_idx[m];
+		}
+		
+	}
 }
 
 void writeWeightToFile(std::string& path, std::vector<std::vector<float>>& _weights)
 {
 	ofstream writer(path);
+	if (!_weights.size())
+		return;
+	writer << _weights.size() << " " << _weights[0].size() << endl;
 	for (int i = 0; i < _weights.size(); ++i)
 	{
 		for (size_t j = 0; j < _weights[i].size(); j++)
@@ -453,5 +593,24 @@ void writeWeightToFile(std::string& path, std::vector<std::vector<float>>& _weig
 
 	}
 	writer.close();
+
+}
+
+void getWeightFromFile(std::string& path, std::vector<std::vector<float>>& _weights)
+{
+	_weights.clear();
+	ifstream reader(path);
+	int rows = 0,cols = 0;
+	reader >> rows >> cols;
+	_weights.resize(rows);
+	for (int i = 0; i < rows; ++i)
+	{
+		_weights[i].resize(cols);
+		for (size_t j = 0; j < _weights[i].size(); j++)
+		{
+			reader >> _weights[i][j];
+		}
+	}
+	reader.close();
 
 }

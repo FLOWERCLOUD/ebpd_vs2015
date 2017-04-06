@@ -1,5 +1,5 @@
-#include <windows.h>  //Windows Header 只加gl.h 不加这个会出错
-#include <gl/gl.h>
+//#include <windows.h>  //Windows Header 只加gl.h 不加这个会出错
+//#include <gl/gl.h>
 #include "render_types.h"
 
 

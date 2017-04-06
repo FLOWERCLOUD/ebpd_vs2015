@@ -1,7 +1,6 @@
 #ifndef _VERTEX_H
 #define _VERTEX_H
 #include "windows.h"
-#include <gl/gl.h>
 #include "selectable_item.h"
 #include <iostream>
 
@@ -9,23 +8,54 @@ class Vertex : public SelectableItem
 {
 public:
 	Vertex():position_(NULL_POINT),
-		normal_(NULL_NORMAL),label_(0),val_(0),is_edge_points_(0),is_wrapbox_(0) ,is_edgePointWithSmallLabel_(-1){};
+		normal_(NULL_NORMAL), texture_(NULL_TEXTURE),label_(0),val_(0),is_edge_points_(0),is_wrapbox_(0) ,is_edgePointWithSmallLabel_(-1){};
 	~Vertex(){};
 
 	void set_idx(IndexType _idx)
 	{
 		idx_ = _idx;
 	}
-	void set_position( const PointType& pos )
+	void set_position( const pcm::PointType& pos )
 	{
 		position_ = pos;
 	}
 
-	void set_normal( const NormalType& n )
+	void set_normal( const pcm::NormalType& n )
 	{
 		normal_ = n;
 	}
-
+	void set_texture(const pcm::TextureType& t)
+	{
+		texture_ = t;
+	}
+	void set_tangent(const pcm::NormalType& t)
+	{
+		tangent_ = t;
+	}
+	void set_bi_tangent(const pcm::NormalType& t)
+	{
+		bi_tangent_ = t;
+	}
+	pcm::PointType get_position()
+	{
+		return position_;
+	}
+	pcm::NormalType get_normal()
+	{
+		return normal_;
+	}
+	pcm::TextureType get_texture()
+	{
+		return texture_;
+	}
+	pcm::NormalType get_tangent()
+	{
+		return tangent_;
+	}
+	pcm::NormalType get_bi_tangent()
+	{
+		return bi_tangent_;
+	}
 	void set_label( IndexType l ){ label_ = l; }
 
 	void set_value(ScalarType v_){ val_ = v_;}
@@ -46,6 +76,14 @@ public:
 	ScalarType g() const { return color_(1); }
 	ScalarType b() const { return color_(2); }
 	ScalarType alpha() const { return color_(3); }
+	ScalarType tex_x() const { return texture_(0); }
+	ScalarType tex_y() const { return texture_(1); }
+	ScalarType tangent_x() const { return tangent_(0); }
+	ScalarType tangent_y() const { return tangent_(1); }
+	ScalarType tangent_z() const { return tangent_(2); }
+	ScalarType bi_tangent_x() const { return bi_tangent_(0); }
+	ScalarType bi_tangent_y() const { return bi_tangent_(1); }
+	ScalarType bi_tangent_z() const { return bi_tangent_(2); }
 	IndexType label() const {return label_;}
 	ScalarType value_() const {return val_;} 
 	/*
@@ -73,9 +111,11 @@ public:
 	void draw_with_sphere( const Matrix44& adjust_matrix , const Vec3& bias);
 	void drawNormal( const Matrix44& adjust_matrix , const Vec3& bias);
 protected:
-	PointType position_;
-	NormalType normal_;
-
+	pcm::PointType position_;
+	pcm::NormalType normal_;
+	pcm::TextureType texture_;
+	pcm::NormalType tangent_;
+	pcm::NormalType bi_tangent_;
 	IndexType	label_;
 	ScalarType  val_;
 	IndexType	is_edge_points_;

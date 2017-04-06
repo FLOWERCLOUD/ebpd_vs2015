@@ -6,7 +6,7 @@
 
 #include "GlobalObject.h"
 
-
+using namespace pcm;
 
 Tracer::~Tracer()
 {

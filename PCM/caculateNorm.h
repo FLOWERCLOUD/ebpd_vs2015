@@ -13,7 +13,7 @@ namespace SampleManipulation{
 			 static CaculateNorm instance;
 			return &instance;
 		}
-		void compute_normal_all(NormalType& baseline);
+		void compute_normal_all(pcm::NormalType& baseline);
 
 		void run();
 	private:
@@ -23,7 +23,7 @@ namespace SampleManipulation{
 
 	private:
 		static CaculateNorm* instance_ ;
-		NormalType baseline_;
+		pcm::NormalType baseline_;
 
 	};
 

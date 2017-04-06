@@ -8,7 +8,7 @@ public:
 	Box():first_expand_(true){}
 	~Box(){}
 
-	void expand( const PointType&  p )
+	void expand( const pcm::PointType&  p )
 	{
 		diag_dirty_ = true;
 		if (first_expand_)
@@ -55,16 +55,16 @@ public:
 
 	}
 
-	const PointType center() const
+	const pcm::PointType center() const
 	{
 		return ( low_corner_ + high_corner_ )/2;
 	}
-	const PointType low_corner() const{return low_corner_;}
-	const PointType high_corner()const{return high_corner_;}
+	const pcm::PointType low_corner() const{return low_corner_;}
+	const pcm::PointType high_corner()const{return high_corner_;}
 
 private:
-	PointType low_corner_;
-	PointType high_corner_;
+	pcm::PointType low_corner_;
+	pcm::PointType high_corner_;
 
 	//Because sqrt is expensive, we record dirty flag to update diag
 	bool diag_dirty_;

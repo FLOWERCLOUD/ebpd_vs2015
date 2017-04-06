@@ -1,7 +1,7 @@
 #include "color_table.h"
 #include <time.h>
 #include <algorithm>
-
+using namespace pcm;
 namespace Color_Utility
 {
 	ColorType color_from_table(IndexType index)

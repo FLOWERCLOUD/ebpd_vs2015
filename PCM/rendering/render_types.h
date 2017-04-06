@@ -1,6 +1,24 @@
 #ifndef  _RENDER_TYPES_
 #define  _RENDER_TYPES_
 #include "basic_types.h"
+
+namespace ColorMode {
+	struct ObjectColorMode;
+	struct VertexColorMode;
+	struct LabelColorMode;
+	struct WrapBoxColorMode; //added by huayun
+	struct EdgePointColorMode;  //added by huayun
+	struct SphereMode;
+}
+namespace RenderMode
+{
+	enum WhichColorMode;
+	enum RenderType;
+	enum WeightColorMode;
+}
+
+
+
 //Determine which color render mode
 namespace ColorMode{
 	struct ObjectColorMode{};
@@ -20,6 +38,14 @@ namespace RenderMode
 	//struct TextureMode{}
 	//struct SelectMode{};
 	enum WhichColorMode{ VERTEX_COLOR, OBJECT_COLOR, LABEL_COLOR ,WrapBoxColorMode ,EdgePointColorMode ,SphereMode};
+	enum WeightColorMode
+	{
+		VERTEX,
+		EDGE,
+		FACE,
+		OBJECT,
+		HANDLE
+	};
 }
 
 #define	 GRAY_COLOR	 ColorType(0.5,0.5,0.5,1.)

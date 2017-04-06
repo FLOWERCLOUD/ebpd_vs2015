@@ -341,7 +341,7 @@ bool raytrace( const qglviewer::Camera* cam)
 
 bool display_loop(const qglviewer:: Camera* _cam ,Render_context* _render_ctx)
 {
-
+	return false;
 	using namespace Tbx;
 	const int width  = _cam->screenWidth();
 	const int height = _cam->screenHeight();
@@ -408,6 +408,7 @@ bool display_loop(const qglviewer:: Camera* _cam ,Render_context* _render_ctx)
 
 	}else
 	{
+		return refresh; //not use depth peeling
 		RenderFuncWireframe rfunc(_cam ,_render_ctx);
 
 		_render_ctx->peeler()->set_render_func(&rfunc);
@@ -511,166 +512,170 @@ void drawSampleSet( PaintCanvas* _curCanvas)
 			}
 			//if( i == 0 || i > 9)continue;
 			LOCK(set[i]);
-			switch (which_color_mode_)
+			if (0)
 			{
-			case VERTEX_COLOR:
-				glEnable(GL_MULTISAMPLE);
-				set[i].draw(ColorMode::VertexColorMode(),Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum));
-				glDisable(GL_MULTISAMPLE);
-				break;
-			case OBJECT_COLOR:
-				glEnable(GL_MULTISAMPLE);
-				set[i].draw(ColorMode::ObjectColorMode(), 
-					Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum));
-				glDisable(GL_MULTISAMPLE);
-				break;
-			case LABEL_COLOR:
-				glEnable(GL_MULTISAMPLE);			
-				set[i].draw(ColorMode::LabelColorMode(),
-					Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum) );
-
-
-				glDisable(GL_MULTISAMPLE);
-				break;
-			case WrapBoxColorMode:   //added by huayun
-				if(_curCanvas->show_Graph_WrapBox_){
-					const pcm::Vec3& bias = Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum);
-					auto camera_look_at = _curCanvas->camera()->viewDirection();
-
-
-
-
-					if(!(set[i].is_visible() ) ){
-						break;
-					}
-					//					 std::cout<<"i:"<<i<<"size1:"<<set[i].wrap_box_link_.size()<<std::endl;
-					//					 std::cout<<"i:"<<i<<"size:"<<set[i].wrap_box_link_[0].size()<<std::endl;
-					std::vector<LinkNode>::iterator bitr = set[i].wrap_box_link_[ 0].begin();
-					std::vector<LinkNode>::iterator eitr = set[i].wrap_box_link_[ 0].end();
-
-					glPointSize( Paint_Param::g_point_size);
-					glEnable(GL_POINT_SMOOTH);
-
-					Matrix44 adjust_matrix = set[i].matrix_to_scene_coord();
+				switch (which_color_mode_)
+				{
+				case VERTEX_COLOR:
 					glEnable(GL_MULTISAMPLE);
+					set[i].draw(ColorMode::VertexColorMode(), Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum));
+					glDisable(GL_MULTISAMPLE);
+					break;
+				case OBJECT_COLOR:
+					glEnable(GL_MULTISAMPLE);
+					set[i].draw(ColorMode::ObjectColorMode(),
+						Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum));
+					glDisable(GL_MULTISAMPLE);
+					break;
+				case LABEL_COLOR:
+					glEnable(GL_MULTISAMPLE);
+					set[i].draw(ColorMode::LabelColorMode(),
+						Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum));
 
-					int count = 0;
-					pcm::Vec3	sum( 0.0 ,0.0 ,0.0 );
-
-					QFont textFont("Times", (int)Paint_Param::g_point_size, QFont::Bold);
-
-					for( ; bitr!= eitr;++ bitr , count = count+2){
-						LinkNode& ln = *bitr;
-
-						//	 renderText(axis_size, 0, 0, "X");
-
-						glBegin(GL_POINTS);
-
-						ColorType color1 ,color2;
-						color1 = Color_Utility::span_color_from_hy_table(ln.labelH_);
-						color2 = Color_Utility::span_color_from_hy_table(ln.labelL_);
-
-						glNormal3f(-camera_look_at.x,-camera_look_at.y,-camera_look_at.z);
-						glColor4f( color1(0)/255.0f,color1(1)/255.0f,color1(2)/255.0f,color1(3) );
-						// glNormal3f( normal_(0), normal_(1), normal_(2));
-						Vec4	tmp1(ln.pointH_.x(), ln.pointH_.y(), ln.pointH_.z(),1.);
-						Vec4	point_to_show1 = adjust_matrix * tmp1;
-						Vec4	tmp2(ln.pointL_.x(), ln.pointL_.y(), ln.pointL_.z(),1.);
-						Vec4	point_to_show2 = adjust_matrix * tmp2;
-						glVertex3f( point_to_show1(0)+bias(0), point_to_show1(1)+bias(1), point_to_show1(2)+bias(2) );
-						glColor4f( color2(0)/255.0f,color2(1)/255.0f,color2(2)/255.0f,color2(3) );
-						glVertex3f( point_to_show2(0)+bias(0), point_to_show2(1)+bias(1), point_to_show2(2)+bias(2) );
-						glEnd();
-
-						glLineWidth( Paint_Param::g_line_size); 
-						glBegin(GL_LINES);
-						glNormal3f(-camera_look_at.x,-camera_look_at.y,-camera_look_at.z);
-						glColor4f( color2(0)/255.0,color2(1)/255.0,color2(2)/255.0,color2(3) );
-						glVertex3f( point_to_show1(0)+bias(0), point_to_show1(1)+bias(1), point_to_show1(2)+bias(2) );
-						glVertex3f( point_to_show2(0)+bias(0), point_to_show2(1)+bias(1), point_to_show2(2)+bias(2) );
-						glEnd();
-						glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
-						Vec4 textofpoint_to_show1,textofpoint_to_show2;
-						textofpoint_to_show1(0) = point_to_show1(0)*1.1;
-						textofpoint_to_show1(1) = point_to_show1(1)*1.1;
-						textofpoint_to_show1(2) = point_to_show1(2)*1.1;
-						textofpoint_to_show2(0) = point_to_show2(0)*1.1;
-						textofpoint_to_show2(1) = point_to_show2(1)*1.1;
-						textofpoint_to_show2(2) = point_to_show2(2)*1.1;
-
-						_curCanvas->renderText( textofpoint_to_show1(0)+bias(0) , textofpoint_to_show1(1)+bias(1), textofpoint_to_show1(2)+bias(2), QString::number(ln.labelH_), textFont);
-						glLineWidth( Paint_Param::g_line_size*0.2); 
-						glBegin(GL_LINES);
-						glNormal3f(-camera_look_at.x,-camera_look_at.y,-camera_look_at.z);
-						glColor4f( color1(0)/255.0,color1(1)/255.0,color1(2)/255.0,color1(3) );
-						glVertex3f( point_to_show1(0)+bias(0), point_to_show1(1)+bias(1), point_to_show1(2)+bias(2) );
-						glVertex3f( textofpoint_to_show1(0)+bias(0), textofpoint_to_show1(1)+bias(1), textofpoint_to_show1(2)+bias(2) );
-						glEnd();
-
-						glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
-						_curCanvas->renderText( textofpoint_to_show2(0)+bias(0), textofpoint_to_show2(1)+bias(1), textofpoint_to_show2(2)+bias(2), QString::number(ln.labelL_),textFont );
-						glLineWidth( Paint_Param::g_line_size*0.2); 
-						glBegin(GL_LINES);
-						glNormal3f(-camera_look_at.x,-camera_look_at.y,-camera_look_at.z);
-						glColor4f( color2(0)/255.0,color2(1)/255.0,color2(2)/255.0,color2(3) );
-						glVertex3f( point_to_show2(0)+bias(0), point_to_show2(1)+bias(1), point_to_show2(2)+bias(2) );
-						glVertex3f( textofpoint_to_show2(0)+bias(0), textofpoint_to_show2(1)+bias(1), textofpoint_to_show2(2)+bias(2) );
-						glEnd();
-						glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
-
-						sum(0) += point_to_show1(0) + bias(0) + point_to_show2(0) + bias(0);
-						sum(1) += point_to_show1(1) + bias(1) + point_to_show2(1) + bias(1);
-						sum(2) += point_to_show1(0) + bias(2) + point_to_show2(2) + bias(2);
-
-					}
-					pcm::Vec3 center = sum /count;
-					glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
-
-					_curCanvas->renderText( center.x()*1.1 ,  center.y()*1.1,  center.z()*1.1, QString("frame")+QString::number(i) ,textFont );
-					glLineWidth( Paint_Param::g_line_size*0.3); 
-					glBegin(GL_LINES);
-					glNormal3f(-camera_look_at.x,-camera_look_at.y,-camera_look_at.z);
-					glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
-					glVertex3f(  center.x(),  center.y(), center.z() );
-					glVertex3f(  center.x()*1.1,  center.y()*1.1, center.z()*1.1 );
-					glEnd();
-					glColor4f( 0.0,0.0, 0.0, 1 );  //绘制全黑
 
 					glDisable(GL_MULTISAMPLE);
+					break;
+				case WrapBoxColorMode:   //added by huayun
+					if (_curCanvas->show_Graph_WrapBox_) {
+						const pcm::Vec3& bias = Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum);
+						auto camera_look_at = _curCanvas->camera()->viewDirection();
 
-					//绘制原的坐标
 
-				}
-				break;
-			case EdgePointColorMode:   //added by huayun
-				glEnable(GL_MULTISAMPLE);
-				if(_curCanvas->show_EdgeVertexs_){
 
-					if(!(set[i].is_visible() ) ){
-						break;
+
+						if (!(set[i].is_visible())) {
+							break;
+						}
+						//					 std::cout<<"i:"<<i<<"size1:"<<set[i].wrap_box_link_.size()<<std::endl;
+						//					 std::cout<<"i:"<<i<<"size:"<<set[i].wrap_box_link_[0].size()<<std::endl;
+						std::vector<LinkNode>::iterator bitr = set[i].wrap_box_link_[0].begin();
+						std::vector<LinkNode>::iterator eitr = set[i].wrap_box_link_[0].end();
+
+						glPointSize(Paint_Param::g_point_size);
+						glEnable(GL_POINT_SMOOTH);
+
+						Matrix44 adjust_matrix = set[i].matrix_to_scene_coord();
+						glEnable(GL_MULTISAMPLE);
+
+						int count = 0;
+						pcm::Vec3	sum(0.0, 0.0, 0.0);
+
+						QFont textFont("Times", (int)Paint_Param::g_point_size, QFont::Bold);
+
+						for (; bitr != eitr; ++bitr, count = count + 2) {
+							LinkNode& ln = *bitr;
+
+							//	 renderText(axis_size, 0, 0, "X");
+
+							glBegin(GL_POINTS);
+
+							ColorType color1, color2;
+							color1 = Color_Utility::span_color_from_hy_table(ln.labelH_);
+							color2 = Color_Utility::span_color_from_hy_table(ln.labelL_);
+
+							glNormal3f(-camera_look_at.x, -camera_look_at.y, -camera_look_at.z);
+							glColor4f(color1(0) / 255.0f, color1(1) / 255.0f, color1(2) / 255.0f, color1(3));
+							// glNormal3f( normal_(0), normal_(1), normal_(2));
+							Vec4	tmp1(ln.pointH_.x(), ln.pointH_.y(), ln.pointH_.z(), 1.);
+							Vec4	point_to_show1 = adjust_matrix * tmp1;
+							Vec4	tmp2(ln.pointL_.x(), ln.pointL_.y(), ln.pointL_.z(), 1.);
+							Vec4	point_to_show2 = adjust_matrix * tmp2;
+							glVertex3f(point_to_show1(0) + bias(0), point_to_show1(1) + bias(1), point_to_show1(2) + bias(2));
+							glColor4f(color2(0) / 255.0f, color2(1) / 255.0f, color2(2) / 255.0f, color2(3));
+							glVertex3f(point_to_show2(0) + bias(0), point_to_show2(1) + bias(1), point_to_show2(2) + bias(2));
+							glEnd();
+
+							glLineWidth(Paint_Param::g_line_size);
+							glBegin(GL_LINES);
+							glNormal3f(-camera_look_at.x, -camera_look_at.y, -camera_look_at.z);
+							glColor4f(color2(0) / 255.0, color2(1) / 255.0, color2(2) / 255.0, color2(3));
+							glVertex3f(point_to_show1(0) + bias(0), point_to_show1(1) + bias(1), point_to_show1(2) + bias(2));
+							glVertex3f(point_to_show2(0) + bias(0), point_to_show2(1) + bias(1), point_to_show2(2) + bias(2));
+							glEnd();
+							glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+							Vec4 textofpoint_to_show1, textofpoint_to_show2;
+							textofpoint_to_show1(0) = point_to_show1(0)*1.1;
+							textofpoint_to_show1(1) = point_to_show1(1)*1.1;
+							textofpoint_to_show1(2) = point_to_show1(2)*1.1;
+							textofpoint_to_show2(0) = point_to_show2(0)*1.1;
+							textofpoint_to_show2(1) = point_to_show2(1)*1.1;
+							textofpoint_to_show2(2) = point_to_show2(2)*1.1;
+
+							_curCanvas->renderText(textofpoint_to_show1(0) + bias(0), textofpoint_to_show1(1) + bias(1), textofpoint_to_show1(2) + bias(2), QString::number(ln.labelH_), textFont);
+							glLineWidth(Paint_Param::g_line_size*0.2);
+							glBegin(GL_LINES);
+							glNormal3f(-camera_look_at.x, -camera_look_at.y, -camera_look_at.z);
+							glColor4f(color1(0) / 255.0, color1(1) / 255.0, color1(2) / 255.0, color1(3));
+							glVertex3f(point_to_show1(0) + bias(0), point_to_show1(1) + bias(1), point_to_show1(2) + bias(2));
+							glVertex3f(textofpoint_to_show1(0) + bias(0), textofpoint_to_show1(1) + bias(1), textofpoint_to_show1(2) + bias(2));
+							glEnd();
+
+							glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+							_curCanvas->renderText(textofpoint_to_show2(0) + bias(0), textofpoint_to_show2(1) + bias(1), textofpoint_to_show2(2) + bias(2), QString::number(ln.labelL_), textFont);
+							glLineWidth(Paint_Param::g_line_size*0.2);
+							glBegin(GL_LINES);
+							glNormal3f(-camera_look_at.x, -camera_look_at.y, -camera_look_at.z);
+							glColor4f(color2(0) / 255.0, color2(1) / 255.0, color2(2) / 255.0, color2(3));
+							glVertex3f(point_to_show2(0) + bias(0), point_to_show2(1) + bias(1), point_to_show2(2) + bias(2));
+							glVertex3f(textofpoint_to_show2(0) + bias(0), textofpoint_to_show2(1) + bias(1), textofpoint_to_show2(2) + bias(2));
+							glEnd();
+							glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+
+							sum(0) += point_to_show1(0) + bias(0) + point_to_show2(0) + bias(0);
+							sum(1) += point_to_show1(1) + bias(1) + point_to_show2(1) + bias(1);
+							sum(2) += point_to_show1(0) + bias(2) + point_to_show2(2) + bias(2);
+
+						}
+						pcm::Vec3 center = sum / count;
+						glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+
+						_curCanvas->renderText(center.x()*1.1, center.y()*1.1, center.z()*1.1, QString("frame") + QString::number(i), textFont);
+						glLineWidth(Paint_Param::g_line_size*0.3);
+						glBegin(GL_LINES);
+						glNormal3f(-camera_look_at.x, -camera_look_at.y, -camera_look_at.z);
+						glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+						glVertex3f(center.x(), center.y(), center.z());
+						glVertex3f(center.x()*1.1, center.y()*1.1, center.z()*1.1);
+						glEnd();
+						glColor4f(0.0, 0.0, 0.0, 1);  //绘制全黑
+
+						glDisable(GL_MULTISAMPLE);
+
+						//绘制原的坐标
+
 					}
-					set[i].draw(ColorMode::EdgePointColorMode(),
-						Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum));
-				}
-				glDisable(GL_MULTISAMPLE);
-				break;
-			case SphereMode:
+					break;
+				case EdgePointColorMode:   //added by huayun
+					glEnable(GL_MULTISAMPLE);
+					if (_curCanvas->show_EdgeVertexs_) {
+
+						if (!(set[i].is_visible())) {
+							break;
+						}
+						set[i].draw(ColorMode::EdgePointColorMode(),
+							Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum));
+					}
+					glDisable(GL_MULTISAMPLE);
+					break;
+				case SphereMode:
 				{   //added by huayun	
 					glEnable(GL_MULTISAMPLE);
 					//if(show_Graph_WrapBox_){
 
-					if(!(set[i].is_visible() ) ){
+					if (!(set[i].is_visible())) {
 						break;
 					}
 					set[i].draw(ColorMode::SphereMode(),
-						Paint_Param::g_step_size * (ScalarType)(i-_curCanvas->centerframeNum));
+						Paint_Param::g_step_size * (ScalarType)(i - _curCanvas->centerframeNum));
 					//}
 					glDisable(GL_MULTISAMPLE);
 					break;
 				}
-			default:
-				break;
+				default:
+					break;
+				}
 			}
+
 
 			switch(which_render_mode)
 			{
@@ -745,7 +750,7 @@ void drawSampleSet( PaintCanvas* _curCanvas)
 	{
 		_curCanvas->single_operate_tool_->draw();
 	}
-	if (1)
+	if (1) //draw handle ,bone or cage
 	{
 		for (int i = 0; i < g_MeshControl.size(); ++i)
 		{

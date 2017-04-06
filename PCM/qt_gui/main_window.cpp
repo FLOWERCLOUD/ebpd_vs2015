@@ -41,6 +41,7 @@
 using namespace qglviewer;
 using namespace std;
 using namespace ANIMATION;
+using namespace pcm;
 //add by huayun
 bool ifGraphBoxVisible = 0;
 bool ifEdgeVertexVisible = 0;

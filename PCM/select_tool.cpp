@@ -13,6 +13,7 @@
 #include <deque>
 #include "LBS_Control.h"
 #include "LBS_Control.h"
+using namespace pcm;
 extern std::vector<MeshControl*> g_MeshControl;
 
 
@@ -647,7 +648,7 @@ void SelectTool::slot_action_OBJECT()
 	SampleSet& set = (*Global_SampleSet);
 	for (int i = 0; i<set.size(); ++i)
 	{
-		set[i].color_mode = Sample::OBJECT;;
+		set[i].color_mode = RenderMode::OBJECT;;
 	}
 }
 
@@ -657,7 +658,7 @@ void SelectTool::slot_action_VERTEX()
 	SampleSet& set = (*Global_SampleSet);
 	for (int i = 0 ;i<set.size(); ++i)
 	{
-		set[i].color_mode = Sample::VERTEX;
+		set[i].color_mode = RenderMode::VERTEX;
 	}
 	
 }
@@ -668,6 +669,6 @@ void SelectTool::slot_action_HANDLE()
 	SampleSet& set = (*Global_SampleSet);
 	for (int i = 0; i<set.size(); ++i)
 	{
-		set[i].color_mode = Sample::HANDLE;
+		set[i].color_mode = RenderMode::HANDLE;
 	}
 }

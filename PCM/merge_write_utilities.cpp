@@ -2,7 +2,7 @@
 #include "sample_set.h"
 #include "vertex.h"
 #include "GlobalObject.h"
-
+using namespace pcm;
 void writePovray(char* _file_in ,char* _file_out)
 {
 	char* file_in = _file_in;

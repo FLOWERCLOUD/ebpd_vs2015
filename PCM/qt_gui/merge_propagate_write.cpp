@@ -4,7 +4,7 @@
 #include "sample.h"
 #include "vertex.h"
 #include "main_window.h"
-
+using namespace pcm;
 void ProxyAjustViewPly::getAllSampleCurrentViewMatrix()
 {
 	PaintCanvas * mcanvas = Global_Window->getActivedCanvas();
@@ -296,7 +296,7 @@ void ProxyPly::generateStandaraPLY()
 	}
 }
 
-void ProxyPly::generateStandaraPLY(vector< vector<PointType> >& SmpSetcoodinates ,vector< vector<PointType> >& SmpSetNorms ,vector< vector<ColorType> >& SmpSetColors)
+void ProxyPly::generateStandaraPLY(vector< vector<pcm::PointType> >& SmpSetcoodinates ,vector< vector<pcm::PointType> >& SmpSetNorms ,vector< vector<pcm::ColorType> >& SmpSetColors)
 {
 	SampleSet& smpset =  (*Global_SampleSet);
 	IndexType frameNum = smpset.size();

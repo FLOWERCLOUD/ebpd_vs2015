@@ -10,6 +10,7 @@
 #include "GlobalObject.h"
 //#define USE_ALL_CURVATURE
 using namespace std;
+using namespace pcm;
 namespace SampleManipulation{
 
 

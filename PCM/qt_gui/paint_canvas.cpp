@@ -39,6 +39,8 @@
 #include "toolbars/io_selection/IO_mesh_edit.hpp"
 #include "toolbars/io_selection/IO_graph.hpp"
 #include "toolbars/io_selection/IO_disable_skin.hpp"
+#include <ctime>
+
 class ManipulateTool;
 
 using namespace pcm;
@@ -58,7 +60,7 @@ static QPoint currenMousePos;
 //Manipulator g_manipulator( Manipulator::OBJECT ,struct SelectedObj() );
 
 using namespace Depth_peeling;
-
+const bool isToggleTimeDebugger = true;
 
 static void draw_junction_sphere(bool rest_pose)
 	//const std::vector<int>& selected_joints,
@@ -129,8 +131,8 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, QWidget *parent):
 	setGridIsDrawn(false);
 	pApp = NULL;
 
-	which_color_mode_ =VERTEX_COLOR/*SphereMode*/,
-	which_render_mode =RenderMode::PointMode,
+	which_color_mode_ = VERTEX_COLOR/*SphereMode*/;
+	which_render_mode = RenderMode::FlatMode;
 
 	fov = 60;
 	clipRatioFar = 1;
@@ -194,12 +196,13 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, int type, QWidget *parent,QWid
 
 	info_gl();
 	init_opengl();
+	
 	Cuda_ctrl::init_opengl_cuda();
 
 	setCamera( new StandardCamera());
 	setAxisIsDrawn(false);
 	setGridIsDrawn(false);
-
+	setFPSIsDisplayed(true);
 
 	if (type < 3)
 	{
@@ -225,8 +228,8 @@ PaintCanvas::PaintCanvas(const QGLFormat& format, int type, QWidget *parent,QWid
 //		 camera()->frame()->setConstraint(constraint);
 	}
 
-	which_color_mode_ =VERTEX_COLOR/*SphereMode*/,
-		which_render_mode =RenderMode::PointMode,
+	which_color_mode_ = VERTEX_COLOR/*SphereMode*/;
+	which_render_mode = RenderMode::FlatMode;
 
 		fov = 60;
 	clipRatioFar = 1;
@@ -291,12 +294,32 @@ PaintCanvas::~PaintCanvas()
 void PaintCanvas::draw()
 {
 	qglviewer::Camera* c_camera = camera();
+
+
 	//makeCurrent();
 	//GL_CHECK_ERRORS();
 
 //	setVisualHintsMask( 1);
 	glPushAttrib(GL_ALL_ATTRIB_BITS);
- 	display_loop( camera() ,m_render_ctx);
+	if (isToggleTimeDebugger)
+	{
+		clock_t start = clock();
+		Logger << "display_loop begin " << endl;
+		display_loop(camera(), m_render_ctx);
+		clock_t stop = clock();
+		float m_time_consumed = (static_cast<double>(stop) - static_cast<double>(start)) / CLOCKS_PER_SEC;
+		Logger << "elapse " << m_time_consumed << endl;
+		Logger << "display_loop end" << endl;
+	}
+	else
+	{
+		display_loop(camera(), m_render_ctx);
+	}
+
+
+
+
+
 	glPopAttrib();
 	if(_heuristic->_type == Tbx::Selection::CIRCLE   && _is_mouse_in )
 	{
@@ -342,8 +365,21 @@ if(0)
 		pApp->Idle();
 	glPopAttrib();
 
+	if (isToggleTimeDebugger)
+	{
+		clock_t start = clock();
+		Logger << "drawSampleSet begin " << endl;
+		drawSampleSet(this);
+		clock_t stop = clock();
+		float m_time_consumed = (static_cast<double>(stop) - static_cast<double>(start)) / CLOCKS_PER_SEC;
+		Logger << "elapse " << m_time_consumed << endl;
+		Logger << "drawSampleSet end" << endl;
+	}
+	else
+	{
+		drawSampleSet(this);
+	}
 
-	drawSampleSet(this);
 	//if(takeSnapTile) pasteTile();
 	//draw line tracer
 	if (show_trajectory_)
@@ -361,7 +397,22 @@ if(0)
 }
 void PaintCanvas::fastDraw()
 {
-	draw();
+	
+	if (isToggleTimeDebugger)
+	{ 
+		clock_t start = clock();
+		Logger << "fastDraw begin " << endl;
+		draw();
+		clock_t stop = clock();
+		float m_time_consumed = (static_cast<double>(stop) - static_cast<double>(start)) / CLOCKS_PER_SEC;
+		Logger << "elapse " << m_time_consumed << endl;
+		Logger << "fastDraw end" << endl;
+	}
+	else
+	{
+		draw();
+	}
+		
 }
 void PaintCanvas::init()
 {

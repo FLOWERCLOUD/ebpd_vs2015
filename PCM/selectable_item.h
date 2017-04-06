@@ -8,15 +8,15 @@ class SelectableItem
 {
 public:
 	
-	SelectableItem( const ColorType& c = ColorType(0.,0.,0.,1.) ):color_(c), 
+	SelectableItem( const pcm::ColorType& c = pcm::ColorType(0.,0.,0.,1.) ):color_(c),
 		visible_(true), 
 		selected_(false),
 		hightlighted_(false){}
 
 	virtual ~SelectableItem(){}
 
-	virtual void set_color( const ColorType& c ){ color_ = c; }
-	virtual const ColorType  color()
+	virtual void set_color( const pcm::ColorType& c ){ color_ = c; }
+	virtual const pcm::ColorType  color()
 	{
 		if (selected_)
  			return SELECTED_COLOR;
@@ -39,7 +39,7 @@ protected:
 	bool visible_;
 	bool selected_;
 	bool hightlighted_;
-	ColorType color_;
+	pcm::ColorType color_;
 
 
 };

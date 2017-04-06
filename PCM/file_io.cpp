@@ -8,6 +8,7 @@
 #include "GlobalObject.h"
 #include <fstream>
 #include <string>
+using namespace pcm;
 namespace FileIO
 {
 	void skip_this_line(FILE* fd)

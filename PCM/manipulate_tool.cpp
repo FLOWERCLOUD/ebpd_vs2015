@@ -1131,6 +1131,8 @@ void ManipulateTool::afterManipulate()
 			if (!select_tool.m_selected_objs_.size())
 				break;
 			Cuda_ctrl::_example_mesh.processCollide((*Global_SampleSet), select_tool.m_selected_objs_);
+			(*Global_SampleSet)[select_tool.cur_sample_to_operate_].caculateNorm();
+			(*Global_SampleSet)[select_tool.cur_sample_to_operate_].update_openglMesh();
 			//update the new position of the manipulator
 			qglviewer::Vec averagePosition;
 			for (ManipulatedObject* obj : select_tool.m_selected_objs_)
@@ -1142,8 +1144,10 @@ void ManipulateTool::afterManipulate()
 			break;
 		}
 		case  ManipulatedObject::HANDLE:
-		{
+		{			
 			g_MeshControl[select_tool.cur_sample_to_operate_]->updateSample();
+			(*Global_SampleSet)[select_tool.cur_sample_to_operate_].caculateNorm();
+			(*Global_SampleSet)[select_tool.cur_sample_to_operate_].update_openglMesh();
 			break;
 		}
 	}

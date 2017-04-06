@@ -1,5 +1,6 @@
 #ifndef _EXAMPLE_H
 #define _EXAMPLE_H
+#include "CustomGL/glew.h"
 #include "QGLViewer/frame.h"
 #include "selectable_item.h"
 #include "pool_allocator.h"
@@ -7,26 +8,21 @@
 #include "..\ICP\ICP.h"
 #include "Eigen\Dense"
 #include "basic_types.h"
+#include "rendering/render_types.h"
 #include "file_io.h"
 #include <QMutex>
 #include <set>
 #include <vertex.h>
+
 class TriangleType;
 class LinkNode;
-
-namespace ColorMode{
-	struct ObjectColorMode;
-	struct VertexColorMode;
-	struct LabelColorMode;
-	struct WrapBoxColorMode; //added by huayun
-	struct EdgePointColorMode;  //added by huayun
-	struct SphereMode;
-}
-namespace RenderMode
+namespace MyOpengl
 {
-	enum WhichColorMode;
-	enum RenderType;
+	class MeshOpengl;
 }
+
+
+
 class Sample:public SelectableItem
 {
 public:
@@ -43,8 +39,8 @@ public:
 	{ 
 		return *triangle_array[i]; 
 	}
-	Vertex* add_vertex( const PointType& pos,const NormalType& n,
-		const ColorType& c);
+	Vertex* add_vertex( const pcm::PointType& pos,const pcm::NormalType& n,
+		const pcm::ColorType& c);
 	TriangleType* add_triangle(const TriangleType& tt);
 	void delete_vertex_group( const std::vector<IndexType>& idx_grp );
 	void set_vertex_label(const std::vector<IndexType>& idx_grp ,IndexType label);
@@ -79,7 +75,8 @@ public:
 	//}
 	
 	void draw_with_name();
-
+	void caculateNorm(pcm::NormalType& baseline = NULL_NORMAL);
+	void caculateTangent();
 	size_t num_vertices() const { return vertices_.size(); }
 	size_t num_triangles() const { return triangle_array.size(); }
 
@@ -91,7 +88,7 @@ public:
 	//Every time vertex change, the kdtree should rebuild
 	void	build_kdtree();
 
-	IndexType closest_vtx( const PointType& query_point );
+	IndexType closest_vtx( const pcm::PointType& query_point );
 	bool		neighbours(const IndexType query_point_idx, const IndexType num_closet, IndexType* out_indices);
 	/* 
 		Get matrix for transforming world-sample space to 
@@ -119,10 +116,10 @@ public:
 		IndexType* out_indices,ScalarType* out_distances);
 
 
-	const PointType box_center() const{ return box_.center(); }
+	const pcm::PointType box_center() const{ return box_.center(); }
 	const ScalarType	box_diag() { return box_.diag(); }
-	const PointType box_near_corner(){ return box_.low_corner(); }
-	const PointType box_far_corner(){ return box_.high_corner(); }
+	const pcm::PointType box_near_corner(){ return box_.low_corner(); }
+	const pcm::PointType box_far_corner(){ return box_.high_corner(); }
 	
 	Box getBox(){return box_;}
 	inline qglviewer::Frame& getFrame()
@@ -139,7 +136,7 @@ public:
 	{
 		Vertex* vetex = vertices_[vtx_idx];
 		qglviewer::Vec pos =  m_frame.coordinatesOf(_pos);  //convert world coordinate to frame coordinate
-		vetex->set_position(PointType(pos.x, pos.y, pos.z));
+		vetex->set_position(pcm::PointType(pos.x, pos.y, pos.z));
 	}
 	inline qglviewer::Vec getLocalPosition(int vtx_idx)
 	{
@@ -151,7 +148,7 @@ public:
 	inline void setLocalPosition(int vtx_idx , qglviewer::Vec _pos)
 	{
 		Vertex* vetex = vertices_[vtx_idx];
-		vetex->set_position(PointType(_pos.x, _pos.y, _pos.z));
+		vetex->set_position(pcm::PointType(_pos.x, _pos.y, _pos.z));
 	}
 
 
@@ -166,26 +163,27 @@ public:
 	IndexType smpId;  //added by huayun
 	FileIO::FILE_TYPE file_type;
 	std::string file_path;
-	enum WeightColorMode
-	{
-		VERTEX,
-		EDGE,
-		FACE,
-		OBJECT,
-		HANDLE
-	};
-	WeightColorMode color_mode;
-	std::vector<ColorType> colors_;
+
+	RenderMode::WeightColorMode color_mode;
+	std::vector<pcm::ColorType> colors_;
 	
 private:
 	qglviewer::Frame m_frame;
 	bool isload_;
 	std::vector<Vertex*>	vertices_;
 	std::vector<TriangleType*>  triangle_array;
+public:
+	void update_openglMesh();
+	void setOpenglMeshUpdated(bool isUpdated)
+	{
+		isOpenglMeshUpdated = false;
+	}
+
 private:
 
-
-
+	bool isOpenglMeshUpdated;
+	bool isUsingProgramablePipeLine;
+	MyOpengl::MeshOpengl* opengl_mesh_;
 
 	PoolAllocator			allocator_;
 	Box						box_;
@@ -209,9 +207,9 @@ class LinkNode
 public:
 	IndexType	labelH_;
 	IndexType	labelL_;	
-	PointType	pointH_;
-	PointType	pointL_;
-	LinkNode( IndexType	_labelH ,IndexType	_labelL, PointType		_pointH, PointType	_pointL):
+	pcm::PointType	pointH_;
+	pcm::PointType	pointL_;
+	LinkNode( IndexType	_labelH ,IndexType	_labelL, pcm::PointType		_pointH, pcm::PointType	_pointL):
 		labelH_(_labelH) ,labelL_(_labelL) ,pointH_(_pointH),pointL_(_pointL){}
 	//Vertex*		vtxH_;
 	//Vertex*		vtxL_;

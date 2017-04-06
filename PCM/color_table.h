@@ -2,8 +2,8 @@
 #define _COLOR_TABLE_H
 #include "basic_types.h"
 
-#define SELECTED_COLOR ColorType(0.5f, 0.5f, 0.5f, 1.0f)
-#define HIGHTLIGHTED_COLOR ColorType(0.0f, 0.0f, 0.0f, 1.0f) //edited by huayun ,origin is 1.0f
+#define SELECTED_COLOR pcm::ColorType(0.5f, 0.5f, 0.5f, 1.0f)
+#define HIGHTLIGHTED_COLOR pcm::ColorType(0.0f, 0.0f, 0.0f, 1.0f) //edited by huayun ,origin is 1.0f
 
 
 namespace Color_Utility
@@ -419,14 +419,14 @@ namespace Color_Utility
 		,130 , 37 , 30
 	};
 
-	ColorType		color_from_table(IndexType index) ;
-	ColorType		random_color_from_table();
-	ColorType		span_color_from_table(IndexType);
-	ColorType       color_map_one(ScalarType index);
+	pcm::ColorType		color_from_table(IndexType index) ;
+	pcm::ColorType		random_color_from_table();
+	pcm::ColorType		span_color_from_table(IndexType);
+	pcm::ColorType       color_map_one(ScalarType index);
 	//added by huayun
-	ColorType		span_color_from_table_with_edge(IndexType label);
-	ColorType	span_color_from_hy_table( IndexType idx );
-	IndexType   getColorLabelId( const ColorType& _color );
+	pcm::ColorType		span_color_from_table_with_edge(IndexType label);
+	pcm::ColorType	span_color_from_hy_table( IndexType idx );
+	pcm::IndexType   getColorLabelId( const pcm::ColorType& _color );
 }
 
 #endif

@@ -4,9 +4,10 @@
 #include "vertex.h"
 #include "triangle.h"
 #include "GlobalObject.h"
+using namespace pcm;
 namespace SampleManipulation{
 
-	void CaculateNorm::compute_normal_all(NormalType& baseline)
+	void CaculateNorm::compute_normal_all(pcm::NormalType& baseline)
 	{
 		baseline_  = baseline;
 
@@ -25,7 +26,7 @@ namespace SampleManipulation{
 		int  size = (*Global_SampleSet).size();
 		for ( int ii = 0 ; ii<size; ++ii){
 			Sample& smp = (*Global_SampleSet)[ii];
-			std::cout<< "caculate:"<< ii<<std::endl;
+			std::cout<< "caculate norm:"<< ii<<"begin "<<std::endl;
 			if( !smp.num_triangles())  //only have points
 			{
 				for ( IndexType i=0; i < smp.num_vertices(); i++ )
@@ -112,7 +113,10 @@ namespace SampleManipulation{
 				}
 
 			}
-
+			std::cout << "caculate norm:" << ii << "end " << std::endl;
+			//因为是在新的线程，直接这样更新不行
+			//smp.update_openglMesh();
+			smp.setOpenglMeshUpdated(false);
 
 		}
 

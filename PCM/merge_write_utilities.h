@@ -342,10 +342,10 @@ static void writePlyFromPly(char* _plyfilename , char* _outplyfilename , ScalarT
 	for ( IndexType ii = 0 ; ii < vecnum ;++ ii)
 	{				
 		mvertex& v =vtxVec[ii];
-		 ColorType cc( v.r ,v.g , v.b ,1.0);
+		pcm::ColorType cc( v.r ,v.g , v.b ,1.0);
 		IndexType labelId = Color_Utility::getColorLabelId(cc);
 	//	std::cout<<corrColormap[labelId][0]<<corrColormap[labelId][1] <<corrColormap[labelId][2] <<std::endl; 
-		ColorType corrColor1(  static_cast<ScalarType>(corrColormap[labelId][0]) ,static_cast<ScalarType>(corrColormap[labelId][1]) ,static_cast<ScalarType>(corrColormap[labelId][2]) ,1. );
+		pcm::ColorType corrColor1(  static_cast<ScalarType>(corrColormap[labelId][0]) ,static_cast<ScalarType>(corrColormap[labelId][1]) ,static_cast<ScalarType>(corrColormap[labelId][2]) ,1. );
 		
 
 		coutStream<<v.x<<" "<<v.y<<" "<<v.z<<" "<<v.nx<<" "<<v.ny<<" "<<v.nz<<" "<<corrColor1(0 ,0)<<" "<<corrColor1(1 ,0)<<" "<< corrColor1(2 ,0)<<" "<<255<<std::endl;

@@ -612,6 +612,12 @@
     <ClCompile Include="WeightGenerator.cpp">
       <Filter>Algorithm</Filter>
     </ClCompile>
+    <ClCompile Include="MeshOpenGL.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="shader.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -1248,6 +1254,12 @@
     </ClInclude>
     <ClInclude Include="WeightGenerator.h">
       <Filter>Algorithm</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshOpenGL.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

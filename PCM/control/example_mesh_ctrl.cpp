@@ -752,6 +752,9 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 	//load first example
 	importObj(g_inputVertices, g_faces, input_mesh_path);
 	Sample* new_sample = FileIO::load_point_cloud_file(input_mesh_path, FileIO::OBJ);
+	new_sample->setLoaded(true);
+	new_sample->set_visble(true);
+	new_sample->update_openglMesh();
 	int sample_idx = 0;
 	qglviewer::Vec translate(0.0f,0.0f,-1.4f);
 	qglviewer::Vec translate_interval(0.0f,0.0f,1.0f);
@@ -792,6 +795,10 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 		p_mesh_control->bindControl(g_inputVertices , g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
 		g_MeshControl.push_back(p_mesh_control);
 		//caculate biharmonic weight once
+		computeWeights(new_sample, p_mesh_control->handles_, g_boneWeights, g_boneWightIdx, g_numIndices);
+		//rebind
+		Logger << "bind" << endl;
+		p_mesh_control->bindControl(g_inputVertices, g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
 //		computeWeights(new_sample, p_mesh_control->handles_, new_wieghts);
 		sample_idx++;
 
@@ -823,7 +830,7 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 				sample_manipulate->getFrame().translate(translate+ sample_idx*translate_interval);
 				for (int i = 0; i < OutputVetices.size() / 3; ++i)
 				{
-					pcm::NormalType normal; normal << 1.0f, 0.0f, 0.0f;						
+					pcm::NormalType normal; normal << 0.0f, 0.0f, 0.0f;						
 					pcm::ColorType  color = Color_Utility::span_color_from_table(sample_idx);
 					sample_manipulate->add_vertex(
 						pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
@@ -848,8 +855,8 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 				sample_manipulate->setLoaded(true);
 				sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
 				sample_manipulate->build_kdtree();
-				Box box = sample_manipulate->getBox();
-				ScalarType dia_distance = box.diag();
+				sample_manipulate->caculateNorm(pcm::NormalType());
+				sample_manipulate->update_openglMesh();
 				SampleSet& smpset = (*Global_SampleSet);
 				smpset.push_back(sample_manipulate);
 				sample_manipulate->smpId = sample_idx;
@@ -909,6 +916,8 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 		sample_manipulate->setLoaded(true);
 		sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
 		sample_manipulate->build_kdtree();
+		sample_manipulate->caculateNorm(pcm::NormalType());
+		sample_manipulate->update_openglMesh();
 		Box box = sample_manipulate->getBox();
 		ScalarType dia_distance = box.diag();
 		SampleSet& smpset = (*Global_SampleSet);

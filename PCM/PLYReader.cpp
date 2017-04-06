@@ -108,10 +108,10 @@ namespace PCM{
 
 			unsigned int i, j, k, l, idx;
 			unsigned int nV;
-			PointType v;//OpenMesh::Vec3f v;
+			pcm::PointType v;//OpenMesh::Vec3f v;
 			std::string trash;
-			PointType t;//OpenMesh::Vec2f t;
-			ColorType c;//OpenMesh::Vec4i c;
+			pcm::PointType t;//OpenMesh::Vec2f t;
+			pcm::ColorType c;//OpenMesh::Vec4i c;
 			float tmp;
 			BaseImporter::VHandles vhandles;
 			int vh;//VertexHandle vh;
@@ -194,7 +194,7 @@ namespace PCM{
 
 				vh = _bi.add_vertex(v);
 				//_bi.set_texcoord(vh, t);
-				_bi.set_color(vh, ColorType(c));
+				_bi.set_color(vh, pcm::ColorType(c));
 			}
 
 			// faces
