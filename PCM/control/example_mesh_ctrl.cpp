@@ -751,13 +751,8 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 	using namespace std;
 	//load first example
 	importObj(g_inputVertices, g_faces, input_mesh_path);
-	Sample* new_sample = FileIO::load_point_cloud_file(input_mesh_path, FileIO::OBJ);
-	new_sample->setLoaded(true);
-	new_sample->set_visble(true);
-	new_sample->update_openglMesh();
-	int sample_idx = 0;
-	qglviewer::Vec translate(0.0f,0.0f,-1.4f);
-	qglviewer::Vec translate_interval(0.0f,0.0f,1.0f);
+	SampleSet& smpset = (*Global_SampleSet);
+	Sample* new_sample = smpset.add_sample_Fromfile(input_mesh_path);
 
 	//load other example
 	GetRigFromFile(g_transfos,
@@ -785,25 +780,19 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 	std::vector<std::vector<float>> new_wieghts;
 	if (new_sample != nullptr)
 	{
-		new_sample->getFrame().translate(translate + sample_idx*translate_interval);
-		new_sample->setLoaded(true);
-		new_sample->set_color(Color_Utility::span_color_from_table(sample_idx));
-		SampleSet& smpset = (*Global_SampleSet);
-		smpset.push_back(new_sample);
-		new_sample->smpId = sample_idx;
 		MeshControl* p_mesh_control = new MeshControl(*new_sample);
-		p_mesh_control->bindControl(g_inputVertices , g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
+		p_mesh_control->bindControl(g_inputVertices , g_transfos_2[new_sample->smpId], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
 		g_MeshControl.push_back(p_mesh_control);
 		//caculate biharmonic weight once
 		computeWeights(new_sample, p_mesh_control->handles_, g_boneWeights, g_boneWightIdx, g_numIndices);
 		//rebind
 		Logger << "bind" << endl;
-		p_mesh_control->bindControl(g_inputVertices, g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
+		p_mesh_control->bindControl(g_inputVertices, g_transfos_2[new_sample->smpId], g_boneWeights, g_boneWightIdx, g_numIndices, g_numBone, g_numVertices, true);
 //		computeWeights(new_sample, p_mesh_control->handles_, new_wieghts);
-		sample_idx++;
 
 	}
 	
+	//add example
 	std::vector<float> OutputVetices;
 	if (1)
 	{
@@ -824,48 +813,15 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 				g_boneWeights,
 				g_boneWightIdx,
 				g_exampleWeights);
-			Sample* sample_manipulate = new Sample();
-			if (sample_manipulate != nullptr)
-			{
-				sample_manipulate->getFrame().translate(translate+ sample_idx*translate_interval);
-				for (int i = 0; i < OutputVetices.size() / 3; ++i)
-				{
-					pcm::NormalType normal; normal << 0.0f, 0.0f, 0.0f;						
-					pcm::ColorType  color = Color_Utility::span_color_from_table(sample_idx);
-					sample_manipulate->add_vertex(
-						pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
-						normal,
-						color);
+			Sample* sample_manipulate = NULL;
+			SampleSet& smpset = (*Global_SampleSet);
+			sample_manipulate = smpset.add_sample_FromArray(OutputVetices, g_faces);
 
-				}
-				for (int i = 0; i < g_faces.size() / 3; ++i)
-				{
-					TriangleType* tt = new TriangleType(*sample_manipulate);
-					tt->set_i_vetex(0, g_faces[3 * i + 0]);
-					tt->set_i_vetex(1, g_faces[3 * i + 1]);
-					tt->set_i_vetex(2, g_faces[3 * i + 2]);
-					tt->set_i_normal(0, g_faces[3 * i + 0]);
-					tt->set_i_normal(1, g_faces[3 * i + 1]);
-					tt->set_i_normal(2, g_faces[3 * i + 2]);
-					sample_manipulate->add_triangle(*tt);
-					delete tt;
-				}
+			MeshControl* p_mesh_control = new MeshControl(*sample_manipulate);
+			p_mesh_control->bindControl(g_inputVertices, g_transfos_2[sample_manipulate->smpId], g_boneWeights, g_boneWightIdx,
+				g_numIndices, g_numBone, g_numVertices, true);
+			g_MeshControl.push_back(p_mesh_control);
 
-
-				sample_manipulate->setLoaded(true);
-				sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
-				sample_manipulate->build_kdtree();
-				sample_manipulate->caculateNorm(pcm::NormalType());
-				sample_manipulate->update_openglMesh();
-				SampleSet& smpset = (*Global_SampleSet);
-				smpset.push_back(sample_manipulate);
-				sample_manipulate->smpId = sample_idx;
-				MeshControl* p_mesh_control = new MeshControl(*sample_manipulate);
-				p_mesh_control->bindControl(g_inputVertices, g_transfos_2[sample_idx], g_boneWeights, g_boneWightIdx,
-					g_numIndices, g_numBone, g_numVertices, true);
-				g_MeshControl.push_back(p_mesh_control);
-				sample_idx++;
-			}
 		}
 	}
 
@@ -885,46 +841,8 @@ void Example_mesh_ctrl::load_example(std::string _file_paths, std::string name)
 		g_boneWeights,
 		g_boneWightIdx,
 		g_exampleWeights);
-	Sample* sample_manipulate = new Sample();
-	if (sample_manipulate != nullptr)
-	{
-		sample_manipulate->getFrame().translate(translate + sample_idx*translate_interval);
-		for (int i = 0; i < OutputVetices.size() / 3; ++i)
-		{
-			pcm::NormalType normal; normal << 1.0f, 0.0f, 0.0f;
-			pcm::ColorType  color = Color_Utility::span_color_from_table(sample_idx);
-			sample_manipulate->add_vertex(
-				pcm::PointType(OutputVetices[3 * i + 0], OutputVetices[3 * i + 1], OutputVetices[3 * i + 2]),
-				normal,
-				color);
-
-		}
-		for (int i = 0; i < g_faces.size() / 3; ++i)
-		{
-			TriangleType* tt = new TriangleType(*sample_manipulate);
-			tt->set_i_vetex(0, g_faces[3 * i + 0]);
-			tt->set_i_vetex(1, g_faces[3 * i + 1]);
-			tt->set_i_vetex(2, g_faces[3 * i + 2]);
-			tt->set_i_normal(0, g_faces[3 * i + 0]);
-			tt->set_i_normal(1, g_faces[3 * i + 1]);
-			tt->set_i_normal(2, g_faces[3 * i + 2]);
-			sample_manipulate->add_triangle(*tt);
-			delete tt;
-		}
-
-
-		sample_manipulate->setLoaded(true);
-		sample_manipulate->set_color(Color_Utility::span_color_from_table(sample_idx));
-		sample_manipulate->build_kdtree();
-		sample_manipulate->caculateNorm(pcm::NormalType());
-		sample_manipulate->update_openglMesh();
-		Box box = sample_manipulate->getBox();
-		ScalarType dia_distance = box.diag();
-		SampleSet& smpset = (*Global_SampleSet);
-		smpset.push_back(sample_manipulate);
-		sample_manipulate->smpId = sample_idx;
-		sample_idx++;
-	}
+	Sample* sample_manipulate;
+	sample_manipulate = smpset.add_sample_FromArray(OutputVetices, g_faces);
 	for (int i = 0; i < g_MeshControl.size(); ++i)
 	{
 		g_MeshControl[i]->updateSample();
@@ -1094,12 +1012,14 @@ void Example_mesh_ctrl::processCollide(SampleSet& smpset, std::vector<Manipulate
 	}
 
 	std::map<int, Tbx::Vec3> delta_xi;
+	int selected_vtx_id = 0;
 	for (ManipulatedObject* obj : selected_obj)
 	{
 		if (obj->getType() == ManipulatedObject::VERTEX)
 		{
 			ManipulatedObjectIsVertex* vtxobj = (ManipulatedObjectIsVertex*)obj;
 			int idx = vtxobj->getVertexIdx();
+			selected_vtx_id = idx;
 			qglviewer::Vec manipulate_pos = vtxobj->getLocalPosition();
 			qglviewer::Vec ori_pos(vertices_beforCollide[3 * idx + 0], vertices_beforCollide[3 * idx + 1], vertices_beforCollide[3 * idx + 2]);
 			qglviewer::Vec delta = manipulate_pos - ori_pos;
@@ -1111,6 +1031,32 @@ void Example_mesh_ctrl::processCollide(SampleSet& smpset, std::vector<Manipulate
 
 	if (exampleSolver)
 		exampleSolver->SolveVertices(delta_xi, delta_exampleWeightsOfVertex, ori_exampleWeights);
+	// i try ensure the weight great than 0
+	auto iter = delta_exampleWeightsOfVertex.begin();
+	for (int i = 0; iter != delta_exampleWeightsOfVertex.end(); i++, ++iter)
+	{
+		int i_vertex = iter->first;
+		std::vector<float>& delta_example = iter->second;
+		float smallest = 1000.0f;
+		for (int j = 0; j < g_numExample; j++)
+		{
+			if (delta_example[j] < smallest)
+			{
+				smallest = delta_example[j];
+			}
+		}
+		if (smallest < 0)
+		{
+			Logger << "delta weight < 0 "<< smallest << endl;
+			for (int j = 0; j < g_numExample; j++)
+			{
+
+				delta_example[j] -= smallest;
+			}
+		}
+
+	}
+
 	std::vector<float> delta_exampleWeights;
 	propagateExampleWeight(delta_exampleWeightsOfVertex, delta_exampleWeights);
 
@@ -1125,13 +1071,33 @@ void Example_mesh_ctrl::processCollide(SampleSet& smpset, std::vector<Manipulate
 			for (int i_example = 0; i_example < g_numExample; i_example++)
 			{
 				g_exampleWeights[i_vertex + i_example*g_numVertices] += (1 - lamda)* delta_exampleWeights[i_vertex + i_example*g_numVertices];
+				if (g_exampleWeights[i_vertex + i_example*g_numVertices] < 0)
+					g_exampleWeights[i_vertex + i_example*g_numVertices] = 0;
 				weight_sum += g_exampleWeights[i_vertex + i_example*g_numVertices];
+			}
+			if (weight_sum < 1e-7)
+			{
+				Logger << "Weight error" << endl;
+			}
+			
+			//print the weight of selected vertex
+			if (i_vertex == selected_vtx_id)
+			{
+				Logger << " selected vtx: id " << selected_vtx_id << endl;
 			}
 			for (int i_example = 0; i_example < g_numExample; i_example++)
 			{
 				g_exampleWeights[i_vertex + i_example*g_numVertices] /= weight_sum; //clamp example between 0 to 1;
 
+				if (i_vertex == selected_vtx_id)
+				{
+					Logger << " weight: id " << i_example << " : " << g_exampleWeights[i_vertex + i_example*g_numVertices] << endl;
+				}
+				
+
 			}
+
+
 		}
 		for (int i_vertex = 0; i_vertex < g_numVertices; i_vertex++)
 		{
@@ -1155,7 +1121,21 @@ void Example_mesh_ctrl::processCollide(SampleSet& smpset, std::vector<Manipulate
 				vertices_afterCollide[3 * i + 1],
 				vertices_afterCollide[3 * i + 2]));
 		}
-		
+		//update color to visulize example weight
+		vector<pcm::ColorType> example_weight_color;
+		for (int i_vertex = 0; i_vertex < g_numVertices; i_vertex++)
+		{
+			pcm::ColorType color_sum(0.0f, 0.0f, 0.0f, 0.0f);
+			for (int i_example = 0; i_example < g_numExample; i_example++)
+			{
+				pcm::ColorType cur_color = smpset[i_example][i_vertex].color();
+				float weight = g_exampleWeights[i_vertex + i_example*g_numVertices];
+				color_sum += weight*cur_color;
+			}
+			example_weight_color.push_back(color_sum);
+		}
+		smp.colors_ = example_weight_color;
+		smp.setOpenglMeshColorUpdated(false);
 	}
 
 

@@ -21,6 +21,7 @@ Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 	isload_ = false;
 	color_mode = RenderMode::OBJECT;
 	isOpenglMeshUpdated = false;
+	isOpenglMeshColorUpdated = false;
 	isUsingProgramablePipeLine = true;
 	opengl_mesh_ = new MyOpengl::MeshOpengl(*this);
 }
@@ -357,6 +358,8 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 	{
 		if(!isOpenglMeshUpdated)
 			update_openglMesh();
+		if (!isOpenglMeshColorUpdated)
+			update_openglMeshColor();
 		opengl_mesh_->draw(wcm,r);
 	}
 	else
@@ -462,6 +465,8 @@ void Sample::drawNormal(const Vec3& bias)
 	{
 		if (!isOpenglMeshUpdated)
 			update_openglMesh();
+		if (!isOpenglMeshColorUpdated)
+			update_openglMeshColor();
 		opengl_mesh_->drawNormal();
 	}
 	else
@@ -919,6 +924,14 @@ void Sample::update_openglMesh()
 		opengl_mesh_->updateMesh();
 	isOpenglMeshUpdated = true;
 
+}
+void Sample::update_openglMeshColor()
+{
+	if (!visible_)
+		return;
+	if (opengl_mesh_)
+		opengl_mesh_->updateColor();
+	isOpenglMeshColorUpdated = true;
 }
 
 

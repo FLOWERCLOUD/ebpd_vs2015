@@ -74,12 +74,14 @@ namespace MyOpengl
 		void drawNormal(pcm::ColorType normalColor = pcm::ColorType(0.0f, 0.0f, 1.0f, 1.0f));
 		void updateMesh();
 		void updateViewOfMesh();
+		void updateColor();
 	private:
 		void updateBuffer();
 		void setup();
 		void setupMesh();
 		void setupBuffer();
 		void loadMeshFromSample();
+
 
 		bool isBufferSetup;
 		bool isMeshSetup;

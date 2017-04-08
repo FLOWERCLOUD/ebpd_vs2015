@@ -5,6 +5,7 @@ using namespace pcm;
 void Handle::draw(const Matrix44& adjust_matrix, bool isWithName /*= false*/)
 {
 	ColorType color = Color_Utility::span_color_from_table(handle_idx_);
+	glEnable(GL_POINT_SMOOTH);
 	if (isSelected)
 	{
 		glPointSize(20.0f);
@@ -98,18 +99,10 @@ void MeshControl::draw(bool isWithName /*= false*/)
 	Tbx::GLEnabledSave save_textu(GL_TEXTURE_2D, true, false);
 	Tbx::GLLineWidthSave save_line;
 
-
-
 	glPushMatrix();
 	glMultMatrixd(smp_.getFrame().matrix());
 	Matrix44 mat = smp_.matrix_to_scene_coord();
-	glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
-	glPointSize(10);
-	glBegin(GL_POINTS);
-	Vec4	tmp(0.0f, 0.0f, 0.0f, 1.);
-	Vec4	point_to_show = mat * tmp;
-	glVertex3f(point_to_show(0), point_to_show(1), point_to_show(2));
-	glEnd();
+
 	for (unsigned int idx = 0; idx < handles_.size(); idx++)
 	{
 

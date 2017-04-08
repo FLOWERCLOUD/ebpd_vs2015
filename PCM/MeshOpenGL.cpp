@@ -443,4 +443,32 @@ namespace MyOpengl
 			Logger << "loadMeshFromSample" << endl;
 		}
 	}
+	void MeshOpengl::updateColor()
+	{
+		canvas_->makeCurrent();
+		colors.clear();
+		if (smp_.colors_.size() == smp_.num_vertices())
+		{
+			for (size_t i = 0; i < smp_.num_vertices(); i++)
+			{
+				OpenglColor openglColor;
+				openglColor.color = smp_.colors_[i];
+				colors.push_back(openglColor);
+			}
+		}
+		else
+		{
+			for (size_t i = 0; i < smp_.num_vertices(); i++)
+			{
+				OpenglColor openglColor;
+				openglColor.color = pcm::ColorType(smp_[i].r(), smp_[i].g(), smp_[i].b(), smp_[i].alpha());
+				colors.push_back(openglColor);
+			}
+
+		}
+
+		glBindBuffer(GL_ARRAY_BUFFER, this->CBO);
+		glBufferData(GL_ARRAY_BUFFER, this->colors.size() * sizeof(OpenglColor), &this->colors[0], GL_STREAM_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
 }

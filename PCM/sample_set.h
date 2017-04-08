@@ -19,7 +19,8 @@ public:
 	//	return instance;
 	//}
 
-
+	Sample* add_sample_Fromfile(std::string input_mesh_path, FileIO::FILE_TYPE = FileIO::OBJ);
+	Sample* add_sample_FromArray(std::vector<float>& _vertices, std::vector<int>& _faces);
 	void push_back( Sample*  );
 	bool empty(){ return set_.empty(); }
 	void clear();

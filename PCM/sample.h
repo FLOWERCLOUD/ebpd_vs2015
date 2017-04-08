@@ -174,14 +174,20 @@ private:
 	std::vector<TriangleType*>  triangle_array;
 public:
 	void update_openglMesh();
+	void update_openglMeshColor();
 	void setOpenglMeshUpdated(bool isUpdated)
 	{
-		isOpenglMeshUpdated = false;
+		isOpenglMeshUpdated = isUpdated;
+	}
+	void setOpenglMeshColorUpdated(bool isUpdated)
+	{
+		isOpenglMeshColorUpdated = isUpdated;
 	}
 
 private:
 
 	bool isOpenglMeshUpdated;
+	bool isOpenglMeshColorUpdated;
 	bool isUsingProgramablePipeLine;
 	MyOpengl::MeshOpengl* opengl_mesh_;
 

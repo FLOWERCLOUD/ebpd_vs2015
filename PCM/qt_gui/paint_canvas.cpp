@@ -60,7 +60,7 @@ static QPoint currenMousePos;
 //Manipulator g_manipulator( Manipulator::OBJECT ,struct SelectedObj() );
 
 using namespace Depth_peeling;
-const bool isToggleTimeDebugger = true;
+const bool isToggleTimeDebugger = false;
 
 static void draw_junction_sphere(bool rest_pose)
 	//const std::vector<int>& selected_joints,
@@ -1613,7 +1613,8 @@ void PaintCanvas::enterEvent(QEvent* e)
 }
 
 void PaintCanvas::leaveEvent( QEvent* e){
-	cout<<"PaintCanvas leave";
+
+//	cout<<"PaintCanvas leave";
 	_is_mouse_in = false;
 	Global_Window->update_viewports();
 	e->ignore();

@@ -312,6 +312,7 @@ void SelectTool::click(QMouseEvent *e, qglviewer::Camera* camera /*= NULL*/)
 					smp.colors_[i] = color;
 
 				}
+				smp.setOpenglMeshColorUpdated(false);
 			}
 
 
