@@ -56,6 +56,7 @@ extern bool isAnimationRun;
 RenderMode::WhichColorMode	which_color_mode_;
 RenderMode::RenderType which_render_mode;
 bool isShowNoraml = false;
+bool isShowKdtree = false;
 static QPoint currenMousePos; 
 //Manipulator g_manipulator( Manipulator::OBJECT ,struct SelectedObj() );
 
@@ -1488,21 +1489,32 @@ void PaintCanvas::savePLY(SavePlySetting& ss)
 	if( "ply" == ss.format)
 	{
 		ftype = FileIO::PLY;
+		for (int i = ss.startframe; i <= ss.endframe; ++i)
+		{
+			sprintf(fullPath, "%s%s%s%.3d%s", std::string(ss.outdir.toLocal8Bit().constData()).c_str(), "/", std::string(ss.basename.toLocal8Bit().constData()).c_str(), i, ".ply");
+			FileIO::saveFile(std::string(fullPath), ftype, i);
+		}
 	}else if( "obj" == ss.format)
 	{
 		ftype = FileIO::OBJ;
+		for (int i = ss.startframe; i <= ss.endframe; ++i)
+		{
+			sprintf(fullPath, "%s%s%s%.3d%s", std::string(ss.outdir.toLocal8Bit().constData()).c_str(), "/", std::string(ss.basename.toLocal8Bit().constData()).c_str(), i, ".obj");
+			FileIO::saveFile(std::string(fullPath), ftype, i);
+		}
 	}else if( "off" == ss.format)
 	{
 		ftype = FileIO::OFF;
+		for (int i = ss.startframe; i <= ss.endframe; ++i)
+		{
+			sprintf(fullPath, "%s%s%s%.3d%s", std::string(ss.outdir.toLocal8Bit().constData()).c_str(), "/", std::string(ss.basename.toLocal8Bit().constData()).c_str(), i, ".off");
+			FileIO::saveFile(std::string(fullPath), ftype, i);
+		}
 	}else
 	{
 
 	}
-	for( int i = ss.startframe ; i <= ss.endframe;++i)
-	{
-		sprintf( fullPath ,"%s%s%s%.3d%s",std::string(ss.outdir.toLocal8Bit().constData()).c_str() ,"/", std::string(ss.basename.toLocal8Bit().constData()).c_str(), i ,".obj");
-		FileIO::saveFile(std::string(fullPath),ftype , i);
-	}
+
 	
 	
 

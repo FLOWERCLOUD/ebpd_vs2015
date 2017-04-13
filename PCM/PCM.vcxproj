@@ -185,6 +185,7 @@
     <ClCompile Include="animation\animesh_colors.cpp" />
     <ClCompile Include="animation\animesh_rig.cpp" />
     <ClCompile Include="BASEReader.cpp" />
+    <ClCompile Include="box.cpp" />
     <ClCompile Include="bullet\BasicDemo.cpp" />
     <ClCompile Include="bullet\BulletOpenGLApplication.cpp" />
     <ClCompile Include="bullet\CollisionShape2TriangleMesh.cpp" />
@@ -231,6 +232,9 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="global_datas\cuda_globals.cpp" />
+    <ClCompile Include="ImageToShape.cpp" />
+    <ClCompile Include="Image_ctrl.cpp" />
+    <ClCompile Include="KdTreeForRaycast.cpp" />
     <ClCompile Include="LBS_Control.cpp" />
     <ClCompile Include="main_window_display.cpp" />
     <ClCompile Include="main_window_swithces.cpp" />
@@ -499,7 +503,11 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImageToShape.h" />
+    <ClInclude Include="Image_ctrl.h" />
+    <ClInclude Include="KdTreeForRaycast.h" />
     <ClInclude Include="MeshOpenGL.h" />
+    <ClInclude Include="ray.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="WeightGenerator.h" />
     <CustomBuild Include="..\ICP\ICP.h">

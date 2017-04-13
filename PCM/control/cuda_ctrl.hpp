@@ -16,6 +16,7 @@
 #include "color_ctrl.hpp"
 #include "path_ctrl.hpp"
 #include "example_mesh_ctrl.h"
+#include "Image_ctrl.h"
 
 class Mesh;
 /** @brief Mouse, keyboard, screen interface and more for the cuda library
@@ -50,6 +51,7 @@ extern Path_ctrl          _paths;
 ///// Control potential plane position
 //extern Potential_plane_ctrl _potential_plane;
 extern Example_mesh_ctrl  _example_mesh;
+extern Image_ctrl _image_ctrl;
 // -----------------------------------------------------------------------------
 
 void genertateVertices(std::string _file_paths,std::string name);

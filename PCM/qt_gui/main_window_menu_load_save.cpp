@@ -400,6 +400,8 @@ void main_window::on_actionLoad_exampleMesh_triggered()
 			(fi.canonicalPath() + "/").toLocal8Bit().constData(),
 			fi.completeBaseName().toLocal8Bit().constData());
 	}
+	else
+		return;
 	createTreeWidgetItems();
 	m_layer->updateTable();
 	QApplication::setOverrideCursor(Qt::WaitCursor);
@@ -408,7 +410,54 @@ void main_window::on_actionLoad_exampleMesh_triggered()
 	//	setCurrentFile(fileName);
 	statusBar()->showMessage(tr("File loaded"), 2000);
 }
+void main_window::on_actionLoad_depthImage_triggered()
+{
+	QString fileName = QFileDialog::getOpenFileName(this,
+		tr("Load depth image"),
+		"./resource/meshes",
+		tr("*.depth"));
 
+	QFileInfo fi(fileName);
+//	resetSampleSet();
+	if (fileName.size() != 0)
+	{
+		Cuda_ctrl::_image_ctrl.add_depthImage(
+			(fi.canonicalPath() + "/").toLocal8Bit().constData(),
+			fi.completeBaseName().toLocal8Bit().constData());
+		statusBar()->showMessage(tr("depthImage loaded"), 2000);
+	}
+	else
+		return;
+	createTreeWidgetItems();
+	m_layer->updateTable();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//textEdit->setPlainText(in.readAll());
+	QApplication::restoreOverrideCursor();
+}
+void main_window::on_actionLoad_sampleIamge_triggered()
+{
+	QString fileName = QFileDialog::getOpenFileName(this,
+		tr("Load sample image"),
+		"./resource/meshes",
+		tr("*.png *.jpg *.bmp"));
+
+	QFileInfo fi(fileName);
+	//	resetSampleSet();
+	if (fileName.size() != 0)
+	{
+		Cuda_ctrl::_image_ctrl.add_example_image(
+			(fi.canonicalPath() + "/").toLocal8Bit().constData(),
+			fi.completeBaseName().toLocal8Bit().constData());
+		statusBar()->showMessage(tr("sampleIamge loaded"), 2000);
+	}
+	else
+		return;
+	createTreeWidgetItems();
+	m_layer->updateTable();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//textEdit->setPlainText(in.readAll());
+	QApplication::restoreOverrideCursor();
+}
 
 void main_window::on_actionSave_as_ISM_triggered(){}
 void main_window::on_actionSave_as_FBX_triggered(){}

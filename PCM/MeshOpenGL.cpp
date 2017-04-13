@@ -137,7 +137,10 @@ namespace MyOpengl
 
 		// Draw mesh
 		glBindVertexArray(this->VAO);
-		glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+		if (this->indices.size())
+			glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+		else
+			glDrawArrays(GL_POINTS, 0, this->vertices.size());
 //		glDrawElements(GL_LINES, this->indices.size(), GL_UNSIGNED_INT, 0); 用线，点感觉都比面慢
 //		glDrawElements(GL_POINTS, this->indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
@@ -271,10 +274,16 @@ namespace MyOpengl
 		// A great thing about structs is that their memory layout is sequential for all its items.
 		// The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
 		// again translates to 3/2 floats which translates to a byte array.
-		glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(OpenglVertex), &this->vertices[0], GL_STREAM_DRAW);
+		if(this->vertices.size())
+			glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(OpenglVertex), &this->vertices[0], GL_STREAM_DRAW);
+		else
+			glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(OpenglVertex), 0, GL_STREAM_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STREAM_DRAW);
+		if(this->indices.size())
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STREAM_DRAW);
+		else
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1 * sizeof(GLuint), 0, GL_STREAM_DRAW);
 
 		//// Set the vertex attribute pointers
 		//// Vertex Positions
@@ -339,11 +348,15 @@ namespace MyOpengl
 			// A great thing about structs is that their memory layout is sequential for all its items.
 			// The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
 			// again translates to 3/2 floats which translates to a byte array.
-			glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(OpenglVertex), &this->vertices[0], GL_STREAM_DRAW);
-
+			if(this->vertices.size())
+				glBufferData(GL_ARRAY_BUFFER, this->vertices.size() * sizeof(OpenglVertex), &this->vertices[0], GL_STREAM_DRAW);
+			else
+				glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(OpenglVertex), 0, GL_STREAM_DRAW);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STREAM_DRAW);
-
+			if(this->indices.size())
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, this->indices.size() * sizeof(GLuint), &this->indices[0], GL_STREAM_DRAW);
+			else
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, 1 * sizeof(GLuint), 0, GL_STREAM_DRAW);
 			// Set the vertex attribute pointers
 			// Vertex Positions
 			glEnableVertexAttribArray(0);

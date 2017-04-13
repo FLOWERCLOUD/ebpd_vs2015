@@ -60,7 +60,7 @@ int REAL_TIME_RENDER = 0;
 extern RenderMode::WhichColorMode	which_color_mode_;
 extern RenderMode::RenderType which_render_mode;
 extern bool isShowNoraml ;
-
+extern bool isShowKdtree;
 bool isBulletRun = false;
 bool isSSDRRun = false;
 bool isAnimationRun = false;
@@ -198,6 +198,7 @@ void main_window::createAlgorithmAction()
 	connect( ui.actionPropagate , SIGNAL(triggered()) ,this , SLOT( doPropagate()) );
 	connect( ui.actionBullet , SIGNAL(triggered()) ,this , SLOT( doBulletPhysics() ) );
 	connect( ui.actionSSDR , SIGNAL(triggered()) ,this , SLOT( doSSDR()) );
+	connect(ui.actionRaycast, SIGNAL(triggered()), this, SLOT(doRaycast()));
 	
 }
 
@@ -211,6 +212,7 @@ void main_window::createPaintSettingAction()
 	connect(ui.actionShow_Tracjectory, SIGNAL(triggered()), this, SLOT(showTracer()));
 	connect(ui.actionBallvertex ,SIGNAL(triggered()), this, SLOT(setBallvertexMode()));
 	connect(ui.actionShow_normal ,SIGNAL(triggered()), this, SLOT(show_normal()));
+	connect(ui.actionShow_kdtree, SIGNAL(triggered()), this, SLOT(show_kdtree()));
 	connect(ui.actionShow_camera_viewer ,SIGNAL(triggered()), this, SLOT(toggle_camera_viewer()));
 	//render mode
 	connect(ui.actionPoint_mode, SIGNAL(triggered()), this, SLOT(setPointMode()) );
@@ -288,6 +290,18 @@ void main_window::show_normal()
 	}else
 	{
 		isShowNoraml = true;
+	}
+	updateGL();
+}
+void main_window::show_kdtree()
+{
+	if (isShowKdtree)
+	{
+		isShowKdtree = false;
+	}
+	else
+	{
+		isShowKdtree = true;
 	}
 	updateGL();
 }
@@ -995,7 +1009,142 @@ void main_window::doSSDR()
 
 
 }
+#include "ray.h"
+#include "triangle.h"
+#include <unordered_map>
+#include <Eigen/Sparse>
+void main_window::doRaycast()
+{
+	if (cur_select_sample_idx_ == -1)
+		return;
+	std::vector<HitResult> hit_result;
+	(*Global_SampleSet).castray(cur_select_sample_idx_, hit_result);
+	//move vertex
+	std::vector<float> hit_result_moved;
+	for (int i = 0; i < hit_result.size(); ++i)
+	{
+		HitResult& hit = hit_result[i];
+		Sample& source_sample = (*Global_SampleSet)[hit.source_sample_idx];
+		Sample& target_sample = (*Global_SampleSet)[hit.target_sample_idx];
+		TriangleType& tt = target_sample.getTriangle(hit.target_triangle_idx);
+		Vertex& source_vtx = source_sample[hit.source_vtx_idx];
+		
+		//pcm::PointType& p0 = target_sample[tt.get_i_vertex(0)].get_position();
+		//pcm::PointType& p1 = target_sample[tt.get_i_vertex(1)].get_position();
+		//pcm::PointType& p2 = target_sample[tt.get_i_vertex(2)].get_position();
+		//Vertex& target_vtx0 = target_sample[tt.get_i_vertex(0)];
+		//Vertex& target_vtx1 = target_sample[tt.get_i_vertex(1)];
+		//Vertex& target_vtx2 = target_sample[tt.get_i_vertex(2)];
+		pcm::PointType& p = source_vtx.get_position();
+		//target_sample[tt.get_i_vertex(0)].set_position(p0 - 0.5*p(2)*target_vtx0.get_normal());
+		//target_sample[tt.get_i_vertex(1)].set_position(p1 - 0.5*p(2)*target_vtx1.get_normal());
+		//target_sample[tt.get_i_vertex(2)].set_position(p2 - 0.5*p(2)*target_vtx2.get_normal());
+//		target_sample.setOpenglMeshUpdated(false);
+//		target_sample.update();
+		//move hit point along triangle normal
+		pcm::Vec3 hit_normal = (hit.p1 - hit.p0).cross(hit.p2 - hit.p0).normalized();
+		pcm::PointType moved_p = hit.target_ph - p(2)*hit_normal;
+		hit_result_moved.push_back(moved_p(0));
+		hit_result_moved.push_back(moved_p(1));
+		hit_result_moved.push_back(moved_p(2));
+	}
+	//use linear equation to solve
+	//AX=B
+	pcm::MatrixXX A;
+	Eigen::SparseMatrix<float> A_SPARSE;
+	pcm::MatrixX3 B;
+	std::unordered_map<int, int> point_idx_occur;
+	std::unordered_map<int, int> point_idx_to_oriidx;
+	int count_of_unkown = 1; //begin with 1, to avoid wrong use in map
+	for (int i = 0; i < hit_result.size(); ++i)
+	{
+		HitResult& hit = hit_result[i];
+		Sample& target_sample = (*Global_SampleSet)[hit.target_sample_idx];
+		TriangleType& tt = target_sample.getTriangle(hit.target_triangle_idx);
+		Vertex& target_vtx0 = target_sample[tt.get_i_vertex(0)];
+		Vertex& target_vtx1 = target_sample[tt.get_i_vertex(1)];
+		Vertex& target_vtx2 = target_sample[tt.get_i_vertex(2)];
+		if (point_idx_occur.find(target_vtx0.get_idx()) == point_idx_occur.end())
+		{
+			point_idx_occur[target_vtx0.get_idx()] = count_of_unkown;
+			point_idx_to_oriidx[count_of_unkown] = target_vtx0.get_idx();
+			++count_of_unkown;
+		}
+		if (point_idx_occur.find(target_vtx1.get_idx()) == point_idx_occur.end())
+		{
+			point_idx_occur[target_vtx1.get_idx()] = count_of_unkown;
+			point_idx_to_oriidx[count_of_unkown] = target_vtx1.get_idx();
+			++count_of_unkown;
+		}
+		if (point_idx_occur.find(target_vtx2.get_idx()) == point_idx_occur.end())
+		{
+			point_idx_occur[target_vtx2.get_idx()] = count_of_unkown;
+			point_idx_to_oriidx[count_of_unkown] = target_vtx2.get_idx();
+			++count_of_unkown;
+		}
+	}
+	A.resize(hit_result.size(), point_idx_occur.size());
+	A.setZero();
+	A_SPARSE.resize(hit_result.size(), point_idx_occur.size());
+	B.resize(hit_result.size(), 3);
+	B.setZero();
+	pcm::MatrixX3 X;
+	X.resize(point_idx_occur.size(), 3);
+	//embed val to A,B
+	for (int i = 0; i < hit_result.size(); ++i)
+	{
+		HitResult& hit = hit_result[i];
+		Sample& target_sample = (*Global_SampleSet)[hit.target_sample_idx];
+		TriangleType& tt = target_sample.getTriangle(hit.target_triangle_idx);
+		Vertex& target_vtx0 = target_sample[tt.get_i_vertex(0)];
+		Vertex& target_vtx1 = target_sample[tt.get_i_vertex(1)];
+		Vertex& target_vtx2 = target_sample[tt.get_i_vertex(2)];
+		int occur_idx0 = point_idx_occur[target_vtx0.get_idx()]-1;
+		A(i, occur_idx0) = 1-hit.u - hit.v;
+		int occur_idx1 = point_idx_occur[target_vtx1.get_idx()]-1;
+		A(i, occur_idx1) = hit.u;
+		int occur_idx2 = point_idx_occur[target_vtx2.get_idx()]-1;
+		A(i, occur_idx2) = hit.v;
+		B(i, 0) = hit_result_moved[3 * i + 0];
+		B(i, 1) = hit_result_moved[3 * i + 1];
+		B(i, 2) = hit_result_moved[3 * i + 2];
 
+	}
+	X = A.colPivHouseholderQr().solve(B);
+	std::vector<float> modified_vtxs;
+	for (int i = 0; i < X.rows(); ++i)
+	{
+		modified_vtxs.push_back(X(i, 0));
+		modified_vtxs.push_back(X(i, 1));
+		modified_vtxs.push_back(X(i, 2));
+	}
+	//modifiy target sample
+	if (hit_result.size())
+	{
+		Sample& target_sample = (*Global_SampleSet)[hit_result[0].target_sample_idx];
+		for (size_t i = 0; i < modified_vtxs.size()/3; ++i)
+		{
+			int ori_vtxid = point_idx_to_oriidx[i + 1];
+			target_sample[ori_vtxid].set_position(pcm::PointType(
+				modified_vtxs[3*i], modified_vtxs[3*i + 1], modified_vtxs[3*i + 2]
+			));
+
+		}
+		target_sample.setOpenglMeshUpdated(false);
+	}
+
+	(*Global_SampleSet).add_sample_FromArray(hit_result_moved);
+	(*Global_SampleSet).add_sample_FromArray(modified_vtxs);
+	update_viewports();
+	createTreeWidgetItems();
+	m_layer->updateTable();
+	QApplication::setOverrideCursor(Qt::WaitCursor);
+	//textEdit->setPlainText(in.readAll());
+	QApplication::restoreOverrideCursor();
+	//	setCurrentFile(fileName);
+	statusBar()->showMessage(tr("File loaded"), 2000);
+
+}
 // void main_window::doSpectralCluster()
 // {
 // 	SpectralClusteringThread* specCla = new SpectralClusteringThread();
@@ -1578,9 +1727,15 @@ void main_window::loadFileToSample( const QFileInfoList& file_list ,bool isLazy)
 				new_sample->setLoaded(true);
 			}
 			new_sample->set_color( Color_Utility::span_color_from_table( file_idx ) );
+			pcm::ColorType  vtx_color = Color_Utility::span_color_from_table(sample_idx);
+			for (int i = 0; i < new_sample->num_vertices(); ++i)
+			{
+				(*new_sample)[i].set_color(vtx_color);
+			}
 			SampleSet& smpset = (*Global_SampleSet);
 			smpset.push_back(new_sample);
 			new_sample->smpId = sample_idx;
+			new_sample->update_openglMesh();
 			sample_idx++;
 		}
 	}

@@ -43,7 +43,7 @@ Graph_ctrl           _graph;
 //Operators_ctrl       _operators;
 Color_ctrl           _color;
 Example_mesh_ctrl  _example_mesh;
-
+Image_ctrl _image_ctrl;
 // -----------------------------------------------------------------------------
 
 void genertateVertices(std::string _file_paths,std::string name)

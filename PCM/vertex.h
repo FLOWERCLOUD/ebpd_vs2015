@@ -7,13 +7,17 @@
 class Vertex : public SelectableItem
 {
 public:
-	Vertex():position_(NULL_POINT),
+	Vertex(IndexType _idx):position_(NULL_POINT), idx_(_idx),
 		normal_(NULL_NORMAL), texture_(NULL_TEXTURE),label_(0),val_(0),is_edge_points_(0),is_wrapbox_(0) ,is_edgePointWithSmallLabel_(-1){};
 	~Vertex(){};
 
 	void set_idx(IndexType _idx)
 	{
 		idx_ = _idx;
+	}
+	IndexType get_idx()
+	{
+		return idx_;
 	}
 	void set_position( const pcm::PointType& pos )
 	{

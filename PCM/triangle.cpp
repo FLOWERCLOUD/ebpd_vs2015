@@ -1,15 +1,16 @@
 #include "sample.h"
 #include "triangle.h"
 #include "vertex.h"
+#include "ray.h"
 #include "rendering/render_types.h"
 
 using namespace pcm;
-TriangleType::TriangleType(Sample& s):sample_(s)
+TriangleType::TriangleType(Sample& s ,int idx):sample_(s), triangle_idx_(idx)
 {
 	i_vertex[0] =i_vertex[1] = i_vertex[2] = 0;
 	i_norm[0]= i_norm[1] = i_norm[2] = 0;
 }
-TriangleType::TriangleType(const TriangleType& s):sample_(s.sample_)
+TriangleType::TriangleType(const TriangleType& s):sample_(s.sample_), triangle_idx_(s.triangle_idx_)
 {
 	for(int i = 0 ;i<3;++i)
 	{
@@ -26,8 +27,81 @@ TriangleType& TriangleType::operator=(const TriangleType& s)
 		this->i_vertex[i] = s.i_vertex[i];
 		this->i_norm[i]= s.i_norm[i];
 	}
+	triangle_idx_ = s.triangle_idx_;
 	//Logger<<"TriangleType assignment"<<std::endl;
 	return *this;
+}
+/*
+ray: x = o + d * t (t > 0)
+triangle : x = (1 - u - v) * p + u * p1 + v * p2 (0 <= u <= 1, 0 <= v <= 1)
+(1 - u - v) * p + u * p1 + v * p2 = o + d * t
+let e1 = p1 - p, e2 = p2 - p
+=> e1 * u + e2 * v - d * t = o - p
+let K = -d, L = o - p, => e1 * u + e2 * v + K * t = L
+So we solve A X = B
+*/
+bool TriangleType::hit(const Ray& ray, float& _t, float& min, HitResult& hitResult)
+{
+	using namespace pcm;
+	int i0 = get_i_vertex(0);
+	int i1 = get_i_vertex(1);
+	int i2 = get_i_vertex(2);
+	PointType& p0 = sample_[i0].get_position();
+	PointType& p1 = sample_[i1].get_position();
+	PointType& p2 = sample_[i2].get_position();
+	Vec3 e1(p1 - p0);
+	Vec3 e2(p2 - p0);
+	Vec3 k = -(ray.dir);
+	Vec3 B = ray.origin - p0;
+	Matrix33 A;
+	A << e1(0), e2(0), k(0),
+		e1(1), e2(1), k(1),
+		e1(2), e2(2), k(2);
+	Vec3 x = A.colPivHouseholderQr().solve(B);
+	float u = x(0);
+	float v = x(1);
+	float t = x(2);
+	if ( u >=0 && u <= 1.0)
+	{
+		if (v >= 0 && v <= 1.0)
+		{
+			if (u + v >= 0 && u + v <= 1.0)
+			{
+				if (t > 0 && t < ray.max_length)
+				{
+					hitResult.target_ph = ray.origin + t*ray.dir;
+					hitResult.target_ph2 = (1-u-v)*p0 +u*p1 +v*p2;
+					hitResult.hit_obj = true;
+					hitResult.target_sample_idx = sample_.smpId;
+					hitResult.target_triangle_idx = this->get_idx();
+					hitResult.u = u;
+					hitResult.v = v;
+					hitResult.t = t;
+					hitResult.p0 = p0;
+					hitResult.p1 = p1;
+					hitResult.p2 = p2;
+					_t = t;
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+
+			}
+			else
+			{
+				return false;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+
+	return false;
 }
 
 void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType& r,const Matrix44& adjust_matrix, const Vec3& bias)

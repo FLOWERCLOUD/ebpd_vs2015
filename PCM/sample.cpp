@@ -12,9 +12,12 @@
 #include <set>
 #include <algorithm>
 #include "MeshOpenGL.h"
+#include "KdTreeForRaycast.h"
+extern bool isShowKdtree;
 using namespace pcm;
 Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 	kd_tree_should_rebuild_(true),
+	kd_tree_raycast_(NULL),
 	mutex_(QMutex::NonRecursive),clayerDepth_(0)
 {
 	file_type = FileIO::NONE;
@@ -24,6 +27,7 @@ Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 	isOpenglMeshColorUpdated = false;
 	isUsingProgramablePipeLine = true;
 	opengl_mesh_ = new MyOpengl::MeshOpengl(*this);
+	setIsScaleToUniform(false);
 }
 
 Sample::~Sample()
@@ -50,8 +54,9 @@ Vertex* Sample::add_vertex(const PointType& pos = NULL_POINT,
 						const NormalType& n = NULL_NORMAL, 
 						const ColorType& c = NULL_COLOR)
 {
+	int vtx_idx = this->num_vertices();
 	Vertex*	new_space = allocator_.allocate<Vertex>();
-	Vertex* new_vtx = new(new_space)Vertex;
+	Vertex* new_vtx = new(new_space)Vertex(vtx_idx);
 	if ( !new_vtx )
 	{
 		return nullptr;
@@ -361,6 +366,8 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 		if (!isOpenglMeshColorUpdated)
 			update_openglMeshColor();
 		opengl_mesh_->draw(wcm,r);
+		if(isShowKdtree)
+			kd_tree_raycast_->drawKdTree();
 	}
 	else
 	{
@@ -650,6 +657,8 @@ void Sample::build_kdtree()
 	{
 		delete kd_tree_;
 	}
+	if (kd_tree_raycast_)
+		delete kd_tree_raycast_;
 
 	size_t n_vtx = vertices_.size();
 	vtx_matrix_ = Matrix3X( 3, n_vtx );
@@ -662,6 +671,8 @@ void Sample::build_kdtree()
 	}
 
 	kd_tree_ = new nanoflann::KDTreeAdaptor<Matrix3X, 3>(vtx_matrix_);
+	kd_tree_raycast_ = new KDTree(*this);
+	kd_tree_raycast_->build();
 
 	kd_tree_should_rebuild_ = false;
 
@@ -709,14 +720,24 @@ IndexType Sample::closest_vtx( const PointType& query_point )
 Matrix44 Sample::matrix_to_scene_coord()
 {
 	Matrix44 mat;
+	if (isScaledToUniform())
+	{
+		const ScalarType scale_factor = 1. / box_.diag();
+		const PointType	 box_center = box_.center();
 
-	const ScalarType scale_factor = 1./box_.diag();
-	const PointType	 box_center = box_.center();
-
-	mat << scale_factor, 0, 0, -box_center(0)*scale_factor,
+		mat << scale_factor, 0, 0, -box_center(0)*scale_factor,
 			0, scale_factor, 0, -box_center(1)*scale_factor,
 			0, 0, scale_factor, -box_center(2)*scale_factor,
 			0, 0, 0, 1;
+	}
+	else
+	{
+		mat << 1, 0, 0, 0,
+			   0, 1, 0, 0,
+			   0, 0, 1, 0,
+			   0, 0, 0, 1;
+	}
+
 
 	return mat;
 						
@@ -724,14 +745,24 @@ Matrix44 Sample::matrix_to_scene_coord()
 Matrix44 Sample::inverse_matrix_to_scene_coord()
 {
 	Matrix44 mat;
+	if (isScaledToUniform())
+	{
+		const ScalarType scale_factor = box_.diag();
+		const PointType	 box_center = box_.center();
 
-	const ScalarType scale_factor = box_.diag();
-	const PointType	 box_center = box_.center();
+		mat << scale_factor, 0, 0, box_center(0),
+			0, scale_factor, 0, box_center(1),
+			0, 0, scale_factor, box_center(2),
+			0, 0, 0, 1;
+	}
+	else
+	{
+		mat << 1, 0, 0, 0,
+			   0, 1, 0, 0,
+			   0, 0, 1, 0,
+			   0, 0, 0, 1;
+	}
 
-	mat << scale_factor, 0, 0, box_center(0),
-		0, scale_factor, 0, box_center(1),
-		0, 0, scale_factor, box_center(2),
-		0, 0, 0, 1;
 
 	return mat;
 
@@ -934,6 +965,53 @@ void Sample::update_openglMeshColor()
 	isOpenglMeshColorUpdated = true;
 }
 
+void Sample::worldRaytoLocal(const Ray& world_ray, Ray& local_ray)
+{
+	qglviewer::Frame& frame = getFrame();
+	qglviewer::Vec world_pos(world_ray.origin(0), world_ray.origin(1), world_ray.origin(2));
+	qglviewer::Vec world_dir(world_ray.dir(0), world_ray.dir(1), world_ray.dir(2));
+	qglviewer::Vec& local_pos = frame.coordinatesOf(world_pos);
+	qglviewer::Vec& local_dir = frame.transformOf(world_dir);
+	local_ray.origin = pcm::Vec3(local_pos.x, local_pos.y, local_pos.z);
+	local_ray.dir = pcm::Vec3(local_dir.x, local_dir.y, local_dir.z);
+}
+
+void Sample::localRayToWorld(const Ray& local_ray, Ray& world_ray)
+{
+	qglviewer::Frame& frame = getFrame();
+	qglviewer::Vec loc_pos(local_ray.origin(0), local_ray.origin(1), local_ray.origin(2));
+	qglviewer::Vec loc_dir(local_ray.dir(0), local_ray.dir(1), local_ray.dir(2));
+	qglviewer::Vec& local_pos = frame.inverseCoordinatesOf(loc_pos);
+	qglviewer::Vec& local_dir = frame.inverseTransformOf(loc_dir);
+	world_ray.origin = pcm::Vec3(local_pos.x, local_pos.y, local_pos.z);
+	world_ray.dir = pcm::Vec3(local_dir.x, local_dir.y, local_dir.z);
+
+
+}
+bool Sample::castray(Ray& world_ray, HitResult& result)
+{
+	using namespace pcm;
+	Ray locaray;
+	worldRaytoLocal(world_ray, locaray);
+	float t;
+	float min;
+	if (kd_tree_raycast_->hit(locaray, t, min, result))
+	{
+
+
+		return true;
+	}
+	return false;
+
+}
+void Sample::clearKdTreeRayBuffer()
+{
+	kd_tree_raycast_->clearHitray();
+}
+void Sample::updateHitrayBuffer()
+{
+	kd_tree_raycast_->updateHitrayBuffer();
+}
 
 
 

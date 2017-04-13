@@ -138,6 +138,7 @@ namespace FileIO
 				std::vector<ColorType> cv;
 				std::vector<NormalType> nv;
 				//std::vector<TriangleType*> ttv;
+				int faces_idx = 0;
 				while( fscanf(fd ,"%2s",pref) != EOF)
 				{
 					if(strcmp(pref,"v")==0)
@@ -151,7 +152,7 @@ namespace FileIO
 						nv.push_back( NormalType(nx/square_num,ny/square_num,nz/square_num));
 					}else if( strcmp(pref,"f")==0)
 					{   
-						TriangleType* tt = new TriangleType(*new_sample);
+						TriangleType* tt = new TriangleType(*new_sample, faces_idx);
 						for(int i_v = 0; i_v<3 ; i_v++)
 						{
 							IndexType i_temp_v;
@@ -199,6 +200,7 @@ namespace FileIO
 						}
 						new_sample->add_triangle(*tt);
 						delete tt;
+						faces_idx++;
 						//					ttv.push_back(tt);
 					}else if(pref[0] =='#')
 					{

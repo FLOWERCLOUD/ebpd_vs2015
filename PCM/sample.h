@@ -16,6 +16,8 @@
 
 class TriangleType;
 class LinkNode;
+class KDTree;
+class HitResult;
 namespace MyOpengl
 {
 	class MeshOpengl;
@@ -183,9 +185,29 @@ public:
 	{
 		isOpenglMeshColorUpdated = isUpdated;
 	}
-
+	bool isScaledToUniform()
+	{
+		return isScaledToUniform_;
+	}
+	void setIsScaleToUniform(bool b )
+	{
+		isScaledToUniform_ = b;
+	}
+	std::vector<Vertex*>& getVerticesArray()
+	{
+		return vertices_;
+	}
+	std::vector<TriangleType*>& getTriangleArray()
+	{
+		return triangle_array;
+	}
+	void worldRaytoLocal(const Ray& world_ray, Ray& local_ray);
+	void localRayToWorld(const Ray& local_ray, Ray&world_ray);
+	bool castray(Ray& world_ray,HitResult& result);
+	void clearKdTreeRayBuffer();
+	void updateHitrayBuffer();
 private:
-
+	bool isScaledToUniform_;
 	bool isOpenglMeshUpdated;
 	bool isOpenglMeshColorUpdated;
 	bool isUsingProgramablePipeLine;
@@ -199,6 +221,7 @@ private:
 	Matrix3X									vtx_matrix_; // 3 * NumOfVtx
 	//Attention: kdtree is just a adapter, it means it use the reference of its data source
 	nanoflann::KDTreeAdaptor<Matrix3X, 3>*		kd_tree_;
+	KDTree*										kd_tree_raycast_;
 	bool										kd_tree_should_rebuild_;
 	QMutex										mutex_;
 public:

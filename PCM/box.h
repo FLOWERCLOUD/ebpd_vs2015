@@ -1,6 +1,7 @@
 #ifndef _BOX_H
 #define _BOX_H
 #include "basic_types.h"
+class Ray;
 
 class Box
 {
@@ -8,26 +9,28 @@ public:
 	Box():first_expand_(true){}
 	~Box(){}
 
-	void expand( const pcm::PointType&  p )
+	void expand( const pcm::PointType&  p );
+	int longest_axis()
 	{
-		diag_dirty_ = true;
 		if (first_expand_)
 		{
-			low_corner_ = p;
-			high_corner_ = p;
-			first_expand_ = false;
-			return;
+			return 0;
 		}
 
-		for (int dim=0; dim <3; dim++)
+		if (!diag_dirty_)
 		{
-			if (p(dim) < low_corner_(dim) )
-				low_corner_(dim) = p(dim);
-			else if( p(dim) > high_corner_(dim) )
-				high_corner_(dim) = p(dim);
+			return 0;
 		}
-	}
 
+		ScalarType d[3];
+		for (int dim = 0; dim < 3; dim++)
+		{
+			d[dim] = fabs(low_corner_(dim) - high_corner_(dim));
+		}
+		return d[0] > d[1] ? (d[0] > d[2] ? 0 : 2) : d[1] > d[2] ? 1 : 2;
+
+	}
+	bool hit(const Ray& ray);
 	void reset(){ first_expand_ = true;diag_dirty_=true; }
 
 	const ScalarType diag()

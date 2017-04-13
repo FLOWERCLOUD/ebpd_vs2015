@@ -73,6 +73,7 @@ public:
 		void setLabelColorMode();
 		void setBallvertexMode();
 		void show_normal();
+		void show_kdtree();
 		void toggle_camera_viewer();
 
 		void setSelectToolMode();
@@ -143,6 +144,7 @@ public:
 		void doPropagate();
 		void doBulletPhysics();
 		void doSSDR();
+		void doRaycast();
 		//void finishDoPlanFit();
 public slots:
 
@@ -200,6 +202,8 @@ public slots:
 		void on_actionLoad_pose_triggered();
 		void on_actionLoad_camera_triggered();
 		void on_actionLoad_exampleMesh_triggered();
+		void on_actionLoad_depthImage_triggered();
+		void on_actionLoad_sampleIamge_triggered();
 
 		void on_actionSave_as_ISM_triggered();
 		void on_actionSave_as_FBX_triggered();

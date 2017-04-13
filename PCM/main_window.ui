@@ -59,7 +59,7 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>221</width>
+        <width>248</width>
         <height>1147</height>
        </rect>
       </property>
@@ -812,8 +812,8 @@ Each cell contains a sub tree ready to be evaluated.
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>108</width>
-        <height>104</height>
+        <width>265</width>
+        <height>588</height>
        </rect>
       </property>
       <attribute name="label">
@@ -898,8 +898,8 @@ Each cell contains a sub tree ready to be evaluated.
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>202</width>
-        <height>564</height>
+        <width>265</width>
+        <height>588</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1265,8 +1265,8 @@ Each cell contains a sub tree ready to be evaluated.
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>182</width>
-        <height>336</height>
+        <width>265</width>
+        <height>588</height>
        </rect>
       </property>
       <attribute name="label">
@@ -1588,7 +1588,7 @@ Each cell contains a sub tree ready to be evaluated.
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>196</width>
+        <width>248</width>
         <height>633</height>
        </rect>
       </property>
@@ -2687,6 +2687,8 @@ This is a post process step.</string>
      <addaction name="actionLoad_pose"/>
      <addaction name="actionLoad_camera"/>
      <addaction name="actionLoad_exampleMesh"/>
+     <addaction name="actionLoad_depthImage"/>
+     <addaction name="actionLoad_sampleIamge"/>
     </widget>
     <widget class="QMenu" name="menuExport">
      <property name="title">
@@ -2729,6 +2731,7 @@ This is a post process step.</string>
     <addaction name="actionShow_EdgeVertexs"/>
     <addaction name="actionBallvertex"/>
     <addaction name="actionShow_normal"/>
+    <addaction name="actionShow_kdtree"/>
     <addaction name="actionShow_camera_viewer"/>
    </widget>
    <widget class="QMenu" name="menuSelect">
@@ -2756,6 +2759,7 @@ This is a post process step.</string>
     <addaction name="actionPropagate"/>
     <addaction name="actionBullet"/>
     <addaction name="actionSSDR"/>
+    <addaction name="actionRaycast"/>
    </widget>
    <widget class="QMenu" name="menuRenderMode">
     <property name="title">
@@ -3445,6 +3449,26 @@ This is a post process step.</string>
   <action name="actionEbpd_hand_mode">
    <property name="text">
     <string>ebpd hand mode</string>
+   </property>
+  </action>
+  <action name="actionLoad_depthImage">
+   <property name="text">
+    <string>Load depthImage</string>
+   </property>
+  </action>
+  <action name="actionLoad_sampleIamge">
+   <property name="text">
+    <string>Load sampleIamge</string>
+   </property>
+  </action>
+  <action name="actionRaycast">
+   <property name="text">
+    <string>Raycast</string>
+   </property>
+  </action>
+  <action name="actionShow_kdtree">
+   <property name="text">
+    <string>show kdtree</string>
    </property>
   </action>
  </widget>

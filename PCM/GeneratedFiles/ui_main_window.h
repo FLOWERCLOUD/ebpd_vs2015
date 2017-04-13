@@ -126,6 +126,10 @@ public:
     QAction *actionSave_keyframes;
     QAction *actionLoad_exampleMesh;
     QAction *actionEbpd_hand_mode;
+    QAction *actionLoad_depthImage;
+    QAction *actionLoad_sampleIamge;
+    QAction *actionRaycast;
+    QAction *actionShow_kdtree;
     QWidget *centralWidget;
     QSplitter *splitter;
     QToolBox *toolBoxMenu;
@@ -678,6 +682,14 @@ public:
         actionLoad_exampleMesh->setObjectName(QStringLiteral("actionLoad_exampleMesh"));
         actionEbpd_hand_mode = new QAction(main_windowClass);
         actionEbpd_hand_mode->setObjectName(QStringLiteral("actionEbpd_hand_mode"));
+        actionLoad_depthImage = new QAction(main_windowClass);
+        actionLoad_depthImage->setObjectName(QStringLiteral("actionLoad_depthImage"));
+        actionLoad_sampleIamge = new QAction(main_windowClass);
+        actionLoad_sampleIamge->setObjectName(QStringLiteral("actionLoad_sampleIamge"));
+        actionRaycast = new QAction(main_windowClass);
+        actionRaycast->setObjectName(QStringLiteral("actionRaycast"));
+        actionShow_kdtree = new QAction(main_windowClass);
+        actionShow_kdtree->setObjectName(QStringLiteral("actionShow_kdtree"));
         centralWidget = new QWidget(main_windowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setEnabled(true);
@@ -693,7 +705,7 @@ public:
         toolBoxMenu->setFrameShape(QFrame::NoFrame);
         Display_settings = new QWidget();
         Display_settings->setObjectName(QStringLiteral("Display_settings"));
-        Display_settings->setGeometry(QRect(0, 0, 221, 1147));
+        Display_settings->setGeometry(QRect(0, 0, 248, 1147));
         horizontalLayout = new QHBoxLayout(Display_settings);
         horizontalLayout->setSpacing(6);
         horizontalLayout->setContentsMargins(11, 11, 11, 11);
@@ -1168,7 +1180,7 @@ public:
         toolBoxMenu->addItem(Display_settings, QStringLiteral("Display"));
         graph_edition = new QWidget();
         graph_edition->setObjectName(QStringLiteral("graph_edition"));
-        graph_edition->setGeometry(QRect(0, 0, 108, 104));
+        graph_edition->setGeometry(QRect(0, 0, 265, 588));
         horizontalLayout_8 = new QHBoxLayout(graph_edition);
         horizontalLayout_8->setSpacing(0);
         horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
@@ -1210,7 +1222,7 @@ public:
         toolBoxMenu->addItem(graph_edition, QStringLiteral("Graph edition"));
         Animation_settings = new QWidget();
         Animation_settings->setObjectName(QStringLiteral("Animation_settings"));
-        Animation_settings->setGeometry(QRect(0, 0, 202, 564));
+        Animation_settings->setGeometry(QRect(0, 0, 265, 588));
         horizontalLayout_2 = new QHBoxLayout(Animation_settings);
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -1465,7 +1477,7 @@ public:
         toolBoxMenu->addItem(Animation_settings, QStringLiteral("Animation"));
         blending_settings = new QWidget();
         blending_settings->setObjectName(QStringLiteral("blending_settings"));
-        blending_settings->setGeometry(QRect(0, 0, 182, 336));
+        blending_settings->setGeometry(QRect(0, 0, 265, 588));
         horizontalLayout_3 = new QHBoxLayout(blending_settings);
         horizontalLayout_3->setSpacing(6);
         horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
@@ -1664,7 +1676,7 @@ public:
         toolBoxMenu->addItem(blending_settings, QStringLiteral("Blending"));
         bone_editor = new QWidget();
         bone_editor->setObjectName(QStringLiteral("bone_editor"));
-        bone_editor->setGeometry(QRect(0, 0, 196, 633));
+        bone_editor->setGeometry(QRect(0, 0, 248, 633));
         horizontalLayout_4 = new QHBoxLayout(bone_editor);
         horizontalLayout_4->setSpacing(6);
         horizontalLayout_4->setContentsMargins(11, 11, 11, 11);
@@ -2416,6 +2428,8 @@ public:
         menuImport->addAction(actionLoad_pose);
         menuImport->addAction(actionLoad_camera);
         menuImport->addAction(actionLoad_exampleMesh);
+        menuImport->addAction(actionLoad_depthImage);
+        menuImport->addAction(actionLoad_sampleIamge);
         menuExport->addSeparator();
         menuExport->addAction(actionSave_as_ISM);
         menuExport->addAction(actionSave_as_FBX);
@@ -2438,6 +2452,7 @@ public:
         menuPaint->addAction(actionShow_EdgeVertexs);
         menuPaint->addAction(actionBallvertex);
         menuPaint->addAction(actionShow_normal);
+        menuPaint->addAction(actionShow_kdtree);
         menuPaint->addAction(actionShow_camera_viewer);
         menuSelect->addAction(actionScene_Mode);
         menuSelect->addAction(actionSelect_Mode);
@@ -2455,6 +2470,7 @@ public:
         menuAlgorithm->addAction(actionPropagate);
         menuAlgorithm->addAction(actionBullet);
         menuAlgorithm->addAction(actionSSDR);
+        menuAlgorithm->addAction(actionRaycast);
         menuRenderMode->addAction(actionPoint_mode);
         menuRenderMode->addAction(actionFlat_mode);
         menuRenderMode->addAction(actionWire_mode);
@@ -2589,6 +2605,10 @@ public:
         actionSave_keyframes->setText(QApplication::translate("main_windowClass", "Save keyframes", 0));
         actionLoad_exampleMesh->setText(QApplication::translate("main_windowClass", "Load exampleMesh", 0));
         actionEbpd_hand_mode->setText(QApplication::translate("main_windowClass", "ebpd hand mode", 0));
+        actionLoad_depthImage->setText(QApplication::translate("main_windowClass", "Load depthImage", 0));
+        actionLoad_sampleIamge->setText(QApplication::translate("main_windowClass", "Load sampleIamge", 0));
+        actionRaycast->setText(QApplication::translate("main_windowClass", "Raycast", 0));
+        actionShow_kdtree->setText(QApplication::translate("main_windowClass", "show kdtree", 0));
         box_camera->setTitle(QApplication::translate("main_windowClass", "Camera", 0));
         lbl_camera_aperture->setText(QApplication::translate("main_windowClass", "fov: ", 0));
         lbl_near_plane->setText(QApplication::translate("main_windowClass", "Near: ", 0));

@@ -1,7 +1,8 @@
 #include "sample_set.h"
 #include "triangle.h"
-qglviewer::Vec translate_interval(0.0f, 0.0f, 1.0f);
-qglviewer::Vec translate(0.0f, 0.0f, -1.4f);
+#include "ray.h"
+qglviewer::Vec translate_interval(0.0f, 0.0f, 0.0f);
+qglviewer::Vec translate(0.0f, 0.0f, 0.0f);
 Sample* SampleSet::add_sample_Fromfile(std::string input_mesh_path, FileIO::FILE_TYPE type)
 {
 
@@ -38,7 +39,7 @@ Sample* SampleSet::add_sample_FromArray(std::vector<float>& _vertices, std::vect
 	}
 	for (int i = 0; i < _faces.size() / 3; ++i)
 	{
-		TriangleType* tt = new TriangleType(*new_sample);
+		TriangleType* tt = new TriangleType(*new_sample,i);
 		tt->set_i_vetex(0, _faces[3 * i + 0]);
 		tt->set_i_vetex(1, _faces[3 * i + 1]);
 		tt->set_i_vetex(2, _faces[3 * i + 2]);
@@ -74,4 +75,62 @@ void SampleSet::clear()
 		delete set_.back();
 		set_.pop_back();
 	}
+}
+bool SampleSet::castray(int sourcesample_idx, std::vector<HitResult>& result)
+{
+	using namespace  pcm;
+	result.clear();
+	for (size_t i = 0; i < size(); i++)
+	{
+		HitResult hitresult;
+		Sample& target_sample = (*this)[i];
+		target_sample.clearKdTreeRayBuffer();
+	}
+	if (sourcesample_idx > -1 && sourcesample_idx < size())
+	{
+		Sample& source_sample = (*this)[sourcesample_idx];
+		for (size_t source_vtx_idx = 0; source_vtx_idx < (*this)[sourcesample_idx].num_vertices(); source_vtx_idx++)
+		{
+			PointType& p = source_sample[source_vtx_idx].get_position();
+			Ray localray, worldray;
+			localray.origin = p;
+			localray.dir = pcm::Vec3(0.0f, 0.0f, 1.0f);
+
+			source_sample.localRayToWorld(localray, worldray);
+			
+			for (size_t target_smp_idx = 0; target_smp_idx < size(); target_smp_idx++)
+			{
+				if (target_smp_idx == sourcesample_idx)
+					continue;
+				HitResult hitresult;
+				Sample& target_sample = (*this)[target_smp_idx];
+				if (target_sample.castray(worldray, hitresult))
+				{
+					hitresult.source_sample_idx = sourcesample_idx;
+					hitresult.source_vtx_idx = source_vtx_idx;
+					result.push_back(hitresult);
+				}
+
+			}
+
+
+
+
+		}
+
+
+
+
+
+	}
+	for (size_t i = 0; i < size(); i++)
+	{
+		HitResult hitresult;
+		Sample& target_sample = (*this)[i];
+		target_sample.updateHitrayBuffer();
+	}
+	return true;
+
+
+
 }

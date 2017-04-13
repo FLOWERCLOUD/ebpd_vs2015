@@ -20,7 +20,7 @@ public:
 	//}
 
 	Sample* add_sample_Fromfile(std::string input_mesh_path, FileIO::FILE_TYPE = FileIO::OBJ);
-	Sample* add_sample_FromArray(std::vector<float>& _vertices, std::vector<int>& _faces);
+	Sample* add_sample_FromArray(std::vector<float>& _vertices, std::vector<int>& _faces = std::vector<int>());
 	void push_back( Sample*  );
 	bool empty(){ return set_.empty(); }
 	void clear();
@@ -45,6 +45,7 @@ public:
 		return set_;
 
 	}
+	bool castray(int sourcesample_idx,std::vector<HitResult>& result);
 private:
 
 
