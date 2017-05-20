@@ -12,6 +12,7 @@
 #include <QColorDialog>
 #include <QMessageBox>
 #include "qt_gui/tools/popup_ok_cancel.hpp"
+#include "VideoEditingWindow.h"
 
 void main_window::load_fbx_mesh( Loader::Fbx_file& loader)
 {
@@ -550,4 +551,20 @@ void main_window::on_actionSkeleton_triggered()
 	{
 		QMessageBox::information(this, "Skeleton informations", "No skeleton to get infos from");
 	}
+}
+
+void main_window::on_actionNew_VideoEditing_Scene_triggered()
+{
+	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
+	videoEditingWindow.show();
+}
+void main_window::on_actionOpen_VideoEditing_Scene_triggered()
+{
+	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
+	videoEditingWindow.show();
+}
+void main_window::on_actionSave_VideoEditing_Scene_triggered()
+{
+	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
+	videoEditingWindow.show();
 }

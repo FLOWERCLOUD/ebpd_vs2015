@@ -2,7 +2,10 @@
 #include "GlobalObject.h"
 #include "qt_gui/main_window.h"
 #include "qt_gui/paint_canvas.h"
+#include "VideoEdittingParameter.h"
 #include "sample_set.h"
+#include <QSemaphore>
+#include <QMutex>
 
 main_window* Global_Window;
 
@@ -32,3 +35,6 @@ void setGlobalSampleSet(SampleSet* _sampleSet)
 {
 	Global_SampleSet = _sampleSet;
 }
+QSemaphore GlobalData::trimapSemaphore(1);
+QSemaphore GlobalData::mattingSemaphore(0);
+QMutex     GlobalData::mutex;

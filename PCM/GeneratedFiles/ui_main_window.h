@@ -130,6 +130,9 @@ public:
     QAction *actionLoad_sampleIamge;
     QAction *actionRaycast;
     QAction *actionShow_kdtree;
+    QAction *actionNew_VideoEditing_Scene;
+    QAction *actionOpen_VideoEditing_Scene;
+    QAction *actionSave_VideoEditing_Scene;
     QWidget *centralWidget;
     QSplitter *splitter;
     QToolBox *toolBoxMenu;
@@ -432,6 +435,7 @@ public:
     QMenu *menuFiles;
     QMenu *menuImport;
     QMenu *menuExport;
+    QMenu *menuVideoEditing;
     QMenu *menuPaint;
     QMenu *menuSelect;
     QMenu *menuAlgorithm;
@@ -690,6 +694,12 @@ public:
         actionRaycast->setObjectName(QStringLiteral("actionRaycast"));
         actionShow_kdtree = new QAction(main_windowClass);
         actionShow_kdtree->setObjectName(QStringLiteral("actionShow_kdtree"));
+        actionNew_VideoEditing_Scene = new QAction(main_windowClass);
+        actionNew_VideoEditing_Scene->setObjectName(QStringLiteral("actionNew_VideoEditing_Scene"));
+        actionOpen_VideoEditing_Scene = new QAction(main_windowClass);
+        actionOpen_VideoEditing_Scene->setObjectName(QStringLiteral("actionOpen_VideoEditing_Scene"));
+        actionSave_VideoEditing_Scene = new QAction(main_windowClass);
+        actionSave_VideoEditing_Scene->setObjectName(QStringLiteral("actionSave_VideoEditing_Scene"));
         centralWidget = new QWidget(main_windowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setEnabled(true);
@@ -2340,6 +2350,8 @@ public:
         menuImport->setObjectName(QStringLiteral("menuImport"));
         menuExport = new QMenu(menuFiles);
         menuExport->setObjectName(QStringLiteral("menuExport"));
+        menuVideoEditing = new QMenu(menuFiles);
+        menuVideoEditing->setObjectName(QStringLiteral("menuVideoEditing"));
         menuPaint = new QMenu(menuBar);
         menuPaint->setObjectName(QStringLiteral("menuPaint"));
         menuSelect = new QMenu(menuBar);
@@ -2418,6 +2430,7 @@ public:
         menuFiles->addAction(menuImport->menuAction());
         menuFiles->addAction(menuExport->menuAction());
         menuFiles->addAction(actionLoad_model);
+        menuFiles->addAction(menuVideoEditing->menuAction());
         menuImport->addAction(actionLoad_ISM);
         menuImport->addAction(actionLoad_FBX);
         menuImport->addAction(actionLoad_mesh);
@@ -2440,6 +2453,9 @@ public:
         menuExport->addAction(actionSave_cluster);
         menuExport->addAction(actionSave_pose);
         menuExport->addAction(actionSave_camera);
+        menuVideoEditing->addAction(actionNew_VideoEditing_Scene);
+        menuVideoEditing->addAction(actionOpen_VideoEditing_Scene);
+        menuVideoEditing->addAction(actionSave_VideoEditing_Scene);
         menuPaint->addAction(actionSet_Visible);
         menuPaint->addAction(actionSet_Invisible);
         menuPaint->addAction(actionObject_Color);
@@ -2609,6 +2625,9 @@ public:
         actionLoad_sampleIamge->setText(QApplication::translate("main_windowClass", "Load sampleIamge", 0));
         actionRaycast->setText(QApplication::translate("main_windowClass", "Raycast", 0));
         actionShow_kdtree->setText(QApplication::translate("main_windowClass", "show kdtree", 0));
+        actionNew_VideoEditing_Scene->setText(QApplication::translate("main_windowClass", "New VideoEditing Scene", 0));
+        actionOpen_VideoEditing_Scene->setText(QApplication::translate("main_windowClass", "Open VideoEditing Scene", 0));
+        actionSave_VideoEditing_Scene->setText(QApplication::translate("main_windowClass", "Save VideoEditing Scene", 0));
         box_camera->setTitle(QApplication::translate("main_windowClass", "Camera", 0));
         lbl_camera_aperture->setText(QApplication::translate("main_windowClass", "fov: ", 0));
         lbl_near_plane->setText(QApplication::translate("main_windowClass", "Near: ", 0));
@@ -2968,6 +2987,7 @@ public:
         menuFiles->setTitle(QApplication::translate("main_windowClass", "Files", 0));
         menuImport->setTitle(QApplication::translate("main_windowClass", "import", 0));
         menuExport->setTitle(QApplication::translate("main_windowClass", "export", 0));
+        menuVideoEditing->setTitle(QApplication::translate("main_windowClass", "VideoEditing", 0));
         menuPaint->setTitle(QApplication::translate("main_windowClass", "View", 0));
         menuSelect->setTitle(QApplication::translate("main_windowClass", "Select", 0));
         menuAlgorithm->setTitle(QApplication::translate("main_windowClass", "Algorithm", 0));

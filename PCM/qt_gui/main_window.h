@@ -241,6 +241,11 @@ public slots:
 		void on_ssd_raio_toggled(bool checked);
 		void on_dual_quaternion_radio_toggled(bool checked);
 		void on_actionSkeleton_triggered();
+
+		void on_actionNew_VideoEditing_Scene_triggered();
+		void on_actionOpen_VideoEditing_Scene_triggered();
+		void on_actionSave_VideoEditing_Scene_triggered();
+
 private:
 		void createAction();
 		void createFileMenuAction();
