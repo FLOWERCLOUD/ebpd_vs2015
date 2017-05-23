@@ -4,6 +4,7 @@
 #include "triangle.h"
 #include "GlobalObject.h"
 #include "paint_canvas.h"
+#include "mesh.h"
 #include <QGLViewer\manipulatedFrame.h>
 #include <sstream>
 #include <string>
@@ -40,7 +41,7 @@ namespace MyOpengl
 		}
 	}
 
-	MeshOpengl::MeshOpengl(Sample& _smp) :smp_(_smp)
+	MeshOpengl::MeshOpengl(Sample& _smp ,const pcm::Mesh* _mesh):smp_(_smp),mesh_(_mesh)
 	{
 		reference_count++;
 		isBufferSetup = false;
@@ -51,8 +52,7 @@ namespace MyOpengl
 			string vertex_shader_path("./rendering/myshaders/shader.vs");
 			string frag_shader_path("./rendering/myshaders/shader.frag");
 			loalshader(openglShader,vertex_shader_path, frag_shader_path);
-		}
-		if (!normal_edge_Shader)
+		}else if (!normal_edge_Shader)
 		{
 			string shaderDir("./rendering/myshaders/");
 			string vertex_shader_path("./rendering/myshaders/normal_edge_shader.vs");
@@ -61,8 +61,9 @@ namespace MyOpengl
 			loalshader(normal_edge_Shader, vertex_shader_path, frag_shader_path, geo_shader_path);
 		}
 		canvas_ = Global_Canvas;
+
 	}
-	void MeshOpengl::draw(RenderMode::WhichColorMode mode , RenderMode::RenderType& r)
+	void MeshOpengl::draw(RenderMode::WhichColorMode mode , RenderMode::RenderType& r , Shader* _shader, PaintCanvas* _canvas)
 	{
 		switch (r)
 		{
@@ -88,22 +89,31 @@ namespace MyOpengl
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
 		updateViewOfMesh();
+		Shader* _curshader = NULL;
+		if (_shader)
+		{
+			_curshader = _shader;
+		}
 		if (openglShader)
 		{
-			openglShader->Use();
-			glUniformMatrix4fv(glGetUniformLocation(openglShader->Program, "projection"), 1, GL_FALSE, p_projmatrix_);
-			glUniformMatrix4fv(glGetUniformLocation(openglShader->Program, "view"), 1, GL_FALSE, p_viewmatrix_);
-			glUniformMatrix4fv(glGetUniformLocation(openglShader->Program, "model"), 1, GL_FALSE, p_modelmatrix_);
+			_curshader = _shader;
+		}
+		if (_curshader)
+		{
+			_curshader->Use();
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "projection"), 1, GL_FALSE, p_projmatrix_);
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "view"), 1, GL_FALSE, p_viewmatrix_);
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "model"), 1, GL_FALSE, p_modelmatrix_);
 
-			GLint lightColorLoc = glGetUniformLocation(openglShader->Program, "lightColor");
-			GLint lightPosLoc = glGetUniformLocation(openglShader->Program, "lightPos");
-			GLint viewPosLoc = glGetUniformLocation(openglShader->Program, "viewPos");
+			GLint lightColorLoc = glGetUniformLocation(_curshader->Program, "lightColor");
+			GLint lightPosLoc = glGetUniformLocation(_curshader->Program, "lightPos");
+			GLint viewPosLoc = glGetUniformLocation(_curshader->Program, "viewPos");
 			glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); //light color
 			qglviewer::Vec camera_pos = canvas_->camera()->position();
 			glUniform3f(lightPosLoc, camera_pos.x, camera_pos.y, camera_pos.z);   //light position
 			glUniform3f(viewPosLoc, camera_pos.x, camera_pos.y, camera_pos.z); //camera position
-			draw(*openglShader);
-			openglShader->UnUse();
+			draw(*_curshader);
+			_curshader->UnUse();
 		}
 	}
 	void MeshOpengl::draw(Shader& _shader)
@@ -126,12 +136,14 @@ namespace MyOpengl
 				ss << specularNr++; // Transfer GLuint to stream
 			else if (name == "texture_normal")
 				ss << normalNr++; // Transfer GLuint to stream
-			else if (name == "texture_height")
+			else if (name == "texture_ambient")
 				ss << heightNr++; // Transfer GLuint to stream
 			number = ss.str();
-			// Now set the sampler to the correct texture unit
-			glUniform1i(glGetUniformLocation(openglShader->Program, (name + number).c_str()), i);
-			// And finally bind the texture
+			//  using glUniform1i to set the location or texture-unit of the uniform samplers. 
+			//By setting them via glUniform1i we make sure each uniform sampler corresponds to the proper texture unit.
+			glUniform1i(glGetUniformLocation(_shader.Program, (name + number).c_str()), i);
+			glUniform1i(glGetUniformLocation(_shader.Program, ("use_"+name + number).c_str()), 1);
+			// And finally bind the texture to current texture unit
 			glBindTexture(GL_TEXTURE_2D, this->textures[i].id);
 		}
 
@@ -162,22 +174,31 @@ namespace MyOpengl
 		glBindVertexArray(0);
 
 	}
-	void MeshOpengl::drawNormal(pcm::ColorType normalColor)
+	void MeshOpengl::drawNormal(pcm::ColorType normalColor , Shader* _shader)
 	{
-		updateViewOfMesh();
-		if (normal_edge_Shader)
+		Shader* _curshader = NULL;
+		if (_shader)
 		{
-			normal_edge_Shader->Use();
+			_curshader = _shader;
+		}
+		else if (_curshader)
+		{
+			_curshader = _shader;
+		}
+		updateViewOfMesh();
+		if (_curshader)
+		{
+			_curshader->Use();
 			glLineWidth(0.01f);
-			glUniformMatrix4fv(glGetUniformLocation(normal_edge_Shader->Program, "u_proj_mat"), 1, GL_FALSE, p_projmatrix_);
-			glUniformMatrix4fv(glGetUniformLocation(normal_edge_Shader->Program, "u_view_mat"), 1, GL_FALSE, p_viewmatrix_);
-			glUniformMatrix4fv(glGetUniformLocation(normal_edge_Shader->Program, "u_model_mat"), 1, GL_FALSE, p_modelmatrix_);
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "u_proj_mat"), 1, GL_FALSE, p_projmatrix_);
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "u_view_mat"), 1, GL_FALSE, p_viewmatrix_);
+			glUniformMatrix4fv(glGetUniformLocation(_curshader->Program, "u_model_mat"), 1, GL_FALSE, p_modelmatrix_);
 
-			GLint color_loc1 = glGetUniformLocation(normal_edge_Shader->Program, "u_edgeColor");
-			GLint color_loc2 = glGetUniformLocation(normal_edge_Shader->Program, "u_faceNormalColor");
-			GLint color_loc3 = glGetUniformLocation(normal_edge_Shader->Program, "u_normalColor");
-			GLint color_loc4 = glGetUniformLocation(normal_edge_Shader->Program, "u_tangentColor");
-			GLint color_loc5 = glGetUniformLocation(normal_edge_Shader->Program, "u_bitangentColor");
+			GLint color_loc1 = glGetUniformLocation(_curshader->Program, "u_edgeColor");
+			GLint color_loc2 = glGetUniformLocation(_curshader->Program, "u_faceNormalColor");
+			GLint color_loc3 = glGetUniformLocation(_curshader->Program, "u_normalColor");
+			GLint color_loc4 = glGetUniformLocation(_curshader->Program, "u_tangentColor");
+			GLint color_loc5 = glGetUniformLocation(_curshader->Program, "u_bitangentColor");
 
 			glUniform4f(color_loc1, 0.2f, 0.2f, 0.2f,1.0f); 
 			glUniform4f(color_loc2, 0.0f, 1.0f, 0.2f, 1.0f);
@@ -185,9 +206,9 @@ namespace MyOpengl
 			glUniform4f(color_loc4, 0.05f, 0.15f, 0.646f, 1.0f);
 			glUniform4f(color_loc5, 0.035f, 0.9f, 0.89f, 1.0f);
 			// modifier for size of the normals, tangents and bitangents
-			glUniform1f(glGetUniformLocation(normal_edge_Shader->Program, "u_normalScale"), 0.025f);
-			drawNormal(*normal_edge_Shader);
-			normal_edge_Shader->UnUse();
+			glUniform1f(glGetUniformLocation(_curshader->Program, "u_normalScale"), 0.025f);
+			drawNormal(*_curshader);
+			_curshader->UnUse();
 		}
 
 
@@ -218,27 +239,37 @@ namespace MyOpengl
 	{
 		canvas_->camera()->getProjectionMatrix(p_projmatrix_);
 		canvas_->camera()->getModelViewMatrix(p_viewmatrix_);
-		qglviewer::Frame& frame = smp_.getFrame();
-		double local_matrix[16];
-		frame.getMatrix(local_matrix);
-		pcm::Matrix44 matirx44;
-		for (int i = 0; i < 4; ++i)
+		if (smp_.num_vertices())
 		{
-			for (int j = 0; j < 4; ++j)
+			qglviewer::Frame& frame = smp_.getFrame();
+			double local_matrix[16];
+			frame.getMatrix(local_matrix);
+			pcm::Matrix44 matirx44;
+			for (int i = 0; i < 4; ++i)
 			{
-				matirx44(i, j) = local_matrix[i + 4 * j];
+				for (int j = 0; j < 4; ++j)
+				{
+					matirx44(i, j) = local_matrix[i + 4 * j];
+				}
+
 			}
-			
+			pcm::Matrix44& mat = smp_.matrix_to_scene_coord();
+			matirx44 = matirx44*mat;
+			for (int i = 0; i < 4; ++i)
+			{
+				for (int j = 0; j < 4; ++j)
+				{
+					p_modelmatrix_[i + 4 * j] = matirx44(i, j);
+				}
+			}
+
 		}
-		pcm::Matrix44& mat = smp_.matrix_to_scene_coord();
-		matirx44 = matirx44*mat;
-		for (int i = 0; i < 4; ++i)
+		else
 		{
-			for (int j = 0; j < 4; ++j)
-			{
-				p_modelmatrix_[i + 4 * j] = matirx44(i, j);
-			}
+
+
 		}
+
 	}
 	void MeshOpengl::updateMesh()
 	{
@@ -326,8 +357,18 @@ namespace MyOpengl
 	{
 		if (!isMeshSetup)
 		{
-			loadMeshFromSample();
-			isMeshSetup = true;
+			if (smp_.num_vertices())
+			{
+				loadMeshFromSample();
+				isMeshSetup = true;
+			}			
+			else if (mesh_)
+			{
+				loadMeshFrompcmMesh();
+				isMeshSetup = true;
+			}
+				
+			isMeshSetup = false;
 		}
 
 
@@ -456,29 +497,97 @@ namespace MyOpengl
 			Logger << "loadMeshFromSample" << endl;
 		}
 	}
+
+	void  MeshOpengl::loadMeshFrompcmMesh()
+	{
+		vertices.clear();
+		indices.clear();
+		textures.clear();
+		colors.clear();
+
+		if (!mesh_)
+			return;
+		for (int i = 0; i < mesh_->num_vertices(); i++)
+		{
+			OpenglVertex vertex;
+			vertex.Position = (*mesh_)[i].get_position();
+			vertex.Normal = (*mesh_)[i].get_normal();
+			vertex.TexCoords = (*mesh_)[i].get_texture();
+			vertex.Tangent = (*mesh_)[i].get_tangent();
+			vertex.Bitangent = (*mesh_)[i].get_bi_tangent();
+			Vertex& v = (*mesh_)[i];
+			vertices.push_back(vertex);
+
+		}
+		for (size_t i = 0; i < mesh_->num_triangles(); i++)
+		{
+			TriangleType& triangle = mesh_->getTriangle(i);
+			indices.push_back(triangle.get_i_vertex(0));
+			indices.push_back(triangle.get_i_vertex(1));
+			indices.push_back(triangle.get_i_vertex(2));
+
+		}
+		for (size_t i = 0; i < mesh_->num_vertices(); i++)
+		{
+			OpenglColor openglColor;
+			openglColor.color = pcm::ColorType((*mesh_)[i].r(), (*mesh_)[i].g(), (*mesh_)[i].b(), (*mesh_)[i].alpha());
+			colors.push_back(openglColor);
+		}
+		if (isDebug)
+		{
+			Logger << "loadMeshFromSample" << endl;
+		}
+
+	}
 	void MeshOpengl::updateColor()
 	{
 		canvas_->makeCurrent();
 		colors.clear();
-		if (smp_.colors_.size() == smp_.num_vertices())
+		if (smp_.num_vertices())
 		{
-			for (size_t i = 0; i < smp_.num_vertices(); i++)
+			if (smp_.colors_.size() == smp_.num_vertices())
 			{
-				OpenglColor openglColor;
-				openglColor.color = smp_.colors_[i];
-				colors.push_back(openglColor);
+				for (size_t i = 0; i < smp_.num_vertices(); i++)
+				{
+					OpenglColor openglColor;
+					openglColor.color = smp_.colors_[i];
+					colors.push_back(openglColor);
+				}
+			}
+			else
+			{
+				for (size_t i = 0; i < smp_.num_vertices(); i++)
+				{
+					OpenglColor openglColor;
+					openglColor.color = pcm::ColorType(smp_[i].r(), smp_[i].g(), smp_[i].b(), smp_[i].alpha());
+					colors.push_back(openglColor);
+				}
+
 			}
 		}
 		else
 		{
-			for (size_t i = 0; i < smp_.num_vertices(); i++)
+			if (mesh_->colors_.size() == mesh_->num_vertices())
 			{
-				OpenglColor openglColor;
-				openglColor.color = pcm::ColorType(smp_[i].r(), smp_[i].g(), smp_[i].b(), smp_[i].alpha());
-				colors.push_back(openglColor);
+				for (size_t i = 0; i < mesh_ -> num_vertices(); i++)
+				{
+					OpenglColor openglColor;
+					openglColor.color = mesh_ ->colors_[i];
+					colors.push_back(openglColor);
+				}
 			}
+			else
+			{
+				for (size_t i = 0; i < mesh_->num_vertices(); i++)
+				{
+					OpenglColor openglColor;
+					openglColor.color = pcm::ColorType( (*mesh_)[i].r(), (*mesh_)[i].g(), (*mesh_)[i].b(), (*mesh_)[i].alpha());
+					colors.push_back(openglColor);
+				}
 
+			}
 		}
+
 
 		glBindBuffer(GL_ARRAY_BUFFER, this->CBO);
 		glBufferData(GL_ARRAY_BUFFER, this->colors.size() * sizeof(OpenglColor), &this->colors[0], GL_STREAM_DRAW);

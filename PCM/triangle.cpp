@@ -104,6 +104,37 @@ bool TriangleType::hit(const Ray& ray, float& _t, float& min, HitResult& hitResu
 	return false;
 }
 
+pcm::PointType TriangleType::get_midpoint()
+{
+	int i0 = get_i_vertex(0);
+	int i1 = get_i_vertex(1);
+	int i2 = get_i_vertex(2);
+	pcm::PointType& p0 = sample_[i0].get_position();
+	pcm::PointType& p1 = sample_[i1].get_position();
+	pcm::PointType& p2 = sample_[i2].get_position();
+	pcm::PointType midp(0.0f, 0.0f, 0.0f);
+	midp += p0;
+	midp += p1;
+	midp += p2;
+	midp /= 3;
+	return midp;
+}
+
+Box TriangleType::get_bounding_box()
+{
+	int i0 = get_i_vertex(0);
+	int i1 = get_i_vertex(1);
+	int i2 = get_i_vertex(2);
+	pcm::PointType& p1 = sample_[i0].get_position();
+	pcm::PointType& p2 = sample_[i1].get_position();
+	pcm::PointType& p3 = sample_[i2].get_position();
+	Box bbox;
+	bbox.expand(p1);
+	bbox.expand(p2);
+	bbox.expand(p3);
+	return bbox;
+}
+
 void TriangleType::draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType& r,const Matrix44& adjust_matrix, const Vec3& bias)
 {
 	if (!visible_)

@@ -11,6 +11,7 @@ namespace RenderMode
 class Sample;
 class Ray;
 class HitResult;
+class Box;
 class TriangleType :public SelectableItem
 {
 public:
@@ -34,35 +35,8 @@ public:
 		return i_norm[which_normal];
 	}
 	bool hit(const Ray& ray, float& t, float& min, HitResult& hitResult);
-	pcm::PointType get_midpoint()
-	{
-		int i0 = get_i_vertex(0);
-		int i1 = get_i_vertex(1);
-		int i2 = get_i_vertex(2);
-		pcm::PointType& p0 = sample_[i0].get_position();
-		pcm::PointType& p1 = sample_[i1].get_position();
-		pcm::PointType& p2 = sample_[i2].get_position();
-		pcm::PointType midp(0.0f, 0.0f, 0.0f);
-		midp += p0;
-		midp += p1;
-		midp += p2;
-		midp /= 3;
-		return midp;
-	}
-	Box get_bounding_box()
-	{
-		int i0 = get_i_vertex(0);
-		int i1 = get_i_vertex(1);
-		int i2 = get_i_vertex(2);
-		pcm::PointType& p1 = sample_[i0].get_position();
-		pcm::PointType& p2 = sample_[i1].get_position();
-		pcm::PointType& p3 = sample_[i2].get_position();
-		Box bbox;
-		bbox.expand(p1);
-		bbox.expand(p2);
-		bbox.expand(p3);
-		return bbox;
-	}
+	pcm::PointType get_midpoint();
+	Box get_bounding_box();
 	void draw(RenderMode::WhichColorMode& wcm, RenderMode::RenderType& r,
 		const Matrix44& adjust_matrix, const Vec3& bias);
 	int get_idx()

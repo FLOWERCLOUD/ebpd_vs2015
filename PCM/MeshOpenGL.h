@@ -7,6 +7,10 @@
 
 class Sample;
 class PaintCanvas;
+namespace pcm
+{
+	class Mesh;
+}
 namespace MyOpengl
 {
 	struct OpenglVertex {
@@ -46,7 +50,7 @@ namespace MyOpengl
 		static Shader* normal_edge_Shader;
 		static int reference_count;
 		static void loalshader(Shader*& shader, const std::string& vertexPath, const std::string& fragmentPath, const std::string& geometryPath = std::string());
-		MeshOpengl(Sample& _smp);
+		MeshOpengl(Sample& _smp, const pcm::Mesh* _mesh = NULL);
 		~MeshOpengl()
 		{
 			if (reference_count == 1)
@@ -70,8 +74,8 @@ namespace MyOpengl
 		void draw(Shader& _shader);
 		void drawNormal(Shader& _shader);
 	public:
-		void draw(RenderMode::WhichColorMode mode, RenderMode::RenderType& r);
-		void drawNormal(pcm::ColorType normalColor = pcm::ColorType(0.0f, 0.0f, 1.0f, 1.0f));
+		void draw(RenderMode::WhichColorMode mode, RenderMode::RenderType& r ,Shader* openglShader = NULL, PaintCanvas* canvas =NULL);
+		void drawNormal(pcm::ColorType normalColor = pcm::ColorType(0.0f, 0.0f, 1.0f, 1.0f) , Shader* _shader =NULL);
 		void updateMesh();
 		void updateViewOfMesh();
 		void updateColor();
@@ -81,11 +85,12 @@ namespace MyOpengl
 		void setupMesh();
 		void setupBuffer();
 		void loadMeshFromSample();
-
+		void loadMeshFrompcmMesh();
 
 		bool isBufferSetup;
 		bool isMeshSetup;
 		Sample& smp_;
+		const pcm::Mesh* mesh_;
 		PaintCanvas* canvas_;
 		GLfloat p_viewmatrix_[16];
 		GLfloat p_projmatrix_[16];
@@ -99,6 +104,44 @@ namespace MyOpengl
 		std::vector<GLuint> indices;
 		std::vector<OpenglTexture> textures;
 		std::vector<OpenglColor> colors;
+	};
+
+
+	class MeshOpengl2
+	{
+	public:
+		MeshOpengl2(pcm::Mesh& mesh);
+		~MeshOpengl2()
+		{
+
+			glDeleteBuffers(1, &VBO);
+			glDeleteBuffers(1, &EBO);
+			glDeleteBuffers(1, &VAO);
+			glDeleteBuffers(1, &VAO2);
+			glDeleteBuffers(1, &CBO);
+		}
+		void updateMesh();
+		void draw(RenderMode::WhichColorMode mode, RenderMode::RenderType& r, Shader* openglShader = NULL, PaintCanvas* canvas = NULL);
+	private:
+		void draw(Shader& _shader);
+		void updateBuffer();
+		void setup();
+		void setupMesh();
+		void setupBuffer();
+
+		bool isBufferSetup;
+		bool isMeshSetup;
+		/*  Render data  */
+		GLuint VBO, EBO, CBO;
+		GLuint VAO;
+		GLuint VAO2;
+		/*  Mesh Data  */
+		std::vector<OpenglVertex> vertices;
+		std::vector<GLuint> indices;
+		std::vector<OpenglTexture> textures;
+		std::vector<OpenglColor> colors;
+
+
 	};
 
 }

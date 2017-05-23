@@ -439,6 +439,7 @@ void main_window::createFileMenuAction()
 	connect(ui.actionSavePly ,SIGNAL(triggered()) , this ,SLOT(savePLY()));
 	connect(ui.actionsaveLabelFile ,SIGNAL(triggered()) , this ,SLOT(saveLabelFile()));
 	connect(ui.actionGetlabel_from_file ,SIGNAL(triggered()) , this ,SLOT(getLabelFromFile()));
+
 }
 
 bool main_window::openFile()
@@ -1287,6 +1288,8 @@ void main_window::pivot_comboBox_currentIndexChanged(int idx)
 	//int val = toolBar->_pivot_comboBox->itemData( idx ).toInt();
 	//_viewports->set_pivot_mode((EOGL_widget::Pivot_t)val);
 }
+
+
 
 void main_window::active_viewport(int id)
 {

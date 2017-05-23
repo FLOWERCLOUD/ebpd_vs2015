@@ -3,6 +3,7 @@
 #include "qt_gui/main_window.h"
 #include "qt_gui/paint_canvas.h"
 #include "VideoEdittingParameter.h"
+#include "VideoEditingWindow.h"
 #include "sample_set.h"
 #include <QSemaphore>
 #include <QMutex>
@@ -11,6 +12,7 @@ main_window* Global_Window;
 
 PaintCanvas* Global_Canvas;
 SampleSet*   Global_SampleSet;
+VideoEditingWindow* Global_WideoEditing_Window;
 void globalObjectsInit()
 {
 
@@ -34,6 +36,10 @@ void setGlobalCanvas(PaintCanvas* _canvas)
 void setGlobalSampleSet(SampleSet* _sampleSet)
 {
 	Global_SampleSet = _sampleSet;
+}
+void setGlobalWideoEditingWindow(VideoEditingWindow* _videoEditingWindow)
+{
+	Global_WideoEditing_Window = _videoEditingWindow;
 }
 QSemaphore GlobalData::trimapSemaphore(1);
 QSemaphore GlobalData::mattingSemaphore(0);

@@ -103,7 +103,8 @@ namespace FileIO
 
 			}
 
-		}else if( type == FileIO::PLY){
+		}
+		else if( type == FileIO::PLY){
 			int vcount=0;
 			int fcount=0;
 			fscanf(in_file,"ply\nformat ascii 1.0\nelement vertex %d\n",&vcount);
@@ -124,7 +125,8 @@ namespace FileIO
 				new_sample->add_vertex(v, nv, cv);
 			}
 
-		}else if(type = FileIO::OBJ)
+		}
+		else if(type = FileIO::OBJ)
 		{
 			char pref[3];
 			new_sample->clear();
@@ -223,11 +225,17 @@ namespace FileIO
 				}
 				//	new_sample->add_triangle(triangle_array= ttv;
 				fclose(fd);
-			}else
+			}
+			else //fd == NULL
 			{		
 				return false;
 			}
 
+		}
+		else if (type = FileIO::PCMSCENE)
+		{
+			new_sample->clear();
+			new_sample->load_scene(filename);
 		}
 		else{
 			fclose(in_file);

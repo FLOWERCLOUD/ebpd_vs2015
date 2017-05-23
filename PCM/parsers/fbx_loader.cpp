@@ -2,7 +2,7 @@
 
 // -----------------------------------------------------------------------------
 
-#include <../../fbxsdk/core/arch/fbxarch.h>
+#include <../../include/fbxsdk/core/arch/fbxarch.h>
 #include "fbx_utils.hpp"
 #include "toolbox/std_utils/map.hpp"
 

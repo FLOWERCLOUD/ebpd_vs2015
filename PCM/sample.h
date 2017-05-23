@@ -22,7 +22,10 @@ namespace MyOpengl
 {
 	class MeshOpengl;
 }
-
+namespace pcm
+{
+	class Scene;
+}
 
 
 class Sample:public SelectableItem
@@ -44,6 +47,8 @@ public:
 	Vertex* add_vertex( const pcm::PointType& pos,const pcm::NormalType& n,
 		const pcm::ColorType& c);
 	TriangleType* add_triangle(const TriangleType& tt);
+	pcm::Scene*  load_scene(std::string path);
+
 	void delete_vertex_group( const std::vector<IndexType>& idx_grp );
 	void set_vertex_label(const std::vector<IndexType>& idx_grp ,IndexType label);
 
@@ -212,6 +217,9 @@ private:
 	bool isOpenglMeshColorUpdated;
 	bool isUsingProgramablePipeLine;
 	MyOpengl::MeshOpengl* opengl_mesh_;
+	pcm::Scene*					scene_;
+
+
 
 	PoolAllocator			allocator_;
 	Box						box_;

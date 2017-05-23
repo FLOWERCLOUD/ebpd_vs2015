@@ -90,6 +90,30 @@
     <Filter Include="Geometry\bullet\extras">
       <UniqueIdentifier>{de999607-61a9-4226-a8a8-ffa8c2982cf9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Algorithm\videoediting">
+      <UniqueIdentifier>{ac5f6505-60c5-4112-b7c1-a57adc05b1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\videoeditting">
+      <UniqueIdentifier>{d2934ff9-2954-4093-8662-3b89acc6bd73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files\nouse">
+      <UniqueIdentifier>{82e68f7d-a9de-423d-825b-bf6f399054ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualize\videoediting">
+      <UniqueIdentifier>{abce8328-13fb-4566-9477-03ae64fe6040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Visualize\nouse">
+      <UniqueIdentifier>{4d41908d-b71a-423f-ae13-264519973139}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\videoediting">
+      <UniqueIdentifier>{fd832dae-3b1d-432c-89fe-6ceceb635e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility\nouse">
+      <UniqueIdentifier>{75428c23-e41f-4b05-9e26-ec1458f17bee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\videoediting">
+      <UniqueIdentifier>{97851d9a-531c-4188-83cc-39ec06612919}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GeneratedFiles\qrc_main_window.cpp">
@@ -429,9 +453,6 @@
     <ClCompile Include="qt_gui\main_window.cpp">
       <Filter>Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="qt_gui\dlg_propagate.cpp">
-      <Filter>Visualize</Filter>
-    </ClCompile>
     <ClCompile Include="qt_gui\cameraViewer.cpp">
       <Filter>Visualize</Filter>
     </ClCompile>
@@ -630,6 +651,114 @@
     <ClCompile Include="box.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="scene.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="pcm_mesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VideoEditingWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SrcWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GenerateTrimap.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="bayesian.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="Cluster.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="MyBayesian.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateTrimap.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="frameDif.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="VideoEditingWindow.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="SrcWidget.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="qt_gui\dlg_propagate.cpp">
+      <Filter>Visualize\nouse</Filter>
+    </ClCompile>
+    <ClCompile Include="readframe.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="camerawidget.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_camerawidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_readframe.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\Manipulator2.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\RotateManipulator.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\ScaleManipulator.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\TranslateManipulator.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\RenderableObject.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\BoundingBox.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\VideoEDCamera.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\VideoEDMesh.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\GLViewWidget.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\HistoryCommand.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\VEScene.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GLViewWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\ObjectTransformWidget.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ObjectTransformWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\GeometryExposer.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\ObjReader.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoEditingCommonType.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -652,9 +781,6 @@
     </CustomBuild>
     <CustomBuild Include="vertex.h">
       <Filter>Geometry</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\ICP\ICP.h">
-      <Filter>Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="color_table.h">
       <Filter>Utility</Filter>
@@ -689,18 +815,6 @@
     <CustomBuild Include="tracer.h">
       <Filter>Tools</Filter>
     </CustomBuild>
-    <CustomBuild Include="dlg_clustering.h">
-      <Filter>Visualize</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\ICP\J_linkage.h">
-      <Filter>Utility</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\ICP\J_linkage_II.h">
-      <Filter>Utility</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\ICP\T_linkage.h">
-      <Filter>Utility</Filter>
-    </CustomBuild>
     <CustomBuild Include="octree.h">
       <Filter>Utility</Filter>
     </CustomBuild>
@@ -709,9 +823,6 @@
     </CustomBuild>
     <CustomBuild Include="bfs_classifier.hpp">
       <Filter>Algorithm</Filter>
-    </CustomBuild>
-    <CustomBuild Include="dlg_Jlinkage.h">
-      <Filter>Visualize</Filter>
     </CustomBuild>
     <CustomBuild Include="GeneratedFiles\ui_testUi.h">
       <Filter>Generated Files</Filter>
@@ -722,17 +833,11 @@
     <CustomBuild Include="GeneratedFiles\ui_JLinkageDlg.h">
       <Filter>Generated Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="dlg_graphcuts.h">
-      <Filter>Visualize</Filter>
-    </CustomBuild>
     <CustomBuild Include="GeneratedFiles\ui_dlg_graphcut.h">
       <Filter>Generated Files</Filter>
     </CustomBuild>
     <CustomBuild Include="GeneratedFiles\ui_GraphCutsDlg.h">
       <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="dlg_fitPlan.h">
-      <Filter>Visualize</Filter>
     </CustomBuild>
     <CustomBuild Include="caculateNorm.h">
       <Filter>Algorithm</Filter>
@@ -743,40 +848,10 @@
     <CustomBuild Include="qt_gui\ui\savesnapshotDialog.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\dlg_clustering.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\dlg_graphcut.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\dlg_plan.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\GraphCutsDlg.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\J-linkageAl.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\JLinkageDlg.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="qt_gui\ui\layerDialog.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\main_window_skin.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\papagate_dialog.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="qt_gui\ui\savePlyDialog.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\tt.ui">
-      <Filter>Form Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\ui\testUi.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="qt_gui\OGL_viewports_skin2.hpp">
@@ -795,9 +870,6 @@
       <Filter>Visualize</Filter>
     </CustomBuild>
     <CustomBuild Include="qt_gui\main_window.h">
-      <Filter>Visualize</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt_gui\dlg_propagate.h">
       <Filter>Visualize</Filter>
     </CustomBuild>
     <CustomBuild Include="qt_gui\GLLogStream.h">
@@ -868,6 +940,87 @@
     </CustomBuild>
     <CustomBuild Include="manipulate_tool.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="GenerateTrimap.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\VideoEditingScene.ui">
+      <Filter>Form Files\videoeditting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\tt.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\testUi.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\main_window_skin.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_plan.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_graphcut.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\dlg_clustering.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\JLinkageDlg.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\J-linkageAl.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\GraphCutsDlg.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\papagate_dialog.ui">
+      <Filter>Form Files\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="VideoEditingWindow.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SrcWidget.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\dlg_propagate.h">
+      <Filter>Visualize\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_clustering.h">
+      <Filter>Visualize\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_fitPlan.h">
+      <Filter>Visualize\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_graphcuts.h">
+      <Filter>Visualize\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="dlg_Jlinkage.h">
+      <Filter>Visualize\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\T_linkage.h">
+      <Filter>Utility\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\J_linkage_II.h">
+      <Filter>Utility\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\J_linkage.h">
+      <Filter>Utility\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\ICP\ICP.h">
+      <Filter>Utility\nouse</Filter>
+    </CustomBuild>
+    <CustomBuild Include="readframe.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="camerawidget.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\GLViewWidget.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\ObjectTransformWidget.h">
+      <Filter>Tools\videoediting</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -1285,13 +1438,81 @@
     <ClInclude Include="ray.h">
       <Filter>Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="scene.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="mesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_tt.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_VideoEditingScene.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="bayesian.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="Cluster.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="MyBayesian.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="frameDif.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoEdittingParameter.h">
+      <Filter>Utility\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\Manipulator2.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\RenderableObject.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\RotateManipulator.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\ScaleManipulator.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\TranslateManipulator.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\BoundingBox.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\HistoryCommand.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\GeometryExposer.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\ObjReader.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\VideoEDMesh.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\VEScene.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\VideoEDCamera.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PCM.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
-    <None Include="qt_gui\main_window_menu_load_save" />
     <None Include="animation\animesh_projection" />
   </ItemGroup>
   <ItemGroup>

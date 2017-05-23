@@ -104,7 +104,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_XML_LIB;GLEW_STATIC;NCUDA;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master/;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(SolutionDir)\toolbox\include;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master/;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h;$(SolutionDir)include/;$(SolutionDir)include/FreeImage;$(SolutionDir)include/assimp</AdditionalIncludeDirectories>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -116,11 +116,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Debug;$(QTDIR_64_12)\lib;$(PCL_ROOT)\3rdParty\FLANN\lib;$(PCL_ROOT)\3rdParty\OpenNI\lib;$(PCL_ROOT)\3rdParty\Qhull\lib;$(PCL_ROOT)\3rdParty\VTK\lib;$(PCL_ROOT)\lib;$(SolutionDir)fbxsdk\lib\vs2012\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Debug;$(QTDIR_64_12)\lib;$(SolutionDir)include\fbxsdk\lib\vs2012\x64;$(OpenCVDir)\build\x64\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImaged.lib;assimp-vc140-mt.lib;opencv_calib3d2413d.lib;opencv_contrib2413d.lib;opencv_core2413d.lib;opencv_features2d2413d.lib;opencv_flann2413d.lib;opencv_gpu2413d.lib;opencv_highgui2413d.lib;opencv_imgproc2413d.lib;opencv_legacy2413d.lib;opencv_ml2413d.lib;opencv_nonfree2413d.lib;opencv_objdetect2413d.lib;opencv_ocl2413d.lib;opencv_photo2413d.lib;opencv_stitching2413d.lib;opencv_superres2413d.lib;opencv_ts2413d.lib;opencv_video2413d.lib;opencv_videostab2413d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <IgnoreSpecificDefaultLibraries>pcl_features_debug.lib;pcl_kdtree_debug.lib;pcl_search_debug.lib;pcl_io_debug.lib;pcl_io_ply_debug.lib;pcl_common_debug.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
     <CustomBuildStep>
       <Command>$(QTDIR_64_12)\bin\moc.exe</Command>
@@ -153,7 +154,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PreprocessorDefinitions>UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_OPENGL_LIB;QT_WIDGETS_LIB;QT_XML_LIB;GLEW_STATIC;NCUDA;FBXSDK_SHARED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(CUDA_PATH)\include;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR_64_12)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR_64_12)\include\QtCore;$(QTDIR_64_12)\include\QtGui;$(QTDIR_64_12)\include\QtOpenGL;$(QTDIR_64_12)\include\QtWidgets;..;$(QTDIR_64_12)\include\QtXml;..\eigen_3_3_2;$(OPENCVDIR)\include\opencv;$(OPENCVDIR)\sources\include\opencv2;$(OPENCVDIR)\build\include;$(MATLABDIR2012b)\extern\include;$(SolutionDir);$(SolutionDir)boost_1_59_0\boost_1_59_0;.\;$(PCL_DIR);$(SolutionDir)\toolbox\include;$(CUDA_PATH)\include;$(SolutionDir)bullet3-2.85.1\src;$(ProjectDir)bullet\Glew;$(SolutionDir)bullet3-2.85.1\Extras;$(SolutionDir)ssdr;$(ProjectDir)qt_gui;%(AdditionalIncludeDirectories);$(SolutionDir)tetgen-master;$(SolutionDir)igl/include;C:\Program Files\Mosek\7\tools\platform\win64x86\h;$(SolutionDir)include/;$(SolutionDir)include/FreeImage;$(SolutionDir)include/assimp</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -162,11 +163,12 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Release;$(QTDIR_64_12)\lib;$(PCL_ROOT)\3rdParty\FLANN\lib;$(PCL_ROOT)\3rdParty\OpenNI\lib;$(PCL_ROOT)\3rdParty\Qhull\lib;$(PCL_ROOT)\3rdParty\VTK\lib;$(PCL_ROOT)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)fbxsdk\lib\vs2012\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Release;$(QTDIR_64_12)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)include\fbxsdk\lib\vs2012\x64;$(OpenCVDir)\build\x64\vc12\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImage.lib;assimp-vc140-mt.lib;opencv_calib3d247.lib;opencv_contrib247.lib;opencv_core247.lib;opencv_features2d247.lib;opencv_flann247.lib;opencv_gpu247.lib;opencv_highgui247.lib;opencv_imgproc247.lib;opencv_legacy247.lib;opencv_ml247.lib;opencv_nonfree247.lib;opencv_objdetect247.lib;opencv_ocl247.lib;opencv_photo247.lib;opencv_stitching247.lib;opencv_superres247.lib;opencv_ts247.lib;opencv_video247.lib;opencv_videostab247.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
-      <IgnoreSpecificDefaultLibraries>pcl_features_release.lib;pcl_kdtree_release.lib;pcl_search_release.lib;pcl_io_release.lib;pcl_io_ply_release.lib;pcl_common_release.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -185,6 +187,7 @@
     <ClCompile Include="animation\animesh_colors.cpp" />
     <ClCompile Include="animation\animesh_rig.cpp" />
     <ClCompile Include="BASEReader.cpp" />
+    <ClCompile Include="bayesian.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="bullet\BasicDemo.cpp" />
     <ClCompile Include="bullet\BulletOpenGLApplication.cpp" />
@@ -204,6 +207,8 @@
     <ClCompile Include="bullet\ThirdPartyLibs\Wavefront\tiny_obj_loader.cpp" />
     <ClCompile Include="bullet\Utils\b3ResourcePath.cpp" />
     <ClCompile Include="caculateNorm.cpp" />
+    <ClCompile Include="camerawidget.cpp" />
+    <ClCompile Include="Cluster.cpp" />
     <ClCompile Include="control\animated_mesh_ctrl.cpp" />
     <ClCompile Include="control\color_ctrl.cpp" />
     <ClCompile Include="control\cuda_ctrl.cpp" />
@@ -211,16 +216,24 @@
     <ClCompile Include="control\example_mesh_ctrl.cpp" />
     <ClCompile Include="control\graph_ctrl.cpp" />
     <ClCompile Include="control\skeleton_ctrl.cpp" />
+    <ClCompile Include="frameDif.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_camerawidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_GenerateTrimap.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_GLViewWidget.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_manipulate_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ObjectTransformWidget.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_popup_ok_cancel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_readframe.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_select_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_SrcWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_VideoEditingWindow.cpp" />
     <ClCompile Include="GeneratedFiles\Release\moc_manipulate_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -231,6 +244,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="GenerateTrimap.cpp" />
     <ClCompile Include="global_datas\cuda_globals.cpp" />
     <ClCompile Include="ImageToShape.cpp" />
     <ClCompile Include="Image_ctrl.cpp" />
@@ -241,7 +255,10 @@
     <ClCompile Include="manipulatedFrameSetConstraint.cpp" />
     <ClCompile Include="manipulate_object.cpp" />
     <ClCompile Include="manipulate_tool.cpp" />
+    <ClCompile Include="MyBayesian.cpp" />
+    <ClCompile Include="pcm_mesh.cpp" />
     <ClCompile Include="MeshOpenGL.cpp" />
+    <ClCompile Include="model.cpp" />
     <ClCompile Include="parsers\fbx_loader.cpp" />
     <ClCompile Include="parsers\fbx_utils.cpp" />
     <ClCompile Include="qt_gui\cameraViewer.cpp" />
@@ -446,6 +463,7 @@
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_interface_skin.cpp" />
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_mesh_edit.cpp" />
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_skeleton.cpp" />
+    <ClCompile Include="readframe.cpp" />
     <ClCompile Include="rendering\camera.cpp" />
     <ClCompile Include="rendering\depth_peeling.cpp" />
     <ClCompile Include="rendering\opengl_stuff.cpp" />
@@ -471,15 +489,34 @@
     <ClCompile Include="qt_gui\paint_canvas.cpp" />
     <ClCompile Include="qt_gui\savePLYDialog.cpp" />
     <ClCompile Include="qt_gui\saveSnapshotDialog.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="select_tool.cpp" />
     <ClCompile Include="qt_gui\standardCamera.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar_frames.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar_painting.cpp" />
     <ClCompile Include="shader.cpp" />
+    <ClCompile Include="SrcWidget.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="vertex.cpp" />
+    <ClCompile Include="videoEditingCommonType.h" />
+    <ClCompile Include="VideoEditingWindow.cpp" />
+    <ClCompile Include="videoediting\BoundingBox.cpp" />
+    <ClCompile Include="videoediting\GeometryExposer.cpp" />
+    <ClCompile Include="videoediting\GLViewWidget.cpp" />
+    <ClCompile Include="videoediting\HistoryCommand.cpp" />
+    <ClCompile Include="videoediting\ObjectTransformWidget.cpp" />
+    <ClCompile Include="videoediting\ObjReader.cpp" />
+    <ClCompile Include="videoediting\VEScene.cpp" />
+    <ClCompile Include="videoediting\VideoEDCamera.cpp" />
+    <ClCompile Include="videoediting\Manipulator2.cpp" />
+    <ClCompile Include="videoediting\VideoEDMesh.cpp" />
+    <ClCompile Include="videoediting\RenderableObject.cpp" />
+    <ClCompile Include="videoediting\RotateManipulator.cpp" />
+    <ClCompile Include="videoediting\ScaleManipulator.cpp" />
+    <ClCompile Include="videoediting\TranslateManipulator.cpp" />
     <ClCompile Include="WeightGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -503,12 +540,105 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="bayesian.h" />
+    <CustomBuild Include="camerawidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="Cluster.h" />
+    <ClInclude Include="frameDif.h" />
+    <ClInclude Include="GeneratedFiles\ui_tt.h" />
+    <ClInclude Include="GeneratedFiles\ui_VideoEditingScene.h" />
+    <CustomBuild Include="GenerateTrimap.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe</AdditionalInputs>
+    </CustomBuild>
     <ClInclude Include="ImageToShape.h" />
     <ClInclude Include="Image_ctrl.h" />
     <ClInclude Include="KdTreeForRaycast.h" />
+    <ClInclude Include="mesh.h" />
     <ClInclude Include="MeshOpenGL.h" />
+    <ClInclude Include="model.h" />
+    <ClInclude Include="MyBayesian.h" />
     <ClInclude Include="ray.h" />
+    <CustomBuild Include="readframe.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
+    <CustomBuild Include="SrcWidget.h">
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="TextureManager.h" />
+    <CustomBuild Include="VideoEditingWindow.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="videoediting\BoundingBox.h" />
+    <ClInclude Include="videoediting\VideoEDCamera.h" />
+    <CustomBuild Include="videoediting\GLViewWidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="videoediting\GeometryExposer.h" />
+    <ClInclude Include="videoediting\HistoryCommand.h" />
+    <ClInclude Include="videoediting\Manipulator2.h" />
+    <ClInclude Include="videoediting\VideoEDMesh.h" />
+    <CustomBuild Include="videoediting\ObjectTransformWidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc_%(Filename).cpp</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+    <ClInclude Include="videoediting\ObjReader.h" />
+    <ClInclude Include="videoediting\RenderableObject.h" />
+    <ClInclude Include="videoediting\RotateManipulator.h" />
+    <ClInclude Include="videoediting\ScaleManipulator.h" />
+    <ClInclude Include="videoediting\VEScene.h" />
+    <ClInclude Include="videoediting\TranslateManipulator.h" />
+    <ClInclude Include="VideoEdittingParameter.h" />
     <ClInclude Include="WeightGenerator.h" />
     <CustomBuild Include="..\ICP\ICP.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -1729,7 +1859,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Performing Custom Build Tools</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc ui_%(Filename).h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -1740,7 +1870,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </AdditionalInputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Performing Custom Build Tools</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc ui_%(Filename).h</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
     </CustomBuild>
@@ -2233,7 +2363,17 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe;%(AdditionalInputs)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ui_%(Filename).h</Message>
     </CustomBuild>
-    <None Include="qt_gui\main_window_menu_load_save" />
+    <CustomBuild Include="qt_gui\ui\VideoEditingScene.ui">
+      <FileType>Document</FileType>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc ui_%(Filename).h</Message>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc ui_%(Filename).h</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ebpd\ebpd.vcxproj">

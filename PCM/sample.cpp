@@ -13,6 +13,7 @@
 #include <algorithm>
 #include "MeshOpenGL.h"
 #include "KdTreeForRaycast.h"
+#include "scene.h"
 extern bool isShowKdtree;
 using namespace pcm;
 Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
@@ -28,6 +29,7 @@ Sample::Sample() :vertices_(),allocator_(),kd_tree_(nullptr),
 	isUsingProgramablePipeLine = true;
 	opengl_mesh_ = new MyOpengl::MeshOpengl(*this);
 	setIsScaleToUniform(false);
+	scene_ = NULL;
 }
 
 Sample::~Sample()
@@ -36,6 +38,9 @@ Sample::~Sample()
 	if(opengl_mesh_)
 		delete opengl_mesh_;
 	opengl_mesh_ = NULL;
+	if (scene_)
+		delete scene_;
+	scene_ = NULL;
 }
 void Sample::clear()
 {
@@ -48,6 +53,8 @@ void Sample::clear()
 	kd_tree_ = NULL;
 	lb_wrapbox_.clear();
 	wrap_box_link_.clear();
+	if (scene_)
+		scene_->clear();
 	
 }
 Vertex* Sample::add_vertex(const PointType& pos = NULL_POINT,
@@ -85,6 +92,20 @@ TriangleType* Sample::add_triangle(const TriangleType& tt)
 	}
 	triangle_array.push_back(new_triangle);
 	return new_triangle;
+}
+
+pcm::Scene*  Sample::load_scene(std::string path)
+{
+	if (scene_)
+	{
+		delete scene_;
+		scene_ = new pcm::Scene(*this, path);
+	}
+	else
+	{
+		scene_ = new pcm::Scene(*this, path);
+	}
+	return scene_;
 }
 void Sample::draw(ColorMode::ObjectColorMode&, const Vec3& bias )
 {
@@ -361,13 +382,20 @@ void Sample::draw( RenderMode::WhichColorMode& wcm ,RenderMode::RenderType& r,co
 
 	if (isUsingProgramablePipeLine)
 	{
-		if(!isOpenglMeshUpdated)
-			update_openglMesh();
-		if (!isOpenglMeshColorUpdated)
-			update_openglMeshColor();
-		opengl_mesh_->draw(wcm,r);
-		if(isShowKdtree)
-			kd_tree_raycast_->drawKdTree();
+
+		if(scene_) // draw scene first
+			scene_->draw(wcm, r);
+		else
+		{
+			if (!isOpenglMeshUpdated)
+				update_openglMesh();
+			if (!isOpenglMeshColorUpdated)
+				update_openglMeshColor();
+			opengl_mesh_->draw(wcm, r);
+			if (isShowKdtree)
+				kd_tree_raycast_->drawKdTree();
+		}
+
 	}
 	else
 	{
@@ -839,6 +867,7 @@ void Sample::delete_vertex_group(const std::vector<IndexType>& idx_grp )
 		if ( i == idx_grp[j] )
 		{
 			//This is the node to delete
+			//we do not explicitly delete the memory,because we use poolallocator to manage it
 			iter = vertices_.erase( iter );
 			j++;
 			if ( j>=size )

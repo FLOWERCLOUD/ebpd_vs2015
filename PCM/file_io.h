@@ -6,7 +6,7 @@ class Sample;
 
 namespace FileIO
 {
-	enum FILE_TYPE{ XYZ,PLY,OBJ,OFF,NONE };
+	enum FILE_TYPE{ XYZ,PLY,OBJ,OFF,NONE,PCMSCENE };
 
 	Sample* load_point_cloud_file( std::string filename, FILE_TYPE type);
 	bool load_point_cloud_file(Sample*);
