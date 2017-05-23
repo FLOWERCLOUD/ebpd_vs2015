@@ -79,3 +79,16 @@ private:
 	static QSemaphore mattingSemaphore;
 	static QMutex     mutex;
 };
+enum CurrentStep
+{
+	STEP1,
+	STEP2,
+	STEP3
+};
+enum ShowMode
+{
+	IMAGEMODE,
+    MANIPULATEMODE
+};
+extern CurrentStep g_curStep;
+extern ShowMode    g_showmode;

@@ -1,31 +1,35 @@
 #pragma once
+#include "basic_types.h"
 #include "ui_VideoEditingScene.h"
 #include "VideoEdittingParameter.h"
 #include "GenerateTrimap.h"
-#include <QtWidgets/QMainWindow>
 #include "opencv2/video/tracking.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
+#include "videoediting\VEScene.h"
+#include "videoediting\ObjectTransformWidget.h"
+#include "GlobalObject.h"
 #include <vector>
 #include <list>
 #include <set>
 #include <iterator>
 #include <algorithm>
+#include <QtWidgets/QMainWindow>
 class VideoEditingWindow;
 class PaintCanvas;
-class CameraViewer;
+namespace videoEditting
+{
+	class GLViewWidget;
+}
+
 class CameraWidget;
 class ReadFrameWidget;
 class VideoEditingWindow : public QMainWindow
 {
 	Q_OBJECT
 public:
-	static VideoEditingWindow& getInstance()
-	{
-		static VideoEditingWindow instance_;
-		window_ = &instance_;
-		return instance_;
-	}
+	static QSharedPointer<videoEditting::Scene> scene;
+	static VideoEditingWindow& getInstance();
 	~VideoEditingWindow();
 private:
 	VideoEditingWindow(QWidget *parent = 0);
@@ -37,6 +41,7 @@ private slots:
 	void openFile();
 	void closeFile();
 	void saveas();
+
 	//tools
 	void read_frame();
 	void camera();
@@ -55,6 +60,8 @@ private slots:
 	void nextInitKey();
 	void setKeyFrame();
 
+	void changeStepTab(int idex);
+	void changeShowMode(int idx);
 
 	//step1 tools
 	void initKeyframe();
@@ -81,6 +88,16 @@ private slots:
 
 
 	//step2 tools
+	void importModel();
+	void selectTool();
+	void selectFaceTool();
+	void moveTool();
+	void rotateTool();
+	void scaleTool();
+	void focusTool();
+
+
+
 
 	//step3 tools
 private:
@@ -111,10 +128,25 @@ private:
 	long currentframePos;	//当前帧数
 	cv::Mat back_ground;		//新的背景
 
+
+	
+
+
 private:
 	Ui::VideoEditingWindow ui_;
 	static VideoEditingWindow* window_;
-	QLayout* opengllayout;
+	QLayout* cameraviewlayout;
+	QLayout* worldviewlayout;
 //	PaintCanvas* canvas;
-	CameraViewer* camera_viewer;
+	videoEditting::GLViewWidget* camera_viewer;
+	videoEditting::GLViewWidget* world_viewer;
+	videoEditting::GLViewWidget* cur_active_viewer;
+public:
+	videoEditting::ObjectInfoWidget* transformEditor;
+	void updateGLView();
+	videoEditting::GLViewWidget* active_viewer()
+	{
+		return cur_active_viewer;
+	}
+	void activate_viewer();
 };

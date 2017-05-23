@@ -4,12 +4,16 @@
 #include "MyBayesian.h"
 #include "frameDif.h"
 #include "GlobalObject.h"
-#include <QFileDialog>
-#include <QMessageBox>
 #include "readFrame.h"
 #include "camerawidget.h"
+#include "videoediting\GLViewWidget.h"
+#include <QFileDialog>
+#include <QMessageBox>
 using namespace cv;
 VideoEditingWindow* VideoEditingWindow:: window_ = 0;
+CurrentStep g_curStep = STEP1;
+ShowMode   g_showmode = IMAGEMODE;
+QSharedPointer<videoEditting::Scene> VideoEditingWindow::scene = QSharedPointer<videoEditting::Scene>(new videoEditting::Scene);
 
 void mat2QImage(const Mat& srcMat, QImage& desQImage)
 {
@@ -79,16 +83,24 @@ inline Mat mattingMethod(const Mat& trimapMat, Mat& srcMat, Mat& alphaMat , Mat&
 
 VideoEditingWindow::VideoEditingWindow(QWidget *parent /*= 0*/):
 	preprocessThread(&preprocessor), cameraWidget(NULL), rfWidget(NULL), currentFrame(NULL),
-	timer(NULL)
+	timer(NULL), transformEditor(NULL)
 {
 	ui_.setupUi(this);
+	transformEditor = new videoEditting::ObjectInfoWidget(ui_);
 	ui_.videoFrame->setMouseTracking(true); 
 	//ui_.SourceVideo->resize(QSize(ui_.SourceVideo->width(),
 	//	ui_.SourceVideo->height() + 1000));
-		
+	
 	setUp();
 }
 
+VideoEditingWindow& VideoEditingWindow::getInstance()
+{
+	static VideoEditingWindow instance_;
+	window_ = &instance_;
+	Global_WideoEditing_Window = window_;
+	return instance_;
+}
 VideoEditingWindow::~VideoEditingWindow()
 {
 	window_ = NULL;
@@ -102,6 +114,12 @@ VideoEditingWindow::~VideoEditingWindow()
 		delete  cameraWidget;
 	if (rfWidget)
 		delete rfWidget;
+	//if (camera_viewer)
+	//	delete camera_viewer;
+	//if (world_viewer)
+	//	delete world_viewer;
+	if (transformEditor)
+		delete transformEditor;
 }
 
 
@@ -112,17 +130,49 @@ void VideoEditingWindow::setUp()
 }
 void VideoEditingWindow::setUpSourceVideo()
 {
+	using namespace videoEditting;
+	
+//	cameraviewlayout = new QHBoxLayout(ui_.frame_cameraview);
+////	PaintCanvas* canvas = new PaintCanvas(QGLFormat::defaultFormat(), 0, ui_.frame_manipulate, this);
+//	camera_viewer = new GLViewWidget(this);
+//	//QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(manipulated()), camera_viewer, SLOT(updateGL()));
+//	//QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(spun()), camera_viewer, SLOT(updateGL()));
+//	// Also update on camera change (type or mode)
+//	//QObject::connect(Global_Canvas, SIGNAL(cameraChanged()), camera_viewer, SLOT(updateGL()));
+//	camera_viewer->setWindowTitle("Camera viewer: " + QString::number(0));		
+//	cameraviewlayout->addWidget(camera_viewer);
+//	camera_viewer->updateGL();
 
-	opengllayout = new QVBoxLayout(ui_.frame_manipulate);
-//	PaintCanvas* canvas = new PaintCanvas(QGLFormat::defaultFormat(), 0, ui_.frame_manipulate, this);
-	camera_viewer = new CameraViewer(Global_Canvas->camera());
-	QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(manipulated()), camera_viewer, SLOT(updateGL()));
-	QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(spun()), camera_viewer, SLOT(updateGL()));
+	worldviewlayout = new QHBoxLayout(ui_.frame_worldview);
+	//	PaintCanvas* canvas = new PaintCanvas(QGLFormat::defaultFormat(), 0, ui_.frame_manipulate, this);
+	world_viewer = new GLViewWidget(this);
+	//QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(manipulated()), world_viewer, SLOT(updateGL()));
+	//QObject::connect((const QObject*)Global_Canvas->camera()->frame(), SIGNAL(spun()), world_viewer, SLOT(updateGL()));
 	// Also update on camera change (type or mode)
-	QObject::connect(Global_Canvas, SIGNAL(cameraChanged()), camera_viewer, SLOT(updateGL()));
-	camera_viewer->setWindowTitle("Camera viewer: " + QString::number(0));		
-	opengllayout->addWidget(camera_viewer);
-	camera_viewer->updateGL();
+	//QObject::connect(Global_Canvas, SIGNAL(cameraChanged()), world_viewer, SLOT(updateGL()));
+	world_viewer->setWindowTitle("world viewer: " + QString::number(0));
+	worldviewlayout->addWidget(world_viewer);
+	world_viewer->updateGL();
+	cur_active_viewer = world_viewer;
+
+	extern std::string g_icons_theme_dir;
+	QIcon icon((g_icons_theme_dir + "/wireframe_transparent.svg").c_str());
+	QIcon icon1((g_icons_theme_dir + "/wireframe.svg").c_str());
+	QIcon icon2((g_icons_theme_dir + "/solid.svg").c_str());
+	QIcon icon3((g_icons_theme_dir + "/texture.svg").c_str());
+
+	ui_.solid1->setIcon(icon);
+	ui_.wireframe1->setIcon(icon1);
+	ui_.transparent1->setIcon(icon2);
+	ui_.texture1->setIcon(icon3);
+
+	ui_.solid2->setIcon(icon);
+	ui_.wireframe2->setIcon(icon1);
+	ui_.transparent2->setIcon(icon2);
+	ui_.texture2->setIcon(icon3);
+
+
+
   
 }
 void VideoEditingWindow::setUpToolbox()
@@ -201,6 +251,21 @@ void VideoEditingWindow::setUpToolbox()
 	connect(&preprocessThread, SIGNAL(changeTrimap()), this, SLOT(refresh()));
 	connect(ui_.videoFrame, SIGNAL(changeMask()), this, SLOT(cutInteract()));
 	connect(ui_.videoFrame, SIGNAL(changeRect()), this, SLOT(cutSelect()));
+
+	//
+	connect(ui_.tabWidget_algorithom, SIGNAL(currentChanged(int)), this, SLOT(changeStepTab(int)) );
+	connect(ui_.source_video_tab, SIGNAL(currentChanged(int)), this, SLOT(changeShowMode(int)));
+
+	connect(ui_.actionLoad_model, SIGNAL(triggered()), this, SLOT(importModel()));
+
+	connect(ui_.radioButton_select, SIGNAL(clicked()), this, SLOT(selectTool()));
+	connect(ui_.radioButton_selectface, SIGNAL(clicked()), this, SLOT(selectFaceTool()));
+	connect(ui_.radioButton_translate, SIGNAL(clicked()), this, SLOT(moveTool()));
+	connect(ui_.radioButton_rotate, SIGNAL(clicked()), this, SLOT(rotateTool()));
+	connect(ui_.radioButton_scale, SIGNAL(clicked()), this, SLOT(scaleTool()));
+	connect(ui_.radioButton_fouces, SIGNAL(clicked()), this, SLOT(focusTool()));
+
+
 
 	back_ground = imread("./background.jpg");	//默认背景
 
@@ -338,6 +403,7 @@ void VideoEditingWindow::saveas()
 	{
 	}
 }
+
 /*
    read image sequence and show in a single window
 */
@@ -934,6 +1000,36 @@ void VideoEditingWindow::setKeyFrame()
 	}
 }
 
+void VideoEditingWindow::changeStepTab(int idex)
+{
+	switch (idex)
+	{
+	case 0:g_curStep = STEP1;
+		break;
+	case 1:g_curStep = STEP2;
+		break;
+	case 2:g_curStep = STEP3;
+		break;
+	default:
+		break;
+	}
+}
+
+void VideoEditingWindow::changeShowMode(int idx)
+{
+	switch (idx)
+	{
+	case 0:g_showmode = IMAGEMODE;
+		break;
+	case 1:g_showmode = MANIPULATEMODE;
+		break;
+	case 2:g_showmode = IMAGEMODE;
+		break;
+	default:
+		break;
+	}
+}
+
 void VideoEditingWindow::initKeyframe()
 {
 	FrameDif framedif;
@@ -1406,4 +1502,73 @@ void VideoEditingWindow::cutSelect()
 		return;
 	}
 	preprocessThread.selectCut(ui_.videoFrame->getRect());
+}
+
+//step2
+void VideoEditingWindow::importModel()
+{
+	QString filename = QFileDialog::getOpenFileName(
+		this,
+		"Open Document",
+		QDir::currentPath(),
+		"Obj files (*.obj)");
+	if (!filename.isNull())
+	{ //用户选择了文件
+		if (!scene->importObj(filename))
+		{
+			QMessageBox::information(this, tr("import"), tr("Not a valid obj file."), QMessageBox::Ok);
+		}
+	}
+
+}
+
+
+void VideoEditingWindow::selectTool()
+{
+	cur_active_viewer->setTool( videoEditting::GLViewWidget::TOOL_SELECT);
+	updateGLView();
+}
+void VideoEditingWindow::selectFaceTool()
+{
+	cur_active_viewer->setTool(videoEditting::GLViewWidget::TOOL_FACE_SELECT);
+	updateGLView();
+}
+void VideoEditingWindow::moveTool()
+{
+	cur_active_viewer->setTool(videoEditting::GLViewWidget::TOOL_TRANSLATE);
+	updateGLView();
+}
+void VideoEditingWindow::rotateTool()
+{
+	cur_active_viewer->setTool(videoEditting::GLViewWidget::TOOL_ROTATE);
+	updateGLView();
+}
+void VideoEditingWindow::scaleTool()
+{
+	cur_active_viewer->setTool(videoEditting::GLViewWidget::TOOL_SCALE);
+	updateGLView();
+}
+void VideoEditingWindow::focusTool()
+{
+	cur_active_viewer->focusCurSelected();
+	updateGLView();
+}
+
+
+
+void VideoEditingWindow::updateGLView()
+{
+	//if (camera_viewer)
+	//	camera_viewer->updateGL();
+	if (world_viewer)
+		world_viewer->updateGL();
+}
+
+void VideoEditingWindow::activate_viewer()
+{
+	//cur_active_viewer->show();
+	//cur_active_viewer->activateWindow();;
+	//cur_active_viewer->raise();
+	//cur_active_viewer->setFocus();
+	cur_active_viewer->makeCurrent();  //涉及两个main window 关键是要make current,这样才能保证qglcontext 在当前的qglwidget
 }
