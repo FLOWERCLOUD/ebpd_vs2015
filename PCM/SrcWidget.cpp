@@ -251,18 +251,43 @@ void SrcWidget::paintEvent(QPaintEvent *event)
 
 	painter.translate(translateValue[0], translateValue[1]);
 	painter.scale(scaleValue, scaleValue);
-	painter.drawImage(0, 0, resultImage);
-	if (hasRegion)
+
+	switch (g_curStep)
 	{
-		painter.setPen(regionPen);
-		painter.drawRect(QRect(beginPointLocal, endPointLocal));
-	}
-	painter.resetTransform();
-	painter.setPen(strokePen);
-	if (curTool == TOOL_BRUSH)
+	case STEP1:
 	{
-		painter.drawEllipse(curPointWorld, brushSize, brushSize);	//在当前位置显示画笔
+		painter.drawImage(0, 0, resultImage);
+		if (hasRegion)
+		{
+			painter.setPen(regionPen);
+			painter.drawRect(QRect(beginPointLocal, endPointLocal));
+		}
+		painter.resetTransform();
+		painter.setPen(strokePen);
+		if (curTool == TOOL_BRUSH)
+		{
+			painter.drawEllipse(curPointWorld, brushSize, brushSize);	//在当前位置显示画笔
+		}
 	}
+	break;
+	case STEP2:
+	{
+
+	}
+		break;
+	case STEP3:
+	{
+
+
+	}
+		break;
+	default:
+		break;
+	}
+
+
+
+
 
 }
 

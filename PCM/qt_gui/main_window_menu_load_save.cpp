@@ -557,14 +557,57 @@ void main_window::on_actionNew_VideoEditing_Scene_triggered()
 {
 	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
 	videoEditingWindow.show();
+	videoEditingWindow.scene->clear();
+	videoEditingWindow.updateGLView();
 }
 void main_window::on_actionOpen_VideoEditing_Scene_triggered()
 {
+	QString filename = QFileDialog::getOpenFileName(
+		this,
+		tr("Open Document"),
+		QDir::currentPath(),
+		"Video Editing Document (*.videoediting)");
+
 	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
 	videoEditingWindow.show();
+	//videoEditingWindow.show();
+	//videoEditingWindow.activateWindow();;
+	//videoEditingWindow.raise();
+	//videoEditingWindow.setFocus();
+	//关键不是焦点，而是对qglwidget makecurrent ,这样才能保证后面的 opengl程序正常运行
+	videoEditingWindow.activate_viewer();
+	videoEditingWindow.scene->open(filename);
+
+//	videoEditingWindow.scene->open(filename);
+//	videoEditingWindow.updateGLView();
+//
+//	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
+//	videoEditingWindow.show();
+//	QString filename = QFileDialog::getOpenFileName(
+//		this,
+//		"Open Document",
+//		QDir::currentPath(),
+//		"Obj files (*.obj)");
+//	if (!filename.isNull())
+//	{
+//		//videoEditingWindow.show();
+//		//videoEditingWindow.activateWindow();;
+//		//videoEditingWindow.raise();
+//		//videoEditingWindow.setFocus();
+//		videoEditingWindow.activate_viewer();
+//		videoEditingWindow.scene->clear();
+//		videoEditingWindow.scene->importObj(filename);
+////		videoEditingWindow.scene->open(filename);
+//
+//	}
+	videoEditingWindow.updateGLView();
 }
 void main_window::on_actionSave_VideoEditing_Scene_triggered()
 {
 	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
-	videoEditingWindow.show();
+	QString filename = QFileDialog::getSaveFileName(this, tr("Save File"),
+		QDir::currentPath(),
+		"Video Editing Document (*.videoediting)");
+	videoEditingWindow.scene->save(filename);
+
 }
