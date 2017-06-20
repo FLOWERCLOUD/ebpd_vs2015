@@ -32,23 +32,23 @@ namespace videoEditting
 
 	void ManipulateCommand::undo()
 	{
-		RenderableObject* obj = Global_WideoEditing_Window->scene->getObject(objID).data();
+		RenderableObject* obj = Global_WideoEditing_Window->activated_viewer()->getScene().getObject(objID).data();
 		if (obj)
 		{
 			obj->setTransform(oldTransform);
-			Global_WideoEditing_Window->scene->updateGeometryImage();
+			Global_WideoEditing_Window->updateGeometryImage();
 			Global_WideoEditing_Window->updateGLView();
 		}
 	}
 
 	void ManipulateCommand::redo()
 	{
-		RenderableObject* obj = Global_WideoEditing_Window->scene->getObject(objID).data();
+		RenderableObject* obj = Global_WideoEditing_Window->activated_viewer()->getScene().getObject(objID).data();
 		
 		if (obj)
 		{
 			obj->setTransform(newTransform);
-			Global_WideoEditing_Window->scene->updateGeometryImage();		
+			Global_WideoEditing_Window->updateGeometryImage();		
 			Global_WideoEditing_Window->updateGLView();
 		}
 	}

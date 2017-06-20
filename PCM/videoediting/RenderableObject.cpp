@@ -1,6 +1,8 @@
 #include "RenderableObject.h"
 #include "VideoEDMesh.h"
+#include "camera.h"
 #include "VideoEditingWindow.h"
+
 //#include "PaintPicker.h"
 //#include "Paint3DFrame.h"
 namespace videoEditting
@@ -76,7 +78,9 @@ namespace videoEditting
 		m_invTransformMatrix *= transposeRot.transposed();
 		m_invTransformMatrix.translate(-m_translation);
 		// 还要更新场景的GeometryImage
-		VideoEditingWindow::getInstance().scene->updateGeometryImage();
+		VideoEditingWindow::getInstance().updateGeometryImage();
+		//这个事实更新画面内容
+		VideoEditingWindow::getInstance().updateGLView();
 	}
 
 
@@ -95,6 +99,11 @@ namespace videoEditting
 		//	PlanePicker* picker = (PlanePicker*)pObj.data();
 		//	out << *picker;
 		//}
+		else if (pObj->type == RenderableObject::OBJ_CAMERA)
+		{
+			Camera* picker = (Camera*)pObj.data();
+			out << *picker;
+		}
 		return out;
 	}
 
@@ -118,8 +127,15 @@ namespace videoEditting
 		//	pObj = pM;
 		//	in >> *pM;
 		//}
+		else if (pObj->type == RenderableObject::OBJ_CAMERA)
+		{
+			QSharedPointer<Camera> pM(new Camera);
+			in >> *pM;
+		}
+		pObj->type = RenderableObject::ObjectType(type);
 		pObj->setName(name);
 		pObj->transform = trans;
+//		pObj->transform.updateTransformMatrix_Public();
 		return in;
 	}
 
@@ -136,7 +152,7 @@ namespace videoEditting
 		in >> trans.m_translation
 			>> trans.m_rotation
 			>> trans.m_scale;
-		trans.updateTransformMatrix();
+//		trans.updateTransformMatrix();
 		return in;
 	}
 

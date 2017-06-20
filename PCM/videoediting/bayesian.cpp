@@ -14,7 +14,7 @@ BayesianMatting::BayesianMatting(const cv::Mat& cImg, const cv::Mat& tmap)
 														// Convert the trimap into a single channel image
 	if (tmap.channels() == 3)
 	{
-		cv::cvtColor(tmap, trimap, CV_RGB2GRAY);
+		cv::cvtColor(tmap, trimap, CV_RGB2GRAY);  //RGB[A] TO Gray : y = 0.299*R + 0.587*G +0.114*B
 	}
 	else if (tmap.channels() == 1)
 	{

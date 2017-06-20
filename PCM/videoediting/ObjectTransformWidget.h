@@ -13,6 +13,7 @@ namespace videoEditting
 		public slots:
 		void updateWidgets();
 		void updateSceneObject();
+		void updateCameraParam();
 		void updateObjectName();
 		void updateObjectType();
 	private:

@@ -133,394 +133,6 @@
                <property name="lineWidth">
                 <number>1</number>
                </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_9">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="QSplitter" name="splitter">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <widget class="QWidget" name="verticalLayoutWidget">
-                   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="1,20">
-                    <property name="spacing">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QScrollArea" name="scrollArea_2">
-                      <property name="widgetResizable">
-                       <bool>true</bool>
-                      </property>
-                      <widget class="QWidget" name="scrollAreaWidgetContents_3">
-                       <property name="geometry">
-                        <rect>
-                         <x>0</x>
-                         <y>0</y>
-                         <width>600</width>
-                         <height>52</height>
-                        </rect>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>600</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout_10">
-                        <property name="spacing">
-                         <number>0</number>
-                        </property>
-                        <property name="leftMargin">
-                         <number>0</number>
-                        </property>
-                        <property name="topMargin">
-                         <number>0</number>
-                        </property>
-                        <property name="bottomMargin">
-                         <number>0</number>
-                        </property>
-                        <item>
-                         <widget class="QFrame" name="frame">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QHBoxLayout" name="horizontalLayout_13">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <property name="leftMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="topMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="rightMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="bottomMargin">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QToolButton" name="solid1">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="wireframe1">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="transparent1">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="texture1">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_3">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>40</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </widget>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_cameraview">
-                      <property name="frameShape">
-                       <enum>QFrame::Box</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                  <widget class="QWidget" name="verticalLayoutWidget_2">
-                   <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,20">
-                    <property name="spacing">
-                     <number>0</number>
-                    </property>
-                    <item>
-                     <widget class="QScrollArea" name="scrollArea_3">
-                      <property name="widgetResizable">
-                       <bool>true</bool>
-                      </property>
-                      <widget class="QWidget" name="scrollAreaWidgetContents_4">
-                       <property name="geometry">
-                        <rect>
-                         <x>0</x>
-                         <y>0</y>
-                         <width>600</width>
-                         <height>52</height>
-                        </rect>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>600</width>
-                         <height>0</height>
-                        </size>
-                       </property>
-                       <layout class="QHBoxLayout" name="horizontalLayout_11">
-                        <property name="spacing">
-                         <number>0</number>
-                        </property>
-                        <property name="topMargin">
-                         <number>0</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>0</number>
-                        </property>
-                        <property name="bottomMargin">
-                         <number>0</number>
-                        </property>
-                        <item>
-                         <widget class="QFrame" name="frame_2">
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <layout class="QHBoxLayout" name="horizontalLayout_12">
-                           <property name="spacing">
-                            <number>0</number>
-                           </property>
-                           <property name="leftMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="topMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="rightMargin">
-                            <number>0</number>
-                           </property>
-                           <property name="bottomMargin">
-                            <number>0</number>
-                           </property>
-                           <item>
-                            <widget class="QToolButton" name="solid2">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="wireframe2">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="transparent2">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QToolButton" name="texture2">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="text">
-                              <string>...</string>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>32</width>
-                               <height>32</height>
-                              </size>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                            </widget>
-                           </item>
-                           <item>
-                            <spacer name="horizontalSpacer_4">
-                             <property name="orientation">
-                              <enum>Qt::Horizontal</enum>
-                             </property>
-                             <property name="sizeHint" stdset="0">
-                              <size>
-                               <width>430</width>
-                               <height>20</height>
-                              </size>
-                             </property>
-                            </spacer>
-                           </item>
-                          </layout>
-                         </widget>
-                        </item>
-                       </layout>
-                      </widget>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QFrame" name="frame_worldview">
-                      <property name="frameShape">
-                       <enum>QFrame::Box</enum>
-                      </property>
-                      <property name="frameShadow">
-                       <enum>QFrame::Raised</enum>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </widget>
-                </item>
-               </layout>
               </widget>
              </item>
             </layout>
@@ -729,6 +341,9 @@
             <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="2,3,4,1">
              <item>
               <layout class="QGridLayout" name="gridLayout_3">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <item row="0" column="0">
                 <widget class="QRadioButton" name="SelectArea">
                  <property name="text">
@@ -785,6 +400,9 @@
              </item>
              <item>
               <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,1">
+               <property name="spacing">
+                <number>0</number>
+               </property>
                <item>
                 <layout class="QGridLayout" name="gridLayout">
                  <item row="1" column="0">
@@ -831,24 +449,20 @@
                </item>
                <item>
                 <layout class="QGridLayout" name="gridLayout_2">
-                 <item row="1" column="2">
-                  <widget class="QPushButton" name="pushButton_5">
-                   <property name="text">
-                    <string>PushButton</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
+                 <item row="2" column="0">
                   <widget class="QPushButton" name="Grabcut">
                    <property name="text">
                     <string>Grabcut Iteration</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="0">
-                  <widget class="QPushButton" name="showKeyFrameNo">
+                 <item row="4" column="2">
+                  <widget class="QCheckBox" name="ifshow_silhouette">
                    <property name="text">
-                    <string>Show key Frame No.</string>
+                    <string>show silhouette</string>
+                   </property>
+                   <property name="checked">
+                    <bool>true</bool>
                    </property>
                   </widget>
                  </item>
@@ -859,17 +473,38 @@
                    </property>
                   </widget>
                  </item>
-                 <item row="2" column="2">
-                  <widget class="QPushButton" name="pushButton_6">
+                 <item row="3" column="2">
+                  <widget class="QPushButton" name="ShowSilhouette">
                    <property name="text">
-                    <string>PushButton</string>
+                    <string>Show Current silhouette</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
+                 <item row="3" column="0">
                   <widget class="QPushButton" name="ShowTrimap">
                    <property name="text">
                     <string>Show Current Trimap</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QPushButton" name="ShowAlphamap">
+                   <property name="text">
+                    <string>Show Current Alphamap</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="2">
+                  <widget class="QPushButton" name="showKeyFrameNo">
+                   <property name="text">
+                    <string>Show key Frame No.</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="4" column="0">
+                  <widget class="QCheckBox" name="ifshowimagemask">
+                   <property name="text">
+                    <string>show image mask</string>
                    </property>
                   </widget>
                  </item>
@@ -895,28 +530,32 @@
                <item>
                 <widget class="QPushButton" name="Init_Key_Frame_by_Diff">
                  <property name="text">
-                  <string>Init Key Frame by Diff</string>
+                  <string>Init Key 
+ Frame by Diff</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="TrimapInterpolation">
                  <property name="text">
-                  <string>TrimapInterpolation</string>
+                  <string>Trimap 
+ Interpolation</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="MattingVideo">
                  <property name="text">
-                  <string>MattingVideo</string>
+                  <string>Matting 
+ Video</string>
                  </property>
                 </widget>
                </item>
                <item>
                 <widget class="QPushButton" name="ChangeBackground">
                  <property name="text">
-                  <string>Change background</string>
+                  <string>Change 
+ background</string>
                  </property>
                 </widget>
                </item>
@@ -937,22 +576,7 @@
             <property name="title">
              <string>Toolbox for Step2</string>
             </property>
-            <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,1,1">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
              <item>
               <widget class="QScrollArea" name="scrollArea_object_info">
                <property name="widgetResizable">
@@ -964,7 +588,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>1000</width>
-                  <height>158</height>
+                  <height>161</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -973,7 +597,7 @@
                   <height>0</height>
                  </size>
                 </property>
-                <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="1,1,1">
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
                  <property name="spacing">
                   <number>0</number>
                  </property>
@@ -990,12 +614,9 @@
                   <number>0</number>
                  </property>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,2,2,2">
                    <property name="spacing">
-                    <number>1</number>
-                   </property>
-                   <property name="sizeConstraint">
-                    <enum>QLayout::SetFixedSize</enum>
+                    <number>0</number>
                    </property>
                    <item>
                     <widget class="QGroupBox" name="object_pose">
@@ -1009,51 +630,21 @@
                       <string>object pose</string>
                      </property>
                      <layout class="QGridLayout" name="gridLayout_4">
-                      <property name="sizeConstraint">
-                       <enum>QLayout::SetDefaultConstraint</enum>
+                      <property name="leftMargin">
+                       <number>5</number>
                       </property>
-                      <item row="4" column="0">
-                       <widget class="QLabel" name="label_11">
-                        <property name="text">
-                         <string>缩放</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="3" column="0">
-                       <widget class="QLabel" name="label_8">
-                        <property name="text">
-                         <string>旋转</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="QLabel" name="label">
-                        <property name="text">
-                         <string>平移</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="1">
-                       <widget class="QDoubleSpinBox" name="translate_x"/>
-                      </item>
-                      <item row="2" column="3">
-                       <widget class="QDoubleSpinBox" name="translate_z"/>
-                      </item>
-                      <item row="4" column="1">
-                       <widget class="QDoubleSpinBox" name="scale_x"/>
-                      </item>
-                      <item row="4" column="3">
-                       <widget class="QDoubleSpinBox" name="scale_z"/>
-                      </item>
-                      <item row="3" column="3">
-                       <widget class="QDoubleSpinBox" name="rotate_z"/>
-                      </item>
-                      <item row="2" column="2">
-                       <widget class="QDoubleSpinBox" name="translate_y"/>
-                      </item>
-                      <item row="3" column="2">
-                       <widget class="QDoubleSpinBox" name="rotate_y"/>
-                      </item>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>5</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
                       <item row="0" column="0">
                        <widget class="QLabel" name="object_name_label">
                         <property name="text">
@@ -1061,11 +652,8 @@
                         </property>
                        </widget>
                       </item>
-                      <item row="4" column="2">
-                       <widget class="QDoubleSpinBox" name="scale_y"/>
-                      </item>
-                      <item row="3" column="1">
-                       <widget class="QDoubleSpinBox" name="rotate_x"/>
+                      <item row="0" column="1" colspan="3">
+                       <widget class="QLineEdit" name="object_name"/>
                       </item>
                       <item row="1" column="0">
                        <widget class="QLabel" name="object_type_label">
@@ -1077,92 +665,268 @@
                       <item row="1" column="1" colspan="3">
                        <widget class="QLineEdit" name="object_type"/>
                       </item>
-                      <item row="0" column="1" colspan="3">
-                       <widget class="QLineEdit" name="object_name"/>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label">
+                        <property name="text">
+                         <string>平移</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QDoubleSpinBox" name="translate_x"/>
+                      </item>
+                      <item row="2" column="2">
+                       <widget class="QDoubleSpinBox" name="translate_y"/>
+                      </item>
+                      <item row="2" column="3">
+                       <widget class="QDoubleSpinBox" name="translate_z"/>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="label_8">
+                        <property name="text">
+                         <string>旋转</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QDoubleSpinBox" name="rotate_x"/>
+                      </item>
+                      <item row="3" column="2">
+                       <widget class="QDoubleSpinBox" name="rotate_y"/>
+                      </item>
+                      <item row="3" column="3">
+                       <widget class="QDoubleSpinBox" name="rotate_z"/>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QLabel" name="label_11">
+                        <property name="text">
+                         <string>缩放</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="1">
+                       <widget class="QDoubleSpinBox" name="scale_x"/>
+                      </item>
+                      <item row="4" column="2">
+                       <widget class="QDoubleSpinBox" name="scale_y"/>
+                      </item>
+                      <item row="4" column="3">
+                       <widget class="QDoubleSpinBox" name="scale_z"/>
+                      </item>
+                     </layout>
+                     <zorder>label_11</zorder>
+                     <zorder>label_8</zorder>
+                     <zorder>label</zorder>
+                     <zorder>translate_x</zorder>
+                     <zorder>translate_z</zorder>
+                     <zorder>scale_x</zorder>
+                     <zorder>scale_z</zorder>
+                     <zorder>rotate_z</zorder>
+                     <zorder>translate_y</zorder>
+                     <zorder>rotate_y</zorder>
+                     <zorder>object_name_label</zorder>
+                     <zorder>scale_y</zorder>
+                     <zorder>rotate_x</zorder>
+                     <zorder>object_type_label</zorder>
+                     <zorder>object_type</zorder>
+                     <zorder>object_name</zorder>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QGroupBox" name="prespectuve_param">
+                     <property name="title">
+                      <string>透视矩阵</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_5">
+                      <property name="leftMargin">
+                       <number>10</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>5</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>5</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
+                      <item row="2" column="0">
+                       <widget class="QLabel" name="label_6">
+                        <property name="text">
+                         <string>viewport 宽（像素）</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLineEdit" name="lineEdit_viewport_width"/>
+                      </item>
+                      <item row="5" column="0">
+                       <widget class="QLabel" name="label_10">
+                        <property name="text">
+                         <string>近平面</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="4" column="0">
+                       <widget class="QLabel" name="label_9">
+                        <property name="text">
+                         <string>宽/高</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="0">
+                       <widget class="QLabel" name="label_13">
+                        <property name="text">
+                         <string>viewport 高（像素）</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="3" column="1">
+                       <widget class="QLineEdit" name="lineEdit_viewport_height"/>
+                      </item>
+                      <item row="6" column="0">
+                       <widget class="QLabel" name="label_12">
+                        <property name="text">
+                         <string>远平面</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="label_14">
+                        <property name="text">
+                         <string>投影类型</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="lineEdit_project_type"/>
+                      </item>
+                      <item row="4" column="1">
+                       <widget class="QDoubleSpinBox" name="doubleSpinBox_width_divide_height"/>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_4">
+                        <property name="text">
+                         <string>fov_y(度）</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QDoubleSpinBox" name="doubleSpinBox_fov"/>
+                      </item>
+                      <item row="5" column="1">
+                       <widget class="QDoubleSpinBox" name="doubleSpinBox_nearplane"/>
+                      </item>
+                      <item row="6" column="1">
+                       <widget class="QDoubleSpinBox" name="doubleSpinBox_farplane"/>
                       </item>
                      </layout>
                     </widget>
                    </item>
+                   <item>
+                    <widget class="QGroupBox" name="cameraintrisic">
+                     <property name="title">
+                      <string>摄像机内参</string>
+                     </property>
+                     <layout class="QGridLayout" name="gridLayout_6">
+                      <property name="leftMargin">
+                       <number>5</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                       <number>5</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="0">
+                       <widget class="QLineEdit" name="alpha">
+                        <property name="text">
+                         <string>2.1848e+04</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLineEdit" name="rotate_x_3">
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="QLineEdit" name="gama">
+                        <property name="text">
+                         <string>0.0</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="2">
+                       <widget class="QLineEdit" name="v0">
+                        <property name="text">
+                         <string>1.3402e+03</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="2">
+                       <widget class="QLineEdit" name="scale_z_3">
+                        <property name="text">
+                         <string>1</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="1">
+                       <widget class="QLineEdit" name="beta">
+                        <property name="text">
+                         <string>1.2049e+04</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="0">
+                       <widget class="QLineEdit" name="scale_x_3">
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="2">
+                       <widget class="QLineEdit" name="u0">
+                        <property name="text">
+                         <string>-241.417</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="2" column="1">
+                       <widget class="QLineEdit" name="scale_y_3">
+                        <property name="text">
+                         <string>0</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
                   </layout>
-                 </item>
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_2">
-                   <property name="title">
-                    <string>摄像机内参</string>
-                   </property>
-                   <layout class="QGridLayout" name="gridLayout_6">
-                    <item row="0" column="0">
-                     <widget class="QLineEdit" name="alpha">
-                      <property name="text">
-                       <string>2.1848e+04</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QLineEdit" name="gama">
-                      <property name="text">
-                       <string>0.0</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="0" column="2">
-                     <widget class="QLineEdit" name="u0">
-                      <property name="text">
-                       <string>-241.417</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="0">
-                     <widget class="QLineEdit" name="rotate_x_3">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QLineEdit" name="beta">
-                      <property name="text">
-                       <string>1.2049e+04</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="2">
-                     <widget class="QLineEdit" name="v0">
-                      <property name="text">
-                       <string>1.3402e+03</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="0">
-                     <widget class="QLineEdit" name="scale_x_3">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QLineEdit" name="scale_y_3">
-                      <property name="text">
-                       <string>0</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="2" column="2">
-                     <widget class="QLineEdit" name="scale_z_3">
-                      <property name="text">
-                       <string>1</string>
-                      </property>
-                     </widget>
-                    </item>
-                   </layout>
-                  </widget>
-                 </item>
-                 <item>
-                  <widget class="QGroupBox" name="groupBox_4">
-                   <property name="title">
-                    <string>GroupBox</string>
-                   </property>
-                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -1236,6 +1000,13 @@
                  </widget>
                 </item>
                 <item>
+                 <widget class="QPushButton" name="set_curframe_as_key_frame_of_pose">
+                  <property name="text">
+                   <string>确定当前帧估计</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
                  <widget class="QPushButton" name="pushButton_whole_pose_estimation">
                   <property name="text">
                    <string>全帧姿态估计</string>
@@ -1261,6 +1032,94 @@
          <attribute name="title">
           <string>3)形状编辑（物理模拟，基于样例的变形）</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,3">
+          <item>
+           <widget class="QGroupBox" name="groupBox_2">
+            <property name="title">
+             <string>simulate</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_10">
+             <item>
+              <widget class="QPushButton" name="begin_simulate">
+               <property name="text">
+                <string>开始模拟</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pause_simulate">
+               <property name="text">
+                <string>暂停模拟</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="continue_simulate">
+               <property name="text">
+                <string>继续模拟</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="restart">
+               <property name="text">
+                <string>还原</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="step_forward">
+               <property name="text">
+                <string>单步执行</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="groupBox_4">
+            <property name="title">
+             <string>info</string>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_7">
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_15">
+               <property name="text">
+                <string>当前模拟帧</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_16">
+               <property name="text">
+                <string>总帧数</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="lineEdit"/>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="lineEdit_2"/>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>

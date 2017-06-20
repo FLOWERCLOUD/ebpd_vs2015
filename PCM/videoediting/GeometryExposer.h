@@ -79,8 +79,8 @@ namespace videoEditting
 		}
 
 
-		void init(int width, int height);			// 初始化，分配各种缓存
-		void setResolution(int width, int height);	// 重新设置分辨率
+		void init(int width, int height, int x_offeset, int y_offset);			// 初始化，分配各种缓存
+		void setResolution(int width, int height,int x_offeset,int y_offset);	// 重新设置分辨率
 		void getResolution(int&width, int&height)
 		{
 			width = this->width; height = this->height;
@@ -111,6 +111,8 @@ namespace videoEditting
 
 		GLenum status;
 		GLuint width, height;
+		int x_offeset, y_offset;
+		int    glwidgetRes[2];
 		GLuint textureObj[2];
 		GLuint frameBufferObj, depthBufferObj;
 	};

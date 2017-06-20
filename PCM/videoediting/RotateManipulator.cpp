@@ -1,7 +1,30 @@
 #include "RotateManipulator.h"
 #include "VideoEDCamera.h"
 #include <float.h>
+#include <QVector>
+#include <QVector3D>
+#include <QQuaternion>
+#include <QSharedPointer>
+#include <vector>
+#include <unordered_map>
 using namespace std;
+
+namespace videoEditting
+{
+	extern std::vector<QVector3D>     g_init_vertices;
+	extern std::vector<int>           g_faces_;
+	extern QVector3D                  g_init_translation;
+	extern QQuaternion                g_init_rotation;
+	extern std::vector<QVector3D>     g_translations;
+	extern std::vector<QQuaternion>   g_rotations;
+	extern std::vector<std::vector<QVector3D> > g_simulated_vertices;
+	extern std::vector<std::unordered_map<int, QVector3D>> g_position_constraint; //this constraint the position of vertices of frames
+	extern int g_total_frame;//total frame 
+	extern int g_current_frame;
+	extern float g_time_step;
+}
+
+
 namespace videoEditting
 {
 	RotateManipulator::RotateManipulator(void)
@@ -161,6 +184,16 @@ namespace videoEditting
 		QQuaternion q;
 		q = QQuaternion::fromAxisAndAngle(rotAxis, theta);
 		getTransform()->rotate(q);
+		if (curObject)
+		{
+			if (curObject.data()->getType() == RenderableObject::OBJ_CAMERA)
+			{
+				((Camera*)curObject.data())->updateCameraPose();
+			}
+			//update curpose
+//			g_translations[g_current_frame] = getTransform()->getTranslate();
+			g_rotations[g_current_frame] = getTransform()->getRotate();
+		}
 	}
 }
 

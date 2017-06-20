@@ -22,6 +22,26 @@ namespace videoEditting
 		connect(ui_.scale_z, SIGNAL(valueChanged(double)), this, SLOT(updateSceneObject()));
 		connect(ui_.object_name, SIGNAL(editingFinished()), this, SLOT(updateObjectName()));
 		connect(ui_.object_type, SIGNAL(editingFinished()), this, SLOT(updateObjectName()));
+
+		//camera param
+		ui_.doubleSpinBox_farplane->setValue(100);
+		ui_.doubleSpinBox_nearplane->setValue(0.2);
+		ui_.doubleSpinBox_fov->setValue(60);
+		ui_.doubleSpinBox_width_divide_height->setValue(1);
+		
+		ui_.doubleSpinBox_farplane->setRange(10, 1000);
+		ui_.doubleSpinBox_farplane->setSingleStep(1.0);
+		ui_.doubleSpinBox_nearplane->setRange(0.01, 10);
+		ui_.doubleSpinBox_nearplane->setSingleStep(0.01);
+		ui_.doubleSpinBox_fov->setRange(0.01, 89);
+		ui_.doubleSpinBox_fov->setSingleStep(0.1);
+		ui_.doubleSpinBox_width_divide_height->setRange(0.01, 100);
+		ui_.doubleSpinBox_width_divide_height->setSingleStep(0.1);
+		connect(ui_.doubleSpinBox_fov, SIGNAL(valueChanged(double)), this, SLOT(updateCameraParam()));
+		connect(ui_.doubleSpinBox_width_divide_height, SIGNAL(valueChanged(double)), this, SLOT(updateCameraParam()));
+		connect(ui_.doubleSpinBox_nearplane, SIGNAL(valueChanged(double)), this, SLOT(updateCameraParam()));
+		connect(ui_.doubleSpinBox_farplane, SIGNAL(valueChanged(double)), this, SLOT(updateCameraParam()));
+		
 	}
 
 	ObjectInfoWidget::~ObjectInfoWidget(void)
@@ -31,7 +51,7 @@ namespace videoEditting
 	void ObjectInfoWidget::updateWidgets()
 	{
 		Global_WideoEditing_Window->updateGLView();
-		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->active_viewer()->getSelectedObject();
+		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->activated_viewer()->getSelectedObject();
 		if (pO)
 		{
 			ObjectTransform& trans = pO->getTransform();
@@ -60,20 +80,66 @@ namespace videoEditting
 			case RenderableObject::OBJ_MESH:
 			{
 				ui_.object_type->setText("MESH");
+				break;
 			}
 			case RenderableObject::OBJ_PICKER_OBJECT:
 			{
 				ui_.object_type->setText("PICKER_OBJECT");
+				break;
 			}
+			case RenderableObject::OBJ_CAMERA:
+			{
+				ui_.object_type->setText("OBJ_CAMERA");
+				break;
+			}
+			
 
 			}
+			if (pO->getType() == RenderableObject::OBJ_CAMERA)
+			{
+				Camera* camera = (Camera*)pO.data();
+				ui_.doubleSpinBox_fov->setValue(camera->getFovAngle());
+				ui_.doubleSpinBox_width_divide_height->setValue(camera->getAspectRatio());
+				ui_.doubleSpinBox_nearplane->setValue(camera->getNearPlane());
+				ui_.doubleSpinBox_farplane->setValue(camera->getFarPlane());
+				int x, y;
+				camera->getScreenResolution(x, y);
+				ui_.lineEdit_viewport_width->setText(QString("%1").arg(x));
+				ui_.lineEdit_viewport_height->setText(QString("%1").arg(y));
+				ui_.lineEdit_viewport_width->setFocusPolicy(Qt::NoFocus);
+				ui_.lineEdit_viewport_height->setFocusPolicy(Qt::NoFocus);
+				switch(camera->getProjtype())
+				{
+					case Camera::GLCAMERA_PERSP:
+						ui_.lineEdit_project_type->setText( "perspective");
+					break;
+					case Camera::GLCAMERA_ORTHO:
+						ui_.lineEdit_project_type->setText("otho");
+					break;
+
+				}
+				ui_.lineEdit_project_type->setFocusPolicy(Qt::NoFocus);
+				
+			}
 		}
+
 		ui_.object_pose->setEnabled(!pO.isNull());
+		if (pO)
+		{
+			ui_.prespectuve_param->setEnabled(pO->getType() == RenderableObject::OBJ_CAMERA);
+			ui_.cameraintrisic->setEnabled(pO->getType() == RenderableObject::OBJ_CAMERA);
+		}
+		else
+		{
+			ui_.prespectuve_param->setEnabled(false);
+			ui_.cameraintrisic->setEnabled(false);
+		}
+
 	}
 
 	void ObjectInfoWidget::updateSceneObject()
 	{
-		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->active_viewer()->getSelectedObject();
+		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->activated_viewer()->getSelectedObject();
 		if (pO)
 		{
 			ObjectTransform  trans;
@@ -95,15 +161,33 @@ namespace videoEditting
 			trans.setRotate(newQuat);
 			trans.setScale(QVector3D(ui_.scale_x->value(), ui_.scale_y->value(), ui_.scale_z->value()));
 			QUndoCommand* cmd = new ManipulateCommand(pO->getObjectID(), pO->getTransform(), trans, ManipulateCommand::MANCMD_ALL);
+
 //			paint3DApp->scene->getUndoStack().push(cmd);
 		}
 	}
 
+	void ObjectInfoWidget::updateCameraParam()
+	{
+		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->activated_viewer()->getSelectedObject();
+		if (pO && pO->getType() == RenderableObject::OBJ_CAMERA)
+		{
+			 
+			Camera* camera = (Camera*)pO.data();
+			camera->setFovAngle(ui_.doubleSpinBox_fov->value());
+			camera->setAspectRatio(ui_.doubleSpinBox_width_divide_height->value());
+			camera->setNearPlane(ui_.doubleSpinBox_nearplane->value());
+			camera->setFarPlane(ui_.doubleSpinBox_farplane->value());
+			Global_WideoEditing_Window->updateGeometryImage();
+			Global_WideoEditing_Window->updateGLView();
+		}
+
+	}
+
 	void ObjectInfoWidget::updateObjectName()
 	{
-		QString oldName = Global_WideoEditing_Window->active_viewer()->getSelectedObject()->getName();
-		VideoEditingWindow::scene->rename(oldName, ui_.object_name->text());
-		ui_.object_name->setText(Global_WideoEditing_Window->active_viewer()->getSelectedObject()->getName());
+		QString oldName = Global_WideoEditing_Window->activated_viewer()->getSelectedObject()->getName();
+		Global_WideoEditing_Window->activated_viewer()->getScene().rename(oldName, ui_.object_name->text());
+		ui_.object_name->setText(Global_WideoEditing_Window->activated_viewer()->getSelectedObject()->getName());
 	}
 	void ObjectInfoWidget::updateObjectType()
 	{

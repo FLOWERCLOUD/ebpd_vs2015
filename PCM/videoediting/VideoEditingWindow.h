@@ -9,39 +9,50 @@
 #include "videoediting\VEScene.h"
 #include "videoediting\ObjectTransformWidget.h"
 #include "GlobalObject.h"
+#include "videoedit_serialization.h"
 #include <vector>
 #include <list>
 #include <set>
 #include <iterator>
 #include <algorithm>
 #include <QtWidgets/QMainWindow>
+
 class VideoEditingWindow;
 class PaintCanvas;
 namespace videoEditting
 {
+	class OGL_widget_skin_hidden;
 	class GLViewWidget;
+	enum VImageType{VORI_IMAGE=0, VTRIMAP=1, VALPHA=2, VSILHOUETTE=3};
 }
 
 class CameraWidget;
 class ReadFrameWidget;
+class BulletInterface;
 class VideoEditingWindow : public QMainWindow
 {
 	Q_OBJECT
+
 public:
-	static QSharedPointer<videoEditting::Scene> scene;
+
+	friend class videoEditting::VSerialization;
+//	static QSharedPointer<videoEditting::Scene> scene;
 	static VideoEditingWindow& getInstance();
 	~VideoEditingWindow();
+
 private:
 	VideoEditingWindow(QWidget *parent = 0);
 	void setUp();
 	void setUpSourceVideo();
 	void setUpToolbox();
+
 private slots:
     //file
 	void openFile();
 	void closeFile();
 	void saveas();
 
+	void openVideoFromVSerialization();
 	//tools
 	void read_frame();
 	void camera();
@@ -64,6 +75,16 @@ private slots:
 	void changeShowMode(int idx);
 
 	//step1 tools
+
+	/*
+	   operation 0 : use saved file ,if saved file doesn't exists, use from cur setting
+	   operation 1 : use cur setting
+	*/
+	bool checkIfCurFileExist(videoEditting::VImageType type,QImage& image,int operation = 0);
+	void saveCurFrame(videoEditting::VImageType type , QImage& image);
+	void saveCurFrame(videoEditting::VImageType type, cv::Mat& image);
+
+
 	void initKeyframe();
 	void trimapInterpolation();
 	void mattingVideo();
@@ -96,19 +117,30 @@ private slots:
 	void scaleTool();
 	void focusTool();
 
-
-
-
+	void runCurrentFramPoseEstimation();
+	void setCurFramePoseEstimationAsKeyFrame();
+	void runWholeFramePoseEstimation();
+	void showCorrespondence();
+	void updateCurSceneObjectPose();
+	void updateCurSceneObjectPose(QString& objname);
 	//step3 tools
+	void begin_simulate();
+	void pause_simulate();
+	void continuie_simulate();
+	void restart();
+	void step_simulate();
+
+
 private:
 	void updateMidImage();
 private:
 	std::vector<FrameInfo> frame;	//视频帧序列
 	std::list<int> keyFrameNo;		//关键帧的位置
 	std::set<int> initKeyframeNo;		//帧差法得到的有序的关键帧序列
-	long totalFrameNumber;	//视频总帧数
+	int totalFrameNumber;	//视频总帧数
 
 	std::string currentfilePath;	//当前打开视频文件所在文件夹
+	std::string videoFilename;
 	PreprocessThread preprocessThread;
 	GenerateTrimap preprocessor;
 
@@ -124,8 +156,8 @@ private:
 	cv::VideoWriter writer;
 	QTimer *timer;
 	double rate;		//帧率
-	int delay;		//两帧间隔
-	long currentframePos;	//当前帧数
+	float delay;		//两帧间隔
+	int currentframePos;	//当前帧数
 	cv::Mat back_ground;		//新的背景
 
 
@@ -141,12 +173,19 @@ private:
 	videoEditting::GLViewWidget* camera_viewer;
 	videoEditting::GLViewWidget* world_viewer;
 	videoEditting::GLViewWidget* cur_active_viewer;
+	videoEditting::OGL_widget_skin_hidden* _hidden;
+	QSharedPointer<BulletInterface>        bullet_wrapper;
 public:
 	videoEditting::ObjectInfoWidget* transformEditor;
 	void updateGLView();
-	videoEditting::GLViewWidget* active_viewer()
+	videoEditting::GLViewWidget* activated_viewer()
 	{
 		return cur_active_viewer;
 	}
+	void clearScene();
 	void activate_viewer();
+	void updateGeometryImage();
+	videoEditting::VSerialization serializer;
+	void open_project(QString& filename);
+	void save_project(QString& filename);
 };

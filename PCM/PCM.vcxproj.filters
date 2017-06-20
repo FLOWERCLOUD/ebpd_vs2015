@@ -32,9 +32,6 @@
     <Filter Include="Geometry">
       <UniqueIdentifier>{2a218069-afb4-4db6-9b9f-62abc615ada3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility">
-      <UniqueIdentifier>{512899be-1d55-4b16-a858-0e9e88ce27dd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Basic">
       <UniqueIdentifier>{f8d64bf3-deba-4305-91c9-09403d807f38}</UniqueIdentifier>
     </Filter>
@@ -105,14 +102,17 @@
     <Filter Include="Visualize\nouse">
       <UniqueIdentifier>{4d41908d-b71a-423f-ae13-264519973139}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utility\videoediting">
-      <UniqueIdentifier>{fd832dae-3b1d-432c-89fe-6ceceb635e35}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Utility\nouse">
-      <UniqueIdentifier>{75428c23-e41f-4b05-9e26-ec1458f17bee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tools\videoediting">
       <UniqueIdentifier>{97851d9a-531c-4188-83cc-39ec06612919}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Utility">
+      <UniqueIdentifier>{512899be-1d55-4b16-a858-0e9e88ce27dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Utility\videoediting">
+      <UniqueIdentifier>{fd832dae-3b1d-432c-89fe-6ceceb635e35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tools\Utility\nouse">
+      <UniqueIdentifier>{75428c23-e41f-4b05-9e26-ec1458f17bee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +120,7 @@
       <Filter>Generated Files</Filter>
     </ClCompile>
     <ClCompile Include="file_system.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </ClCompile>
     <ClCompile Include="globals.cpp">
       <Filter>Basic</Filter>
@@ -132,22 +132,22 @@
       <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="file_io.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </ClCompile>
     <ClCompile Include="vertex.cpp">
       <Filter>Geometry</Filter>
     </ClCompile>
     <ClCompile Include="console.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </ClCompile>
     <ClCompile Include="color_table.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </ClCompile>
     <ClCompile Include="select_tool.cpp">
       <Filter>Tools</Filter>
     </ClCompile>
     <ClCompile Include="sample_properity.cpp">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </ClCompile>
     <ClCompile Include="caculateNorm.cpp">
       <Filter>Algorithm</Filter>
@@ -672,35 +672,8 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_GenerateTrimap.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="bayesian.cpp">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="Cluster.cpp">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="MyBayesian.cpp">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="GenerateTrimap.cpp">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="frameDif.cpp">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="VideoEditingWindow.cpp">
-      <Filter>Visualize\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="SrcWidget.cpp">
-      <Filter>Visualize\videoediting</Filter>
-    </ClCompile>
     <ClCompile Include="qt_gui\dlg_propagate.cpp">
       <Filter>Visualize\nouse</Filter>
-    </ClCompile>
-    <ClCompile Include="readframe.cpp">
-      <Filter>Visualize\videoediting</Filter>
-    </ClCompile>
-    <ClCompile Include="camerawidget.cpp">
-      <Filter>Visualize\videoediting</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_camerawidget.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -756,8 +729,71 @@
     <ClCompile Include="videoediting\ObjReader.cpp">
       <Filter>Tools\videoediting</Filter>
     </ClCompile>
-    <ClCompile Include="videoEditingCommonType.h">
+    <ClCompile Include="videoediting\canvas.cpp">
       <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\drawcamera.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\GLViewWidgetViewport.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\MyBayesian.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\GenerateTrimap.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\camerawidget.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\Cluster.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\bayesian.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\VideoEditingWindow.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\SrcWidget.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\readframe.cpp">
+      <Filter>Visualize\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\frameDif.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\videoedit_serialization.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletInterface.cpp">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_camerawidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GenerateTrimap.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GLViewWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_manipulator.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ObjectTransformWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_readframe.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SrcWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VideoEditingWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -783,19 +819,19 @@
       <Filter>Geometry</Filter>
     </CustomBuild>
     <CustomBuild Include="color_table.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="console.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="file_io.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="file_system.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="pool_allocator.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ICP\kdtree.hpp">
       <Filter>Basic</Filter>
@@ -816,10 +852,10 @@
       <Filter>Tools</Filter>
     </CustomBuild>
     <CustomBuild Include="octree.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="sample_properity.h">
-      <Filter>Utility</Filter>
+      <Filter>Tools\Utility</Filter>
     </CustomBuild>
     <CustomBuild Include="bfs_classifier.hpp">
       <Filter>Algorithm</Filter>
@@ -941,9 +977,6 @@
     <CustomBuild Include="manipulate_tool.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="GenerateTrimap.h">
-      <Filter>Algorithm\videoediting</Filter>
-    </CustomBuild>
     <CustomBuild Include="qt_gui\ui\VideoEditingScene.ui">
       <Filter>Form Files\videoeditting</Filter>
     </CustomBuild>
@@ -977,12 +1010,6 @@
     <CustomBuild Include="qt_gui\ui\papagate_dialog.ui">
       <Filter>Form Files\nouse</Filter>
     </CustomBuild>
-    <CustomBuild Include="VideoEditingWindow.h">
-      <Filter>Visualize\videoediting</Filter>
-    </CustomBuild>
-    <CustomBuild Include="SrcWidget.h">
-      <Filter>Visualize\videoediting</Filter>
-    </CustomBuild>
     <CustomBuild Include="qt_gui\dlg_propagate.h">
       <Filter>Visualize\nouse</Filter>
     </CustomBuild>
@@ -999,28 +1026,40 @@
       <Filter>Visualize\nouse</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ICP\T_linkage.h">
-      <Filter>Utility\nouse</Filter>
+      <Filter>Tools\Utility\nouse</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ICP\J_linkage_II.h">
-      <Filter>Utility\nouse</Filter>
+      <Filter>Tools\Utility\nouse</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ICP\J_linkage.h">
-      <Filter>Utility\nouse</Filter>
+      <Filter>Tools\Utility\nouse</Filter>
     </CustomBuild>
     <CustomBuild Include="..\ICP\ICP.h">
-      <Filter>Utility\nouse</Filter>
-    </CustomBuild>
-    <CustomBuild Include="readframe.h">
-      <Filter>Visualize\videoediting</Filter>
-    </CustomBuild>
-    <CustomBuild Include="camerawidget.h">
-      <Filter>Visualize\videoediting</Filter>
+      <Filter>Tools\Utility\nouse</Filter>
     </CustomBuild>
     <CustomBuild Include="videoediting\GLViewWidget.h">
       <Filter>Visualize\videoediting</Filter>
     </CustomBuild>
     <CustomBuild Include="videoediting\ObjectTransformWidget.h">
       <Filter>Tools\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\glwidget_render_mode.ui">
+      <Filter>Form Files\videoeditting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\camerawidget.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\GenerateTrimap.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\VideoEditingWindow.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\SrcWidget.h">
+      <Filter>Visualize\videoediting</Filter>
+    </CustomBuild>
+    <CustomBuild Include="videoediting\readframe.h">
+      <Filter>Visualize\videoediting</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -1456,21 +1495,6 @@
     <ClInclude Include="GeneratedFiles\ui_VideoEditingScene.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="bayesian.h">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClInclude>
-    <ClInclude Include="Cluster.h">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClInclude>
-    <ClInclude Include="MyBayesian.h">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClInclude>
-    <ClInclude Include="frameDif.h">
-      <Filter>Algorithm\videoediting</Filter>
-    </ClInclude>
-    <ClInclude Include="VideoEdittingParameter.h">
-      <Filter>Utility\videoediting</Filter>
-    </ClInclude>
     <ClInclude Include="videoediting\Manipulator2.h">
       <Filter>Tools\videoediting</Filter>
     </ClInclude>
@@ -1506,6 +1530,39 @@
     </ClInclude>
     <ClInclude Include="videoediting\VideoEDCamera.h">
       <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\canvas.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\drawcamera.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_glwidget_render_mode.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\MyBayesian.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\Cluster.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\bayesian.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\frameDif.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\videoEditingCommonType.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\VideoEdittingParameter.h">
+      <Filter>Algorithm\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\videoedit_serialization.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="bulletInterface.h">
+      <Filter>Algorithm\videoediting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

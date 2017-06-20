@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ebpd", "ebpd\ebpd.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
@@ -31,6 +31,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vtp", "VTP_source_code\vtp.vcxproj", "{80340F2B-13CB-47F2-87D0-E45317D59FFE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tetgen", "tetgen-master\tetgen.vcxproj", "{8D33E22D-47A3-33E9-A405-B9CA1DA4161F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BulletSoftBody", "bullet3-2.85.1\vs\src\BulletSoftBody\BulletSoftBody.vcxproj", "{F4391499-3993-3835-A0BE-FCCFD709DB99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -328,6 +330,26 @@ Global
 		{8D33E22D-47A3-33E9-A405-B9CA1DA4161F}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|x64
 		{8D33E22D-47A3-33E9-A405-B9CA1DA4161F}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
 		{8D33E22D-47A3-33E9-A405-B9CA1DA4161F}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Debug|Mixed Platforms.ActiveCfg = Debug|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Debug|Mixed Platforms.Build.0 = Debug|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Debug|Win32.ActiveCfg = Debug|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Debug|x64.ActiveCfg = Debug|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Debug|x64.Build.0 = Debug|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.MinSizeRel|Mixed Platforms.ActiveCfg = MinSizeRel|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.MinSizeRel|Mixed Platforms.Build.0 = MinSizeRel|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.MinSizeRel|x64.ActiveCfg = MinSizeRel|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.MinSizeRel|x64.Build.0 = MinSizeRel|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Release|Mixed Platforms.ActiveCfg = Release|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Release|Mixed Platforms.Build.0 = Release|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Release|Win32.ActiveCfg = Release|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Release|x64.ActiveCfg = Release|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.Release|x64.Build.0 = Release|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.RelWithDebInfo|Mixed Platforms.ActiveCfg = RelWithDebInfo|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.RelWithDebInfo|Mixed Platforms.Build.0 = RelWithDebInfo|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|x64
+		{F4391499-3993-3835-A0BE-FCCFD709DB99}.RelWithDebInfo|x64.Build.0 = RelWithDebInfo|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

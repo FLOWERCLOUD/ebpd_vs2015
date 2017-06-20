@@ -35,11 +35,29 @@ void SrcWidget::setImage(QImage* srcImage)
 	//QMessageBox::information(this, "setImage", "setImage",QMessageBox::Ok);
 	this->srcImage = srcImage;
 	maskImage = QImage(srcImage->width(), srcImage->height(), QImage::Format_ARGB32);
+	maskImage.fill(QColor(255.0, 255.0, 255.0, 255.0));
+	maskCutImage = QImage(srcImage->width(), srcImage->height(), QImage::Format_ARGB32);
+	maskCutImage.fill(QColor(255.0, 255.0, 255.0, 255.0));
 	translateValue[0] = translateValue[1] = 0.0f;
 	scaleValue = 1.f;
-	float widthscale = (float) this->size().width() / (float)srcImage->width();
-	float heightscale = (float)this->size().height() / (float)srcImage->height();
-	scaleValue = widthscale < heightscale ? widthscale : heightscale;
+
+	if (srcImage && !srcImage->size().isEmpty())
+	{
+		if (this->size().width() >= srcImage->width() &&
+			this->size().height() >= srcImage->height()
+			)
+		{
+			scaleValue = 1.0f; //尽可能保持图片的原始大小
+		}
+		else
+		{
+			float widthscale = (float) this->size().width() / (float)srcImage->width();
+			float heightscale = (float)this->size().height() / (float)srcImage->height();
+			scaleValue = widthscale < heightscale ? widthscale : heightscale;
+		}
+
+	}
+
 	//
 	//maskCutImage=QImage(srcImage->width(),srcImage->height(), QImage::Format_ARGB32);
 }
@@ -55,7 +73,7 @@ void SrcWidget::updateDisplayImage()
 
 	QPainter painter(&resultImage);
 	painter.setBrush(QBrush(QColor::fromRgba(0x30ffffff)));
-	painter.drawRect(0, 0, resultImage.width(), resultImage.height());
+	//painter.drawRect(0, 0, resultImage.width(), resultImage.height());
 	painter.setCompositionMode(QPainter::CompositionMode_Multiply);
 	painter.drawImage(0, 0, maskImage);
 	painter.drawImage(0, 0, maskCutImage);
@@ -298,9 +316,19 @@ void SrcWidget::resizeEvent(QResizeEvent* event)
 	QLabel::resizeEvent(event);
 	if (srcImage && !srcImage->size().isEmpty())
 	{
-		float widthscale = (float) this->size().width() / (float)srcImage->width();
-		float heightscale = (float)this->size().height() / (float)srcImage->height();
-		scaleValue = widthscale < heightscale ? widthscale : heightscale;
+		if (this->size().width() >= srcImage->width() && 
+			this->size().height() >= srcImage->height()
+			)
+		{
+			scaleValue = 1.0f; //尽可能保持图片的原始大小
+		}
+		else
+		{
+			float widthscale = (float) this->size().width() / (float)srcImage->width();
+			float heightscale = (float)this->size().height() / (float)srcImage->height();
+			scaleValue = widthscale < heightscale ? widthscale : heightscale;
+		}
+
 	}
 
 	updateDisplayImage();
@@ -362,6 +390,7 @@ void SrcWidget::updateTrimap(const QImage& newMap)
 	//else
 	maskImage = newMap;
 	maskCutImage = QImage(srcImage->width(), srcImage->height(), QImage::Format_ARGB32);
+	maskCutImage.fill(QColor(255.0, 255.0, 255.0, 255.0));
 }
 
 void SrcWidget::setTrimap(const QImage& trimap)

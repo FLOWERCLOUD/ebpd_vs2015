@@ -118,7 +118,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Debug;$(QTDIR_64_12)\lib;$(SolutionDir)include\fbxsdk\lib\vs2012\x64;$(OpenCVDir)\build\x64\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImaged.lib;assimp-vc140-mt.lib;opencv_calib3d2413d.lib;opencv_contrib2413d.lib;opencv_core2413d.lib;opencv_features2d2413d.lib;opencv_flann2413d.lib;opencv_gpu2413d.lib;opencv_highgui2413d.lib;opencv_imgproc2413d.lib;opencv_legacy2413d.lib;opencv_ml2413d.lib;opencv_nonfree2413d.lib;opencv_objdetect2413d.lib;opencv_ocl2413d.lib;opencv_photo2413d.lib;opencv_stitching2413d.lib;opencv_superres2413d.lib;opencv_ts2413d.lib;opencv_video2413d.lib;opencv_videostab2413d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>$(QTDIR_64_12)\lib\Qt5Widgetsd.lib;$(QTDIR_64_12)\lib\Qt5Cored.lib;$(QTDIR_64_12)\lib\Qt5Guid.lib;$(QTDIR_64_12)\lib\Qt5OpenGLd.lib;opengl32.lib;glu32.lib;$(QTDIR_64_12)\lib\Qt5Xmld.lib;QGLViewerd2.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImaged.lib;assimp-vc140-mt.lib;opencv_calib3d2413d.lib;opencv_contrib2413d.lib;opencv_core2413d.lib;opencv_features2d2413d.lib;opencv_flann2413d.lib;opencv_gpu2413d.lib;opencv_highgui2413d.lib;opencv_imgproc2413d.lib;opencv_legacy2413d.lib;opencv_ml2413d.lib;opencv_nonfree2413d.lib;opencv_objdetect2413d.lib;opencv_ocl2413d.lib;opencv_photo2413d.lib;opencv_stitching2413d.lib;opencv_superres2413d.lib;opencv_ts2413d.lib;opencv_video2413d.lib;opencv_videostab2413d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -163,9 +163,9 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
-      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Release;$(QTDIR_64_12)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)include\fbxsdk\lib\vs2012\x64;$(OpenCVDir)\build\x64\vc12\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(MATLABDIR2012b)\extern\lib\win64\microsoft;$(MATLABDIR2012b)\lib\win64;$(SolutionDir)\x64\Release;$(QTDIR_64_12)\lib;$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)include\fbxsdk\lib\vs2012\x64;$(OpenCVDir)\build\x64\vc11\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImage.lib;assimp-vc140-mt.lib;opencv_calib3d247.lib;opencv_contrib247.lib;opencv_core247.lib;opencv_features2d247.lib;opencv_flann247.lib;opencv_gpu247.lib;opencv_highgui247.lib;opencv_imgproc247.lib;opencv_legacy247.lib;opencv_ml247.lib;opencv_nonfree247.lib;opencv_objdetect247.lib;opencv_ocl247.lib;opencv_photo247.lib;opencv_stitching247.lib;opencv_superres247.lib;opencv_ts247.lib;opencv_video247.lib;opencv_videostab247.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;QGLViewer2.lib;$(QTDIR_64_12)\lib\Qt5Widgets.lib;$(QTDIR_64_12)\lib\Qt5Core.lib;$(QTDIR_64_12)\lib\Qt5Gui.lib;$(QTDIR_64_12)\lib\Qt5OpenGL.lib;$(QTDIR_64_12)\lib\Qt5Xml.lib;glut64.lib;Bullet3Collision.lib;Bullet3Common.lib;Bullet3Dynamics.lib;BulletCollision.lib;BulletDynamics.lib;BulletSoftBody.lib;LinearMath.lib;toolbox.lib;libfbxsdk.lib;ebpd.lib;vtp.lib;tetgen.lib;FreeImage.lib;assimp-vc140-mt.lib;opencv_calib3d2413.lib;opencv_contrib2413.lib;opencv_core2413.lib;opencv_features2d2413.lib;opencv_flann2413.lib;opencv_gpu2413.lib;opencv_highgui2413.lib;opencv_imgproc2413.lib;opencv_legacy2413.lib;opencv_ml2413.lib;opencv_nonfree2413.lib;opencv_objdetect2413.lib;opencv_ocl2413.lib;opencv_photo2413.lib;opencv_stitching2413.lib;opencv_superres2413.lib;opencv_ts2413.lib;opencv_video2413.lib;opencv_videostab2413.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
@@ -187,7 +187,32 @@
     <ClCompile Include="animation\animesh_colors.cpp" />
     <ClCompile Include="animation\animesh_rig.cpp" />
     <ClCompile Include="BASEReader.cpp" />
-    <ClCompile Include="bayesian.cpp" />
+    <ClCompile Include="BulletInterface.cpp" />
+    <ClCompile Include="GeneratedFiles\Release\moc_camerawidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GenerateTrimap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_GLViewWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_manipulator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ObjectTransformWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_readframe.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_SrcWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_VideoEditingWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="videoediting\bayesian.cpp" />
     <ClCompile Include="box.cpp" />
     <ClCompile Include="bullet\BasicDemo.cpp" />
     <ClCompile Include="bullet\BulletOpenGLApplication.cpp" />
@@ -207,8 +232,8 @@
     <ClCompile Include="bullet\ThirdPartyLibs\Wavefront\tiny_obj_loader.cpp" />
     <ClCompile Include="bullet\Utils\b3ResourcePath.cpp" />
     <ClCompile Include="caculateNorm.cpp" />
-    <ClCompile Include="camerawidget.cpp" />
-    <ClCompile Include="Cluster.cpp" />
+    <ClCompile Include="videoediting\camerawidget.cpp" />
+    <ClCompile Include="videoediting\Cluster.cpp" />
     <ClCompile Include="control\animated_mesh_ctrl.cpp" />
     <ClCompile Include="control\color_ctrl.cpp" />
     <ClCompile Include="control\cuda_ctrl.cpp" />
@@ -216,24 +241,47 @@
     <ClCompile Include="control\example_mesh_ctrl.cpp" />
     <ClCompile Include="control\graph_ctrl.cpp" />
     <ClCompile Include="control\skeleton_ctrl.cpp" />
-    <ClCompile Include="frameDif.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_camerawidget.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_GenerateTrimap.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_GLViewWidget.cpp" />
+    <ClCompile Include="videoediting\frameDif.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_camerawidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GenerateTrimap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_GLViewWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_manipulate_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_ObjectTransformWidget.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_ObjectTransformWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_popup_ok_cancel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_readframe.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_readframe.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_select_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_SrcWidget.cpp" />
-    <ClCompile Include="GeneratedFiles\Debug\moc_VideoEditingWindow.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_SrcWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_VideoEditingWindow.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_manipulate_tool.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -244,7 +292,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="GenerateTrimap.cpp" />
+    <ClCompile Include="videoediting\GenerateTrimap.cpp" />
     <ClCompile Include="global_datas\cuda_globals.cpp" />
     <ClCompile Include="ImageToShape.cpp" />
     <ClCompile Include="Image_ctrl.cpp" />
@@ -255,7 +303,7 @@
     <ClCompile Include="manipulatedFrameSetConstraint.cpp" />
     <ClCompile Include="manipulate_object.cpp" />
     <ClCompile Include="manipulate_tool.cpp" />
-    <ClCompile Include="MyBayesian.cpp" />
+    <ClCompile Include="videoediting\MyBayesian.cpp" />
     <ClCompile Include="pcm_mesh.cpp" />
     <ClCompile Include="MeshOpenGL.cpp" />
     <ClCompile Include="model.cpp" />
@@ -269,82 +317,105 @@
     <ClCompile Include="GeneratedFiles\Debug\moc_caculateNorm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_dlg_graphcuts.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_dlg_Jlinkage.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_dlg_propagate.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_GLLogStream.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_LayerDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_maching_state.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_main_window.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_OGL_viewports_skin2.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_paint_canvas.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_savePLYDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_saveSnapshotDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_standardCamera.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_toolbar.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_toolbar_frames.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_toolbar_painting.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_fitting.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_frame.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_gizmo.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_painting_floats.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_render_mode.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_selection.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_widget_viewports.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_caculateNorm.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -463,7 +534,7 @@
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_interface_skin.cpp" />
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_mesh_edit.cpp" />
     <ClCompile Include="qt_gui\toolbars\io_selection\IO_skeleton.cpp" />
-    <ClCompile Include="readframe.cpp" />
+    <ClCompile Include="videoediting\readframe.cpp" />
     <ClCompile Include="rendering\camera.cpp" />
     <ClCompile Include="rendering\depth_peeling.cpp" />
     <ClCompile Include="rendering\opengl_stuff.cpp" />
@@ -496,16 +567,18 @@
     <ClCompile Include="qt_gui\toolbars\toolbar_frames.cpp" />
     <ClCompile Include="qt_gui\toolbars\toolbar_painting.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="SrcWidget.cpp" />
+    <ClCompile Include="videoediting\SrcWidget.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="tracer.cpp" />
     <ClCompile Include="triangle.cpp" />
     <ClCompile Include="vertex.cpp" />
-    <ClCompile Include="videoEditingCommonType.h" />
-    <ClCompile Include="VideoEditingWindow.cpp" />
+    <ClCompile Include="videoediting\VideoEditingWindow.cpp" />
     <ClCompile Include="videoediting\BoundingBox.cpp" />
+    <ClCompile Include="videoediting\canvas.cpp" />
+    <ClCompile Include="videoediting\drawcamera.cpp" />
     <ClCompile Include="videoediting\GeometryExposer.cpp" />
     <ClCompile Include="videoediting\GLViewWidget.cpp" />
+    <ClCompile Include="videoediting\GLViewWidgetViewport.cpp" />
     <ClCompile Include="videoediting\HistoryCommand.cpp" />
     <ClCompile Include="videoediting\ObjectTransformWidget.cpp" />
     <ClCompile Include="videoediting\ObjReader.cpp" />
@@ -517,6 +590,7 @@
     <ClCompile Include="videoediting\RotateManipulator.cpp" />
     <ClCompile Include="videoediting\ScaleManipulator.cpp" />
     <ClCompile Include="videoediting\TranslateManipulator.cpp" />
+    <ClCompile Include="videoediting\videoedit_serialization.cpp" />
     <ClCompile Include="WeightGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -540,8 +614,9 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bayesian.h" />
-    <CustomBuild Include="camerawidget.h">
+    <ClInclude Include="bulletInterface.h" />
+    <ClInclude Include="videoediting\bayesian.h" />
+    <CustomBuild Include="videoediting\camerawidget.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
@@ -551,11 +626,12 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
-    <ClInclude Include="Cluster.h" />
-    <ClInclude Include="frameDif.h" />
+    <ClInclude Include="videoediting\Cluster.h" />
+    <ClInclude Include="videoediting\frameDif.h" />
+    <ClInclude Include="GeneratedFiles\ui_glwidget_render_mode.h" />
     <ClInclude Include="GeneratedFiles\ui_tt.h" />
     <ClInclude Include="GeneratedFiles\ui_VideoEditingScene.h" />
-    <CustomBuild Include="GenerateTrimap.h">
+    <CustomBuild Include="videoediting\GenerateTrimap.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
@@ -571,9 +647,9 @@
     <ClInclude Include="mesh.h" />
     <ClInclude Include="MeshOpenGL.h" />
     <ClInclude Include="model.h" />
-    <ClInclude Include="MyBayesian.h" />
+    <ClInclude Include="videoediting\MyBayesian.h" />
     <ClInclude Include="ray.h" />
-    <CustomBuild Include="readframe.h">
+    <CustomBuild Include="videoediting\readframe.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
@@ -585,7 +661,7 @@
     </CustomBuild>
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
-    <CustomBuild Include="SrcWidget.h">
+    <CustomBuild Include="videoediting\SrcWidget.h">
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc_%(Filename).cpp</Message>
@@ -596,7 +672,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="TextureManager.h" />
-    <CustomBuild Include="VideoEditingWindow.h">
+    <CustomBuild Include="videoediting\VideoEditingWindow.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
@@ -607,6 +683,8 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
     <ClInclude Include="videoediting\BoundingBox.h" />
+    <ClInclude Include="videoediting\canvas.h" />
+    <ClInclude Include="videoediting\drawcamera.h" />
     <ClInclude Include="videoediting\VideoEDCamera.h" />
     <CustomBuild Include="videoediting\GLViewWidget.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
@@ -621,6 +699,7 @@
     <ClInclude Include="videoediting\GeometryExposer.h" />
     <ClInclude Include="videoediting\HistoryCommand.h" />
     <ClInclude Include="videoediting\Manipulator2.h" />
+    <ClInclude Include="videoediting\videoEditingCommonType.h" />
     <ClInclude Include="videoediting\VideoEDMesh.h" />
     <CustomBuild Include="videoediting\ObjectTransformWidget.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  </Command>
@@ -638,7 +717,8 @@
     <ClInclude Include="videoediting\ScaleManipulator.h" />
     <ClInclude Include="videoediting\VEScene.h" />
     <ClInclude Include="videoediting\TranslateManipulator.h" />
-    <ClInclude Include="VideoEdittingParameter.h" />
+    <ClInclude Include="videoediting\VideoEdittingParameter.h" />
+    <ClInclude Include="videoediting\videoedit_serialization.h" />
     <ClInclude Include="WeightGenerator.h" />
     <CustomBuild Include="..\ICP\ICP.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -2372,6 +2452,18 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc ui_%(Filename).h</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
+    </CustomBuild>
+    <CustomBuild Include="qt_gui\ui\glwidget_render_mode.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR_64_12)\bin\uic.exe" -o ".\GeneratedFiles\ui_%(Filename).h" "%(FullPath)"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">moc ui_%(Filename).h</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">moc ui_%(Filename).h</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\ui_%(Filename).h;%(Outputs)</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\uic.exe</AdditionalInputs>
     </CustomBuild>
   </ItemGroup>

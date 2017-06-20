@@ -1,7 +1,9 @@
 #include "GeometryExposer.h"
 #include "VideoEDMesh.h"
+#include "FreeImage.h"
 #include <QtOpenGL/QGLFramebufferObject>	
 #include <QtWidgets\qmessagebox.h>
+
 #include <math.h>
 using namespace std;
 namespace videoEditting
@@ -16,6 +18,7 @@ namespace videoEditting
 		norTexData = NULL;
 		width = 256;
 		height = 256;
+		x_offeset = y_offset = 0;
 		projType = GE_PROJ_PERSPECTIVE;
 		depthType = GE_DEPTH_GEOMETRY;
 		isProjDepthTypeUpdated = true;
@@ -36,10 +39,12 @@ namespace videoEditting
 		return QGLFramebufferObject::hasOpenGLFramebufferObjects();
 	}
 
-	void GeometryExposer::init(int w, int h)
+	void GeometryExposer::init(int w, int h, int _x_offeset, int _y_offset)
 	{
 		width = w;
 		height = h;
+		x_offeset = _x_offeset;
+		y_offset = _y_offset;
 		generateBuffers();
 
 		fboShader = new QGLShaderProgram;
@@ -116,7 +121,9 @@ namespace videoEditting
 
 		GLint view[4];
 		glPushAttrib(GL_VIEWPORT_BIT);
-		glViewport(0, 0, width, height);
+		//frambuffer 是整个窗口，并不会受viewport影响，viewport只会影响到渲染到的窗口
+		//设置为0，0，这样使得frambuffer图片对应于渲染小窗口的图片
+		glViewport(0, 0, width, height); 
 		glClearColor(CLEAR_COLOR_FLOAT, CLEAR_COLOR_FLOAT, CLEAR_COLOR_FLOAT, CLEAR_COLOR_FLOAT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -164,6 +171,44 @@ namespace videoEditting
 		GLenum errorMsg = glGetError();
 		if (errorMsg != GL_NO_ERROR)
 			qDebug() << "error occurs when exposing" << endl;
+		//导出图片
+		if (0) //用于debug frambuffer
+		{
+			FIBITMAP* bitmap = FreeImage_Allocate(width, height, 32, 8, 8, 8);
+			int y_size = FreeImage_GetHeight(bitmap);
+			int x_size = FreeImage_GetWidth(bitmap);
+			for (int y = 0; y< y_size; y++)
+			{
+				BYTE *bits = FreeImage_GetScanLine(bitmap, y);
+				for (int x = 0; x < x_size; x++)
+				{
+					UVTexPixelData& data = uvTexData[y * width + x];
+					unsigned short u = data.u;
+					unsigned short vu = data.v;
+					if (data.objectID != NO_OBJECT_BIT)
+					{
+						for (int j = 0; j < 4; ++j)
+						{
+							bits[j] = data.objectID;
+						}
+					}
+					else
+					{
+						for (int j = 0; j < 4; ++j)
+						{
+							bits[j] = data.objectID;
+						}
+					}
+
+					bits[3] = 255;
+					bits += 4;
+				}
+			}
+			bool bSuccess = FreeImage_Save(FIF_PNG, bitmap, "C:/Users/hehua2015/Pictures/test.png", PNG_DEFAULT);
+			FreeImage_Unload(bitmap);
+		}
+
+
 	}
 
 	void GeometryExposer::setRenderObject(const QWeakPointer<RenderableObject>& object)
@@ -192,11 +237,13 @@ namespace videoEditting
 		}
 	}
 
-	void GeometryExposer::setResolution(int w, int h)
+	void GeometryExposer::setResolution(int w, int h, int _x_offeset, int _y_offset)
 	{
 		destroyBuffers();
 		width = max(w, 1);
 		height = max(h, 1);
+		x_offeset = _x_offeset;
+		y_offset  = _y_offset;
 		generateBuffers();
 	}
 

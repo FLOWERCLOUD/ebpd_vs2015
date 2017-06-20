@@ -2,6 +2,7 @@
 #include "basic_types.h"
 #include "RenderableObject.h"
 #include "videoEditingCommonType.h"
+#include "canvas.h"
 #include <QVector>
 #include <qvector2d.h>
 #include <QQuaternion>
@@ -55,8 +56,8 @@ namespace videoEditting
 		void releaseGLBuffer();
 
 		// initCanvas 初始化画布，要求在initGLBuffer之后调用
-		void initCanvas(int texWidth = TEX_DIM, int texHeight = TEX_DIM);
-		Canvas& getCanvas() { return *canvas; }
+//		void initCanvas(int texWidth = TEX_DIM, int texHeight = TEX_DIM);
+		Canvas& getCanvas() { return canvas; }
 		void updateGLTextures();
 
 		bool getTriangleData(const int faceID, TriangleData& triData);
@@ -78,10 +79,39 @@ namespace videoEditting
 		{
 			isWireFrameEnabled = isShow;
 		}
-
+		const QVector<QVector3D>& getVertices()
+		{
+			return vertices;
+		}
+		const QVector<QVector3D>& getNormals()
+		{
+			return vertices;
+		}
+		const QVector<QVector2D>& gettexcoords()
+		{
+			return texcoords;
+		}
+		const QVector<ObjTriangle>& getFaces()
+		{
+			return faces;
+		}
+		const QVector<int> getFacesIdxs()
+		{
+			QVector<int> faces;
+			for (int i = 0; i < getFaces().size(); ++i)
+			{
+				const ObjTriangle& triangle = getFaces()[i];
+				faces.push_back(triangle.vertIndex[0]);
+				faces.push_back(triangle.vertIndex[1]);
+				faces.push_back(triangle.vertIndex[2]);
+			}
+			return faces;
+		}
+		friend QDataStream& operator<<(QDataStream& out, const ObjTriangle&tri);
+		friend QDataStream& operator >> (QDataStream& in, ObjTriangle&tri);
 		friend QDataStream& operator<<(QDataStream& out, const Mesh&mesh);
 		friend QDataStream& operator >> (QDataStream& in, Mesh&mesh);
-
+		
 	protected:
 		void buildLocalBBox();
 		void buildGLArrays();				// 构建openGL用的数组
@@ -117,7 +147,7 @@ namespace videoEditting
 		QSet<int> selectedFaceIDSet;
 		QVector<int> selectedVertexIDArray;
 
-		Canvas* canvas;
+		Canvas canvas;
 
 	};
 }

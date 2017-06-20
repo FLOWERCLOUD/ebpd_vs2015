@@ -1,19 +1,53 @@
 #include "basic_types.h"
 #include "VideoEDCamera.h"
+#include "ObjReader.h"
+#include "drawcamera.h"
 #include <math.h>
+#include <QtOpenGL/QGLFunctions>
+
 using namespace std;
+
 namespace videoEditting
 {
+	float CAMERA_FOV_Y_RAD(float fov_degree)
+	{
+		return fov_degree* M_PI / 180.0f;
+	}
+
+
 	Camera::Camera(void)
 	{
+		type = OBJ_CAMERA;
+		fov_degree = 60;
+		nearplane = 0.2;
+		farplane = 100;
+		setupCameraShape();
 		resetCamera();
 	}
 
 
 	Camera::~Camera(void)
 	{
+
 	}
 
+	void Camera::setupCameraShape()
+	{
+		QString fileName = "resource/meshes/scene/camera/cameraball.obj";
+		ObjReader reader;
+		if (!reader.read(fileName))
+			return;
+		for (int i = 0; i < reader.getNumMeshes(); ++i)
+		{
+			QSharedPointer<Mesh> pM(reader.getMesh(i)); //reader 读的网格会后面会自己销毁
+//			pM->init();
+//			common_scene->objectArray.push_back(pM);
+			vertices = pM->getVertices();
+			normals  = pM->getNormals();
+			texcoords =  pM->gettexcoords();
+			faces = pM->getFaces();
+		}
+	}
 	void Camera::computeViewParam()
 	{
 		QVector3D xRotAxis = QVector3D(0, 0, direction[1].z());
@@ -33,7 +67,7 @@ namespace videoEditting
 	}
 	void Camera::computeAttachedTransfrom()
 	{
-		float tanAngle = tan(CAMERA_FOV_Y_RAD / 2.0f);
+		float tanAngle = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f);
 		double h = tanAngle * length;
 		double w = h * aspectRatio;
 		float xOffset = w * attachOffset[0];
@@ -60,11 +94,11 @@ namespace videoEditting
 		projMatrix.setToIdentity();
 		if (projType == Camera::GLCAMERA_PERSP)
 		{
-			projMatrix.perspective(CAMERA_FOV_Y_DEGREE, aspectRatio, 0.2, 100);
+			projMatrix.perspective(fov_degree, aspectRatio, nearplane, farplane);
 		}
 		else
 		{
-			float tanAngle = tan(CAMERA_FOV_Y_RAD / 2.0f);
+			float tanAngle = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f);
 			double h = tanAngle * length;
 			double w = h * aspectRatio;
 			projMatrix.ortho(-w, w, -h, h, 0, 1000);
@@ -72,12 +106,24 @@ namespace videoEditting
 	}
 
 
-	void Camera::setScreenResolution(int x, int y)
+	void Camera::setScreenResolution(int x, int y, int glwidget_width, int glwidget_height)
 	{
 		screenRes[0] = x; screenRes[1] = y;
-		glViewport(0, 0, x, y);
+		glwidgetRes[0] = glwidget_width; glwidgetRes[1] = glwidget_height;
+//		glViewport(0, 0, x, y);
+		viewoffeset[0] = glwidgetRes[0] / 2 - screenRes[0] / 2;
+		viewoffeset[1] = glwidgetRes[1] / 2 - screenRes[1] / 2;
+		glViewport(viewoffeset[0], viewoffeset[1],
+			screenRes[0], screenRes[1]);
 		aspectRatio = screenRes[0] / (double)screenRes[1];
 		updateAll();
+	}
+	void Camera::getCameraViewport(int& x_offset, int& y_offset, int& width, int& height)
+	{
+		x_offset = viewoffeset[0];
+		y_offset = viewoffeset[1];
+		width = screenRes[0];
+		height = screenRes[1];
 	}
 
 
@@ -107,12 +153,26 @@ namespace videoEditting
 
 	void Camera::getRay(int x, int y, QVector3D& ori, QVector3D& dir)
 	{
-		double xRatio = x / (double)screenRes[0] * 2.0 - 1.0;
-		double yRatio = 1.0 - y / (double)screenRes[1] * 2.0;
+
+		int width, height;
+		int x_offset, y_offset;//y_offset 相对于左下角
+		int glwidget_width, glwidget_height;
+		//	camera->getScreenResolution(width, height);
+		getCameraViewport(x_offset, y_offset, width, height);
+		getGLWidgetResoluiont(glwidget_width, glwidget_height);
+		//float xRatio = x / float(width);
+		//float yRatio = y / float(height);
+//		float xRatio = (x - x_offset) / float(width);
+		float y_offset_reverse = glwidget_height - y_offset - height;
+//		float yRatio = (y - y_offset_reverse) / float(height);
+		
+		
+		double xRatio = (x-x_offset )/ (double)screenRes[0] * 2.0 - 1.0;
+		double yRatio = 1.0 - (y- y_offset_reverse) / (double)screenRes[1] * 2.0;
 
 		if (projType == Camera::GLCAMERA_ORTHO)
 		{
-			double h = tan(CAMERA_FOV_Y_RAD / 2.0f) * length;
+			double h = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f) * length;
 			double w = h * aspectRatio;
 			xRatio *= w;
 			yRatio *= h;
@@ -123,7 +183,7 @@ namespace videoEditting
 		}
 		else
 		{
-			double h = tan(CAMERA_FOV_Y_RAD / 2.0f);
+			double h = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f);
 			double w = h * aspectRatio;
 			xRatio *= w;
 			yRatio *= h;
@@ -140,13 +200,73 @@ namespace videoEditting
 		computeProjParam();
 	}
 
+
+	Camera::ProjType Camera::getProjtype()
+	{
+		return projType;
+	}
+
+	void Camera::setFovAngle(float angle)
+	{
+		fov_degree = angle;
+		computeProjParam();
+	}
+
+
+	float Camera::getFovAngle()
+	{
+		return fov_degree;
+	}
+
+
+	void Camera::setAspectRatio(float _aspectRatio)
+	{
+		aspectRatio = _aspectRatio;
+		computeProjParam();
+	}
+
+
+	float Camera::getAspectRatio()
+	{
+		return aspectRatio;
+	}
+
+
+	void Camera::setNearPlane(float _nearplane)
+	{
+		nearplane = _nearplane;
+		computeProjParam();
+	}
+
+
+	float Camera::getNearPlane()
+	{
+		return nearplane;
+	}
+
+
+	void Camera::setFarPlane(float _farplane)
+	{
+		farplane = _farplane;
+		computeProjParam();
+	}
+
+
+	float Camera::getFarPlane()
+	{
+		return farplane;
+	}
+
 	void Camera::resetCamera()
 	{
 		projType = GLCAMERA_PERSP;
 		screenRes[0] = 640;
 		screenRes[1] = 480;
+		viewoffeset[0] = 0.0f;
+		viewoffeset[1] = 0.0f;
 		aspectRatio = screenRes[1] / (double)screenRes[0];
-		origin = QVector3D(10, 0, 0);
+//		origin = QVector3D(10, 0, 0);
+		origin = getCenter();
 		target = QVector3D(0, 0, 0);
 		direction[0] = QVector3D(0, 1, 0);
 		direction[1] = QVector3D(0, 0, 1);
@@ -159,7 +279,8 @@ namespace videoEditting
 		attachRotation = 0;
 		attachScale[0] = attachScale[1] = 1;
 
-		updateAll();
+		//updateAll();
+		updateAllnotMesh();
 	}
 
 	void Camera::applyGLMatrices()
@@ -186,7 +307,7 @@ namespace videoEditting
 
 		if (projType == Camera::GLCAMERA_ORTHO)
 		{
-			double h = tan(CAMERA_FOV_Y_RAD / 2.0f) * length;
+			double h = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f) * length;
 			double w = h * aspectRatio;
 			xR *= w;
 			yR *= h;
@@ -197,7 +318,7 @@ namespace videoEditting
 		}
 		else
 		{
-			double h = tan(CAMERA_FOV_Y_RAD / 2.0f);
+			double h = tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f);
 			double w = h * aspectRatio;
 			xR *= w;
 			yR *= h;
@@ -238,12 +359,77 @@ namespace videoEditting
 	{
 		if (projType == Camera::GLCAMERA_ORTHO)
 		{
-			h = 2 * tan(CAMERA_FOV_Y_RAD / 2.0f) * length;
+			h = 2 * tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f) * length;
 		}
 		else
-			h = 2 * tan(CAMERA_FOV_Y_RAD / 2.0f);
+			h = 2 * tan(CAMERA_FOV_Y_RAD(fov_degree) / 2.0f);
 		w = h * aspectRatio;
 	}
+	void Camera::updateCameraPose()
+	{
+
+		const QQuaternion& rotation = getTransform().getRotate();
+		const QVector3D& translation = getTransform().getScale();
+		const QVector3D& scale = getTransform().getTranslate();
+
+
+	}
+
+	void Camera::drawGeometry()
+	{
+		Mesh::drawGeometry();
+	}
+
+
+	void Camera::drawAppearance()
+	{
+		Mesh::drawAppearance();
+		appearProgram->release();
+
+		glPushMatrix();
+
+		glMultMatrixf(transform.getTransformMatrix().constData());
+		//QGLFunctions glFuncs(QGLContext::currentContext());
+		//glFuncs.glEnableVertexAttribArray(PROGRAM_VERTEX_ATTRIBUTE);
+		//glFuncs.glEnableVertexAttribArray(PROGRAM_NORMAL_ATTRIBUTE);
+		glEnable(GL_COLOR_MATERIAL);
+//		drawCamera();
+      // 再画透明的物体
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDepthMask(GL_FALSE);
+
+
+		float fov_half_rad = CAMERA_FOV_Y_RAD(fov_degree / 2);
+		drawFrustum(0, -nearplane*tan(fov_half_rad)*aspectRatio, nearplane*tan(fov_half_rad)*aspectRatio,
+			-nearplane*tan(fov_half_rad), nearplane*tan(fov_half_rad),
+			nearplane, farplane);
+		glDepthMask(GL_TRUE);
+		glDisable(GL_BLEND);
+
+		glPopMatrix();
+		glDisable(GL_COLOR_MATERIAL);
+		//glFuncs.glDisableVertexAttribArray(PROGRAM_VERTEX_ATTRIBUTE);
+		//glFuncs.glDisableVertexAttribArray(PROGRAM_NORMAL_ATTRIBUTE);
+		appearProgram->bind();
+	}
+
+	QDataStream& operator<<(QDataStream& out, const Camera& mesh)
+	{
+		out << mesh.vertices << mesh.normals << mesh.texcoords << mesh.faces;
+			
+		//	<< mesh.canvas;
+		return out;
+	}
+
+	QDataStream& operator >> (QDataStream& in, Camera& mesh)
+	{
+		in >> mesh.vertices >> mesh.normals >> mesh.texcoords >> mesh.faces;
+		//		>> mesh.canvas;
+		mesh.init();
+		return in;
+	}
+
 
 	void Camera::addAttachedObjects(const QWeakPointer<RenderableObject> obj)
 	{
@@ -278,6 +464,25 @@ namespace videoEditting
 	}
 
 	void Camera::updateAll()
+	{
+
+		computeViewParam();
+		computeProjParam();
+		computeAttachedTransfrom();
+		deltaAngle[0] = deltaAngle[1] = 0;
+		deltaLength = 0;
+		updateMesh();
+
+	}
+	void  Camera::updateMesh()
+	{
+		QVector3D trans;
+		QQuaternion rot;
+		getCameraTransform(trans, rot);
+		getTransform().setTranslate(trans);
+		getTransform().setRotate(rot);
+	}
+	void Camera::updateAllnotMesh()
 	{
 		computeViewParam();
 		computeProjParam();

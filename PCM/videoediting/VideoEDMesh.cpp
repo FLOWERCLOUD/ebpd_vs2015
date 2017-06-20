@@ -47,6 +47,8 @@ namespace videoEditting
 
 		if (!geometryProgram)
 		{
+			//使用QGLShaderProgram 的默认构造函数的话，则当前shaderprogram 属于当前的QGLContext
+			//这在具有多个QGLContext 的情况下，就不应共享同一个QGLShaderProgram 对象
 			geometryProgram = QSharedPointer<QGLShaderProgram>(new QGLShaderProgram);
 			geometryProgram->addShaderFromSourceFile(QGLShader::Vertex, "./rendering/myshaders/fboShaderVS.glsl");
 			geometryProgram->addShaderFromSourceFile(QGLShader::Fragment, "./rendering/myshaders/fboShaderFS.glsl");
@@ -93,8 +95,8 @@ namespace videoEditting
 		int texRegBase = GL_TEXTURE0_ARB + MESH_TEXTURE_REGISTER_OFFSET;
 		int texRegOffset = MESH_TEXTURE_REGISTER_OFFSET;
 		glActiveTextureARB(texRegBase + 3);								// 分配一个纹理寄存器
-//		glBindTexture(GL_TEXTURE_2D, canvas.getGLBaseThicknessTexObj());		// 把贴图对象绑定到寄存器
-//		geometryProgram->setUniformValue("baseThickTex", texRegOffset + 3);	// 把寄存器绑定到着色器变量
+		glBindTexture(GL_TEXTURE_2D, canvas.getGLBaseThicknessTexObj());		// 把贴图对象绑定到寄存器
+		geometryProgram->setUniformValue("baseThickTex", texRegOffset + 3);	// 把寄存器绑定到着色器变量
 
 		bool isBindError = false;																	// 顶点各属性数组
 		if (!glBuffer[0].bind())
@@ -214,7 +216,7 @@ namespace videoEditting
 		assertTrue(glBuffer[5].bind());
 
 		buildLocalBBox();
-//		canvas.init(vertices, normals, texcoords, faces);
+		canvas.init(vertices, normals, texcoords, faces);
 	}
 
 	void Mesh::releaseGLBuffer()
@@ -223,7 +225,8 @@ namespace videoEditting
 		{
 			for (int i = 0; i < NUM_GL_VALUE_BUFFERS; ++i)
 			{
-				glBuffer[i].release();
+				if(glBuffer[i].isCreated())
+					glBuffer[i].release();
 			}
 			releaseGLArrays();
 		}
@@ -233,7 +236,7 @@ namespace videoEditting
 	{
 		qDebug() << "delete mesh " << objectID << endl;
 		releaseGLBuffer();
-		//canvas.release();
+		canvas.release();
 	}
 
 
@@ -271,18 +274,18 @@ namespace videoEditting
 		int texRegBase = GL_TEXTURE0_ARB + MESH_TEXTURE_REGISTER_OFFSET;
 		int texRegOffset = MESH_TEXTURE_REGISTER_OFFSET;
 		glActiveTextureARB(texRegBase + 0);								// 分配一个纹理寄存器
-		//glBindTexture(GL_TEXTURE_2D, canvas.getGLColorTexObj());		// 把贴图对象绑定到寄存器
-		//appearProgram->setUniformValue("colorTex", texRegOffset + 0);	// 把寄存器绑定到着色器变量
+		glBindTexture(GL_TEXTURE_2D, canvas.getGLColorTexObj());		// 把贴图对象绑定到寄存器
+		appearProgram->setUniformValue("colorTex", texRegOffset + 0);	// 把寄存器绑定到着色器变量
 
-		//glActiveTextureARB(texRegBase + 1);
-		//glBindTexture(GL_TEXTURE_2D, canvas.getGLSurfTexObj());
-		//appearProgram->setUniformValue("surfTex", texRegOffset + 1);
+		glActiveTextureARB(texRegBase + 1);
+		glBindTexture(GL_TEXTURE_2D, canvas.getGLSurfTexObj());
+		appearProgram->setUniformValue("surfTex", texRegOffset + 1);
 
-		//glActiveTextureARB(texRegBase + 2);
-		//glBindTexture(GL_TEXTURE_2D, canvas.getGLThicknessTexObj());
-		//appearProgram->setUniformValue("thickTex", texRegOffset + 2);
+		glActiveTextureARB(texRegBase + 2);
+		glBindTexture(GL_TEXTURE_2D, canvas.getGLThicknessTexObj());
+		appearProgram->setUniformValue("thickTex", texRegOffset + 2);
 
-		//appearProgram->setUniformValue("finalAlpha", alphaForAppearance);
+		appearProgram->setUniformValue("finalAlpha", alphaForAppearance);
 
 		bool isBindError = false;
 		if (!glBuffer[0].bind())
@@ -329,6 +332,13 @@ namespace videoEditting
 		{
 			drawWireFrame();
 		}
+		glBuffer[0].release();
+		glBuffer[1].release();
+		glBuffer[2].release();
+		glBuffer[3].release();
+		glBuffer[4].release();
+
+
 		glPopMatrix();
 
 	}
@@ -364,7 +374,7 @@ namespace videoEditting
 	}
 	void Mesh::updateGLTextures()
 	{
-		//canvas.updateGLTextures();
+		canvas.updateGLTextures();
 	}
 
 	bool Mesh::getTriangleData(const int faceID, TriangleData& triData)
@@ -389,6 +399,7 @@ namespace videoEditting
 
 		appearProgram->release();
 		QGLFunctions glFuncs(QGLContext::currentContext());
+		glDisable(GL_LIGHTING);  //需要关掉光照
 		glColor3f(0.8, 0.8, 0.8);
 		glLineWidth(1.0f);
 
@@ -397,7 +408,7 @@ namespace videoEditting
 		glColor3f(116.0 / 255.0f, 190.0 / 255.0f, 160.0 / 255.0f);
 		glEnable(GL_COLOR_MATERIAL);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
+		//如果渲染环境，buffer等出错，这里又可能出错。
 		glDrawArrays(GL_TRIANGLES, 0, glVertexBuffer.size());
 
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -476,6 +487,7 @@ namespace videoEditting
 		}
 
 		// 更新三角形索引
+		//如果存在一个点多法向等可能会出错
 		for (int ithTri = 0; ithTri < faces.size(); ++ithTri)
 		{
 			ObjTriangle& tri = faces[ithTri];
@@ -561,15 +573,15 @@ namespace videoEditting
 
 	QDataStream& operator<<(QDataStream& out, const Mesh&mesh)
 	{
-		out << mesh.vertices << mesh.normals << mesh.texcoords << mesh.faces;
-		//	<< mesh.canvas;
+		out << mesh.vertices << mesh.normals << mesh.texcoords << mesh.faces
+			<< mesh.canvas;
 		return out;
 	}
 
 	QDataStream& operator >> (QDataStream& in, Mesh&mesh)
 	{
-		in >> mesh.vertices >> mesh.normals >> mesh.texcoords >> mesh.faces;
-	//		>> mesh.canvas;
+		in >> mesh.vertices >> mesh.normals >> mesh.texcoords >> mesh.faces
+			>> mesh.canvas;
 		mesh.init();
 		return in;
 	}

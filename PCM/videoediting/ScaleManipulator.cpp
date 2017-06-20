@@ -99,6 +99,13 @@ namespace videoEditting
 		float scaleV[] = { 1,1,1 };
 		scaleV[curSelectedAxis] = curScale;
 		getTransform()->scale(QVector3D(scaleV[0], scaleV[1], scaleV[2]));
+		if (curObject)
+		{
+			if (curObject.data()->getType() == RenderableObject::OBJ_CAMERA)
+			{
+				((Camera*)curObject.data())->updateCameraPose();
+			}
+		}
 	}
 
 }

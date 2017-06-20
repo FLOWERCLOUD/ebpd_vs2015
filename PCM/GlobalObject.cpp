@@ -2,8 +2,8 @@
 #include "GlobalObject.h"
 #include "qt_gui/main_window.h"
 #include "qt_gui/paint_canvas.h"
-#include "VideoEdittingParameter.h"
-#include "VideoEditingWindow.h"
+#include "videoediting/VideoEdittingParameter.h"
+#include "videoediting/VideoEditingWindow.h"
 #include "sample_set.h"
 #include <QSemaphore>
 #include <QMutex>

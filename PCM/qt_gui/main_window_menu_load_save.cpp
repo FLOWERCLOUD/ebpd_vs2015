@@ -12,7 +12,8 @@
 #include <QColorDialog>
 #include <QMessageBox>
 #include "qt_gui/tools/popup_ok_cancel.hpp"
-#include "VideoEditingWindow.h"
+#include "videoediting/VideoEditingWindow.h"
+#include "videoediting\GLViewWidget.h"
 
 void main_window::load_fbx_mesh( Loader::Fbx_file& loader)
 {
@@ -557,7 +558,8 @@ void main_window::on_actionNew_VideoEditing_Scene_triggered()
 {
 	VideoEditingWindow& videoEditingWindow = VideoEditingWindow::getInstance();
 	videoEditingWindow.show();
-	videoEditingWindow.scene->clear();
+//	videoEditingWindow.activated_viewer()->getScene().clear();
+	videoEditingWindow.clearScene();
 	videoEditingWindow.updateGLView();
 }
 void main_window::on_actionOpen_VideoEditing_Scene_triggered()
@@ -575,8 +577,10 @@ void main_window::on_actionOpen_VideoEditing_Scene_triggered()
 	//videoEditingWindow.raise();
 	//videoEditingWindow.setFocus();
 	//关键不是焦点，而是对qglwidget makecurrent ,这样才能保证后面的 opengl程序正常运行
-	videoEditingWindow.activate_viewer();
-	videoEditingWindow.scene->open(filename);
+//	videoEditingWindow.activate_viewer();
+//	videoEditingWindow.activated_viewer()->getScene().open(filename);
+
+	videoEditingWindow.open_project(filename);
 
 //	videoEditingWindow.scene->open(filename);
 //	videoEditingWindow.updateGLView();
@@ -608,6 +612,7 @@ void main_window::on_actionSave_VideoEditing_Scene_triggered()
 	QString filename = QFileDialog::getSaveFileName(this, tr("Save File"),
 		QDir::currentPath(),
 		"Video Editing Document (*.videoediting)");
-	videoEditingWindow.scene->save(filename);
+    //videoEditingWindow.activated_viewer()->getScene().save(filename);
+	videoEditingWindow.save_project(filename);
 
 }

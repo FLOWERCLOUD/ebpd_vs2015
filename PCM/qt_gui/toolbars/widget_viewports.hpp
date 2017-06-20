@@ -22,6 +22,7 @@ public:
 
         QIcon icon3( (g_icons_theme_dir+"/viewport_four.svg").c_str() );
         toolB_four->setIcon(icon3);
+
     }
 };
 

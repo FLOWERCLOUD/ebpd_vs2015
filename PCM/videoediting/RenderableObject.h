@@ -41,11 +41,13 @@ namespace videoEditting
 
 		friend QDataStream& operator >> (QDataStream& in, ObjectTransform& trans);
 		friend QDataStream& operator<<(QDataStream& out, const ObjectTransform& trans);
-
+		void updateTransformMatrix_Public()
+		{
+			updateTransformMatrix();
+		}
 	protected:
+		
 		void updateTransformMatrix();
-
-
 		QVector3D m_translation;
 		QQuaternion m_rotation;
 		QVector3D m_scale;
@@ -59,12 +61,12 @@ namespace videoEditting
 	// 抽象类，表示可以在场景中显示的物体
 	class RenderableObject
 	{
-		enum DrawType { DRAW_GEOMETRY = 0x1, DRAW_BBOX = 0x1 << 1 };
+		enum DrawType { DRAW_GEOMETRY = 0x1, DRAW_BBOX = 0x1 << 1,DRAW_CAMERA = 0x1 << 2};
 	public:
 		typedef QWeakPointer<RenderableObject> ObjectPointer;
 
 		enum ObjectComponent { CMP_MESH = 0x1, CMP_PICKER = 0x2 };
-		enum ObjectType { OBJ_MESH = 0x1, OBJ_PICKER_OBJECT = CMP_MESH | CMP_PICKER };
+		enum ObjectType { OBJ_MESH = 0x1, OBJ_PICKER_OBJECT = CMP_MESH | CMP_PICKER, OBJ_CAMERA = 0x1 << 3};
 
 		RenderableObject(void);
 		virtual ~RenderableObject(void);
@@ -106,7 +108,10 @@ namespace videoEditting
 
 		friend QDataStream& operator<<(QDataStream& out, const QSharedPointer<RenderableObject>&pObj);
 		friend QDataStream& operator >> (QDataStream&  in, QSharedPointer<RenderableObject>&pObj);
-
+		void updateTransformMatrix()
+		{
+			transform.updateTransformMatrix_Public();
+		}
 	protected:
 
 		ObjectType type;

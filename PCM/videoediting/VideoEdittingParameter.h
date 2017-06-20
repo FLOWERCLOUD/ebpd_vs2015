@@ -1,6 +1,9 @@
 #pragma once
 #include <QSemaphore>
 #include <QMutex>
+#include <QDataStream>
+#include <QImage>
+#include <QDebug>
 #include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp" 
 #include "math.h"
@@ -8,7 +11,7 @@
 #define fps	29.0	//帧率
 #define perKF 15	//关键帧平均间隔
 //红：0xffff0000       绿：0xff00ff00       蓝：0xff0000ff  for QImage
-#define COMPUTE_AREA_VALUE			0xff00ff00		//(第一个0xff表示透明度100%，绿色依次为A（0xff），R(00)，G(ff)，B(00))
+#define COMPUTE_AREA_VALUE			0xff00ff00		//(第一个0xff表示透明度100%，依次为A（0xff），R(00)，G(ff)，B(00))
 #define BACKGROUND_AREA_VALUE	0xff7f7f7f
 #define FOREGROUND_AREA_VALUE	0xffffffff
 
@@ -43,7 +46,7 @@ enum GrabcutMode { GRABCUT_WITH_RECT = 0, GRABCUT_WITH_MASK, GRABCUT_EVAL };
 //#define INVALID 0	//无效
 struct FrameInfo	//每一帧相应的数据
 {
-	long framePos;								//帧位置（>=0）	
+	int framePos;								//帧位置（>=0）	
 												/************************************************************************/
 												/* 不另外保存srcFrame,通过帧位置来表示对应的原始帧，以免内存过大*/
 												/************************************************************************/
@@ -53,11 +56,13 @@ struct FrameInfo	//每一帧相应的数据
 	{
 		ifKeyFrame = false;		//默认不是关键帧
 	}
+	friend QDataStream& operator<<(QDataStream& out, const FrameInfo&info);
+	friend QDataStream& operator >> (QDataStream& in, FrameInfo& infor);
 };
 
 struct FlowError	//光流估计误差
 {
-	long framePos;								//帧位置（>=0）	
+	int framePos;								//帧位置（>=0）	
 	cv::Mat forwardErrorMap;					//前向误差		(单帧误差可以考虑用一个变量，因为两个误差是独立的，且不需要保存的，类似有效位，而累积误差要进行比较，所以不能用一个)	
 	cv::Mat backwardErrorMap;				//后向误差
 	cv::Mat forwardAccumulatedError;		//前向累积误差
@@ -92,3 +97,8 @@ enum ShowMode
 };
 extern CurrentStep g_curStep;
 extern ShowMode    g_showmode;
+
+
+
+QImage cvMat2QImage(const cv::Mat& mat);
+cv::Mat QImage2cvMat(const QImage& image);

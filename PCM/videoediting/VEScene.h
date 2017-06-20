@@ -4,7 +4,7 @@
 #include "VideoEDMesh.h"
 #include "GeometryExposer.h"
 #include <QtOpenGL/QGLShader>
-#define SCREEN_BUFFER_RATIO 2
+#define SCREEN_BUFFER_RATIO 1  //framebuffer尺寸设置成和窗口画面一致
 
 // 分配各个类采用的纹理寄存器起始序号
 #define SCENE_TEXTURE_REGISTER_OFFSET 0 
@@ -14,11 +14,27 @@ namespace videoEditting
 {
 	uint qHash(const QWeakPointer<RenderableObject>& key);
 	class Brush;
+
+
+	class CommonScene
+	{
+	public:
+		void makeNameUnique(RenderableObject* newObj);
+		QVector<QSharedPointer<RenderableObject>> objectArray;
+		QSet<QWeakPointer<RenderableObject>> frozenObjectSet;
+		//QVector<QSharedPointer<ObjMaterial>> materials;
+
+
+	};
+
+
+
 	class Scene
 	{
 	public:
-
-		Scene(void);
+		friend class CommonScene;
+		static QSharedPointer<CommonScene> common_scene;
+		Scene(QGLContext* qglcontex);
 		~Scene(void);
 
 		void clear();
@@ -26,7 +42,7 @@ namespace videoEditting
 		void addPlanePicker();
 		bool importObj(const QString& fileName);
 		bool importEnvMap(const QString& fileName);
-		void draw();
+		void draw(bool isdrawgrid = false);
 
 		void rotateCamera(float dx, float dy);
 		void moveCamera(float dx, float dy);
@@ -35,11 +51,12 @@ namespace videoEditting
 		bool removeObject(QSharedPointer<RenderableObject>& obj);
 		void insertObject(const QSharedPointer<RenderableObject>& obj);
 		bool rename(const QString& oldName, const QString& newName);
-		void resizeCamera(int width, int height);
+		void resizeCamera(int width, int height, int glwidget_width = 10, int glwidget_height = 10);
 
 		QWeakPointer<RenderableObject> selectObject(int x, int y);
 
-		inline Camera& getCamera() { return camera; }
+		inline Camera& getCamera() { return *camera; }
+		QWeakPointer<Camera> getCameraWeakRef() { return camera; }
 		//inline GeometryExposer& getScreenExposer() { return exposer; }
 
 		QSharedPointer<RenderableObject> getObject(int objID);
@@ -50,15 +67,15 @@ namespace videoEditting
 		//StrokeLib& getStrokeLib() { return strokeLib; }
 		//QUndoStack&getUndoStack() { return undoStack; }
 		GeometryExposer&getGeometryExposer() { return exposer; }
-		void       getObjectNames(RenderableObject::ObjectType type, QStringList& names);
-
+		void getObjectNames(RenderableObject::ObjectType type, QStringList& names);
+		QWeakPointer<RenderableObject> selectObject(int objID);
 		void setObjectFrozen(QSet<QWeakPointer<RenderableObject>> obj);
 		void setObjectUnfrozen(QSet<QWeakPointer<RenderableObject>>obj);
 		void setOtherObjectFrozen(QSet<QWeakPointer<RenderableObject>> obj);
 		void setAllObjectUnfrozen();
 		void setPickerObjectFrozen();
 		void setPickerObjectUnfrozen();
-		const QSet<QWeakPointer<RenderableObject>>& getFrozenObjectSet() { return frozenObjectSet; }
+		const QSet<QWeakPointer<RenderableObject>>& getFrozenObjectSet();
 		// 更新记录场景信息的图像
 		void updateGeometryImage() { isGeometryImgInvalid = true; }
 		// 检查与光线相交的最近的物体，但不选中物体
@@ -66,17 +83,19 @@ namespace videoEditting
 
 		void save(const QString& fileName);
 		void open(const QString& fileName);
+		void setObserveCamera(QWeakPointer<Camera> _camera)
+		{
+			oberveCamera = _camera;
+		}
 	private:
 		void drawGrid();
-		void makeNameUnique(RenderableObject* newObj);
+
 		void refreshExposerObjectList();
 
-		QVector<QSharedPointer<RenderableObject>> objectArray;
-		QSet<QWeakPointer<RenderableObject>> frozenObjectSet;
-		//QVector<QSharedPointer<ObjMaterial>> materials;
-		GeometryExposer exposer;
-		Camera camera;
 
+		GeometryExposer exposer;
+		QSharedPointer<Camera> camera;
+		QWeakPointer<Camera> oberveCamera;
 		//QSharedPointer<Brush>   brush;
 		//QSharedPointer<Painter> painter;
 		//StrokeLib               strokeLib;
@@ -93,7 +112,7 @@ namespace videoEditting
 
 		bool isEnvMapUpdated;
 
-		QWeakPointer<RenderableObject> selectObject(int objID);
+
 	};
 }
 
