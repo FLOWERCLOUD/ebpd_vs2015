@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>494</width>
-    <height>26</height>
+    <height>22</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,13 +21,19 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="spacing">
-    <number>2</number>
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QToolButton" name="toolB_wire_transc">
@@ -264,7 +270,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="toolB_tex_5">
+    <widget class="QToolButton" name="toolB_showgrid">
      <property name="minimumSize">
       <size>
        <width>18</width>
@@ -288,7 +294,7 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoRaise">
       <bool>true</bool>
@@ -296,7 +302,7 @@ p, li { white-space: pre-wrap; }
     </widget>
    </item>
    <item>
-    <widget class="QToolButton" name="toolB_tex_6">
+    <widget class="QToolButton" name="toolB_showbackground">
      <property name="minimumSize">
       <size>
        <width>18</width>
@@ -320,7 +326,7 @@ p, li { white-space: pre-wrap; }
       <bool>true</bool>
      </property>
      <property name="autoExclusive">
-      <bool>true</bool>
+      <bool>false</bool>
      </property>
      <property name="autoRaise">
       <bool>true</bool>

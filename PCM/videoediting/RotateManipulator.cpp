@@ -181,6 +181,7 @@ namespace videoEditting
 		float rotAxisV[] = { 0,0,0 };
 		rotAxisV[curSelectedAxis] = 1;
 		QVector3D rotAxis = getTransform()->getRotMatrix() * QVector3D(rotAxisV[0], rotAxisV[1], rotAxisV[2]);
+//		cout << "rotate axis: " << rotAxis[0] << " " << rotAxis[1] << " " << rotAxis[2] << " theta " << theta;
 		QQuaternion q;
 		q = QQuaternion::fromAxisAndAngle(rotAxis, theta);
 		getTransform()->rotate(q);
@@ -192,7 +193,8 @@ namespace videoEditting
 			}
 			//update curpose
 //			g_translations[g_current_frame] = getTransform()->getTranslate();
-			g_rotations[g_current_frame] = getTransform()->getRotate();
+			if(g_current_frame <g_rotations.size())
+				g_rotations[g_current_frame] = getTransform()->getRotate();
 		}
 	}
 }

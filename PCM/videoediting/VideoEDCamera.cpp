@@ -4,7 +4,7 @@
 #include "drawcamera.h"
 #include <math.h>
 #include <QtOpenGL/QGLFunctions>
-
+#include "QGLViewer/quaternion.h"
 using namespace std;
 
 namespace videoEditting
@@ -21,6 +21,7 @@ namespace videoEditting
 		fov_degree = 60;
 		nearplane = 0.2;
 		farplane = 100;
+		cameraShouldUpdate = true;
 		setupCameraShape();
 		resetCamera();
 	}
@@ -50,7 +51,12 @@ namespace videoEditting
 	}
 	void Camera::computeViewParam()
 	{
-		QVector3D xRotAxis = QVector3D(0, 0, direction[1].z());
+		//QVector3D xRotAxis = QVector3D(0, 0, direction[1].z());
+		//QQuaternion xRotQuat = QQuaternion::fromAxisAndAngle(xRotAxis, deltaAngle[0]);
+		//direction[0] = xRotQuat.rotatedVector(direction[0]);
+		//QQuaternion yRotQuat = QQuaternion::fromAxisAndAngle(direction[0], deltaAngle[1]);
+		//QQuaternion rotQuat = yRotQuat * xRotQuat;
+		QVector3D xRotAxis = QVector3D(0, direction[1].y(), 0);
 		QQuaternion xRotQuat = QQuaternion::fromAxisAndAngle(xRotAxis, deltaAngle[0]);
 		direction[0] = xRotQuat.rotatedVector(direction[0]);
 		QQuaternion yRotQuat = QQuaternion::fromAxisAndAngle(direction[0], deltaAngle[1]);
@@ -105,7 +111,7 @@ namespace videoEditting
 		}
 	}
 
-
+	
 	void Camera::setScreenResolution(int x, int y, int glwidget_width, int glwidget_height)
 	{
 		screenRes[0] = x; screenRes[1] = y;
@@ -129,10 +135,14 @@ namespace videoEditting
 
 	void Camera::rotateCamera(double dx, double dy)
 	{
-		deltaAngle[0] -= dx / 5.0;
+		//运行在方向0和方向1 旋转
+		deltaAngle[0] -= dx / 5.0;   
 		deltaAngle[1] -= dy / 5.0;
+		//deltaAngle[0] -= dx / 5.0;
+		//deltaAngle[2] -= dy / 5.0;
 		updateAll();
 		deltaAngle[0] = deltaAngle[1] = 0.0f;
+		//deltaAngle[0] = deltaAngle[2] = 0.0f;
 	}
 
 	void Camera::moveCamera(double dx, double dy)
@@ -268,11 +278,16 @@ namespace videoEditting
 //		origin = QVector3D(10, 0, 0);
 		origin = getCenter();
 		target = QVector3D(0, 0, 0);
-		direction[0] = QVector3D(0, 1, 0);
-		direction[1] = QVector3D(0, 0, 1);
-		direction[2] = QVector3D(-1, 0, 0);
-		deltaAngle[0] = CAMERA_INIT_ALPHA_DEGREE;
-		deltaAngle[1] = CAMERA_INIT_BETA_DEGREE;
+		//direction[0] = QVector3D(0, 1, 0);
+		//direction[1] = QVector3D(0, 0, 1);
+		//direction[2] = QVector3D(-1, 0, 0);
+		direction[0] = QVector3D(1, 0, 0);
+		direction[1] = QVector3D(0, 1, 0);
+		direction[2] = QVector3D(0, 0, -1);
+		//deltaAngle[0] = CAMERA_INIT_ALPHA_DEGREE;
+		//deltaAngle[1] = CAMERA_INIT_BETA_DEGREE;
+		deltaAngle[0] = 0;
+		deltaAngle[1] = 0;
 		deltaLength = 0;
 		length = 10.0f;
 		attachOffset[0] = attachOffset[1] = attachOffset[2] = 0;
@@ -285,12 +300,28 @@ namespace videoEditting
 
 	void Camera::applyGLMatrices()
 	{
+		if (cameraShouldUpdate)
+		{
+			cameraShouldUpdate = false;
+			updateAll();
+		}
+
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(viewMatrix.constData());
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(projMatrix.constData());
 	}
+	void Camera::applyViewMatrices()
+	{
+		if (cameraShouldUpdate)
+		{
+			cameraShouldUpdate = false;
+			updateAll();
+		}
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(viewMatrix.constData());
 
+	}
 
 	void Camera::setCenter(QVector3D& center, float distance /*= 10*/)
 	{
@@ -344,14 +375,31 @@ namespace videoEditting
 	{
 		trans = origin + direction[2];
 
-		float xAngle = atan2(direction[0].y(), direction[0].x()) / M_PI * 180.0f;
-		QQuaternion rotX = QQuaternion::fromAxisAndAngle(0, 0, 1, xAngle);
-		float x = -direction[2].z();
-		float y = direction[1].z();
-		float yAngle = atan2(y, x) / M_PI * 180.0f;
-		QVector3D newX = rotX.rotatedVector(QVector3D(1, 0, 0));
-		QQuaternion rotY = QQuaternion::fromAxisAndAngle(newX, yAngle);
-		rot = rotY * rotX;
+		//float xAngle = atan2(direction[0].y(), direction[0].x()) / M_PI * 180.0f;
+		//QQuaternion rotX = QQuaternion::fromAxisAndAngle(0, 0, 1, xAngle);
+		//float x = -direction[2].z();
+		//float y = direction[1].z();
+		//float yAngle = atan2(y, x) / M_PI * 180.0f;
+		//QVector3D newX = rotX.rotatedVector(QVector3D(1, 0, 0));
+		//QQuaternion rotY = QQuaternion::fromAxisAndAngle(newX, yAngle);
+		//rot = rotY * rotX;
+		//float xAngle = atan2(direction[0].x(), direction[0].z()) / M_PI * 180.0f;
+		//QQuaternion rotX = QQuaternion::fromAxisAndAngle(0, 1, 0, xAngle);
+		//float x = -direction[2].z();
+		//float y = direction[1].z();
+		//float yAngle = atan2(y, x) / M_PI * 180.0f;
+		//QVector3D newX = rotX.rotatedVector(QVector3D(1, 0, 0));
+		//QQuaternion rotY = QQuaternion::fromAxisAndAngle(newX, yAngle);
+		//rot = rotY * rotX;
+		qglviewer::Vec dir1(direction[0].x(), direction[0].y(), direction[0].z());
+		qglviewer::Vec dir2(direction[1].x(), direction[1].y(), direction[1].z());
+		qglviewer::Vec dir3(-direction[2].x(), -direction[2].y(), -direction[2].z());
+		qglviewer::Quaternion q;
+		q.setFromRotatedBasis(dir1, dir2, dir3);
+		rot.setX(q[0]);
+		rot.setY(q[1]);
+		rot.setZ(q[2]);
+		rot.setScalar(q[3]);
 
 	}
 
@@ -470,6 +518,7 @@ namespace videoEditting
 		computeProjParam();
 		computeAttachedTransfrom();
 		deltaAngle[0] = deltaAngle[1] = 0;
+		//deltaAngle[0] = deltaAngle[2] = 0;
 		deltaLength = 0;
 		updateMesh();
 

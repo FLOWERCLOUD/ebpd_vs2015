@@ -8,11 +8,11 @@
 #include <QSemaphore>
 #include <QMutex>
 
-main_window* Global_Window;
+main_window* Global_Window =NULL;
 
-PaintCanvas* Global_Canvas;
-SampleSet*   Global_SampleSet;
-VideoEditingWindow* Global_WideoEditing_Window;
+PaintCanvas* Global_Canvas = NULL;
+SampleSet*   Global_SampleSet = NULL;
+VideoEditingWindow* Global_WideoEditing_Window = NULL;
 void globalObjectsInit()
 {
 

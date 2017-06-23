@@ -32,24 +32,24 @@ public:
     QToolButton *toolB_video_background_tex;
     QToolButton *toolB_image_resolution;
     QToolButton *toolB_tex_glwidget_resolution;
-    QToolButton *toolB_tex_5;
-    QToolButton *toolB_tex_6;
+    QToolButton *toolB_showgrid;
+    QToolButton *toolB_showbackground;
     QSpacerItem *horizontalSpacer;
 
     void setupUi(QWidget *glwidgetRender_mode_toolbuttons)
     {
         if (glwidgetRender_mode_toolbuttons->objectName().isEmpty())
             glwidgetRender_mode_toolbuttons->setObjectName(QStringLiteral("glwidgetRender_mode_toolbuttons"));
-        glwidgetRender_mode_toolbuttons->resize(494, 26);
+        glwidgetRender_mode_toolbuttons->resize(494, 22);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(glwidgetRender_mode_toolbuttons->sizePolicy().hasHeightForWidth());
         glwidgetRender_mode_toolbuttons->setSizePolicy(sizePolicy);
         horizontalLayout = new QHBoxLayout(glwidgetRender_mode_toolbuttons);
-        horizontalLayout->setSpacing(2);
+        horizontalLayout->setSpacing(0);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(-1, 2, -1, 2);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
         toolB_wire_transc = new QToolButton(glwidgetRender_mode_toolbuttons);
         toolB_wire_transc->setObjectName(QStringLiteral("toolB_wire_transc"));
         toolB_wire_transc->setEnabled(true);
@@ -123,25 +123,25 @@ public:
 
         horizontalLayout->addWidget(toolB_tex_glwidget_resolution);
 
-        toolB_tex_5 = new QToolButton(glwidgetRender_mode_toolbuttons);
-        toolB_tex_5->setObjectName(QStringLiteral("toolB_tex_5"));
-        toolB_tex_5->setMinimumSize(QSize(18, 18));
-        toolB_tex_5->setIconSize(QSize(16, 16));
-        toolB_tex_5->setCheckable(true);
-        toolB_tex_5->setAutoExclusive(true);
-        toolB_tex_5->setAutoRaise(true);
+        toolB_showgrid = new QToolButton(glwidgetRender_mode_toolbuttons);
+        toolB_showgrid->setObjectName(QStringLiteral("toolB_showgrid"));
+        toolB_showgrid->setMinimumSize(QSize(18, 18));
+        toolB_showgrid->setIconSize(QSize(16, 16));
+        toolB_showgrid->setCheckable(true);
+        toolB_showgrid->setAutoExclusive(false);
+        toolB_showgrid->setAutoRaise(true);
 
-        horizontalLayout->addWidget(toolB_tex_5);
+        horizontalLayout->addWidget(toolB_showgrid);
 
-        toolB_tex_6 = new QToolButton(glwidgetRender_mode_toolbuttons);
-        toolB_tex_6->setObjectName(QStringLiteral("toolB_tex_6"));
-        toolB_tex_6->setMinimumSize(QSize(18, 18));
-        toolB_tex_6->setIconSize(QSize(16, 16));
-        toolB_tex_6->setCheckable(true);
-        toolB_tex_6->setAutoExclusive(true);
-        toolB_tex_6->setAutoRaise(true);
+        toolB_showbackground = new QToolButton(glwidgetRender_mode_toolbuttons);
+        toolB_showbackground->setObjectName(QStringLiteral("toolB_showbackground"));
+        toolB_showbackground->setMinimumSize(QSize(18, 18));
+        toolB_showbackground->setIconSize(QSize(16, 16));
+        toolB_showbackground->setCheckable(true);
+        toolB_showbackground->setAutoExclusive(false);
+        toolB_showbackground->setAutoRaise(true);
 
-        horizontalLayout->addWidget(toolB_tex_6);
+        horizontalLayout->addWidget(toolB_showbackground);
 
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -207,14 +207,14 @@ public:
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Render model with phong and textures.</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        toolB_tex_5->setToolTip(QApplication::translate("glwidgetRender_mode_toolbuttons", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        toolB_showgrid->setToolTip(QApplication::translate("glwidgetRender_mode_toolbuttons", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\">Render model with phong and textures.</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
 #ifndef QT_NO_TOOLTIP
-        toolB_tex_6->setToolTip(QApplication::translate("glwidgetRender_mode_toolbuttons", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+        toolB_showbackground->setToolTip(QApplication::translate("glwidgetRender_mode_toolbuttons", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"

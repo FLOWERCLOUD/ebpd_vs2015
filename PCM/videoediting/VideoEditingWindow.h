@@ -61,7 +61,9 @@ private slots:
 	void alpha2Trimap();	
 	void splitVideo();
 	void computeGradient();
-
+	void writeCameraViewertovideo();
+	void writeCameraViewertoImagearray();
+	void renderCameraViewerToImagearray();
 	//browser
 	void nextFrame();
 	void pause();
@@ -110,6 +112,9 @@ private slots:
 
 	//step2 tools
 	void importModel();
+	void importPose();
+	void exportPose();
+
 	void selectTool();
 	void selectFaceTool();
 	void moveTool();
@@ -121,6 +126,9 @@ private slots:
 	void setCurFramePoseEstimationAsKeyFrame();
 	void runWholeFramePoseEstimation();
 	void showCorrespondence();
+	void caculateCurFrameCorredTexture();
+	void caculateAllCorredTexture();
+
 	void updateCurSceneObjectPose();
 	void updateCurSceneObjectPose(QString& objname);
 	//step3 tools
@@ -129,6 +137,11 @@ private slots:
 	void continuie_simulate();
 	void restart();
 	void step_simulate();
+	void setStrongFaceConstraint();
+	void setWeakFaceConstraint();
+	void unsetFaceConstraint();
+	void showConstraint();
+	void unshowConstraint();
 
 
 private:

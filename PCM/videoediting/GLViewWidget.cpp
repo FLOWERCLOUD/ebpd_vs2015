@@ -85,12 +85,63 @@ static void drawAxis(qreal length)
 }
 
 
-namespace videoEditting
+static void drawAxis(qreal length, float color[4])
 {
 
-	void drawSimulateObjects(videoEditting::Camera& camera)
-	{
+	const qreal charWidth = length / 40.0;
+	const qreal charHeight = length / 30.0;
+	const qreal charShift = 1.04 * length;
 
+	glColor4fv(color);
+	//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
+	// The Z
+	glBegin(GL_LINES);
+	glVertex3d(-charWidth, charHeight, charShift);
+	glVertex3d(charWidth, charHeight, charShift);
+	glVertex3d(charWidth, charHeight, charShift);
+	glVertex3d(-charWidth, -charHeight, charShift);
+	glVertex3d(-charWidth, -charHeight, charShift);
+	glVertex3d(charWidth, -charHeight, charShift);
+	glEnd();
+	drawArrow(length, 0.01*length);
+
+	//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
+	glColor4fv(color);
+	glBegin(GL_LINES);
+	// The X
+	glVertex3d(charShift, charWidth, -charHeight);
+	glVertex3d(charShift, -charWidth, charHeight);
+	glVertex3d(charShift, -charWidth, -charHeight);
+	glVertex3d(charShift, charWidth, charHeight);
+	glEnd();
+	glPushMatrix();
+	glRotatef(90.0f, 0.0f, 1.0f, 0.0f);
+	drawArrow(length, 0.01*length);
+	glPopMatrix();
+
+	//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
+	glColor4fv(color);
+	// The Y
+	glBegin(GL_LINES);
+	glVertex3d(charWidth, charShift, charHeight);
+	glVertex3d(0.0, charShift, 0.0);
+	glVertex3d(-charWidth, charShift, charHeight);
+	glVertex3d(0.0, charShift, 0.0);
+	glVertex3d(0.0, charShift, 0.0);
+	glVertex3d(0.0, charShift, -charHeight);
+	glEnd();
+
+	glPushMatrix();
+	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
+	drawArrow(length, 0.01*length);
+	glPopMatrix();
+}
+namespace videoEditting
+{
+	bool isShowSimulationConstraint = true;
+	void drawSimulateObjects(videoEditting::Camera& camera )
+	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
 		float Diffuse[4] = { 1,0,0,1 };
@@ -119,10 +170,10 @@ namespace videoEditting
 			glColor3f(1.0f, 0.5f, 0.5f);
 
 //			glMultMatrixf(camera.getTransform().getTransformMatrix().constData());
-			QMatrix4x4 pose;
-			pose.translate(g_translations[g_current_frame]);
-			pose.rotate(g_rotations[g_current_frame]);
-			glMultMatrixf(pose.constData());
+			//QMatrix4x4 pose;
+			//pose.translate(g_translations[g_current_frame]);
+			//pose.rotate(g_rotations[g_current_frame]);
+			//glMultMatrixf(pose.constData());
 			std::vector<int> tmp_faces = g_faces_;
 			for (int i = 0; i < g_faces_.size()/3; ++i)
 			{
@@ -176,17 +227,233 @@ namespace videoEditting
 			//		g_simulated_vertices[g_current_frame][constrainted_nodes[i]].y(),
 			//		g_simulated_vertices[g_current_frame][constrainted_nodes[i]].z()));
 			//}
+
+
+
 			//glEnd();
 			//glEnable(GL_DEPTH_TEST);
+			if ( isShowSimulationConstraint)
+			{
+				glDisable(GL_DEPTH_TEST);
+				glMatrixMode(GL_MODELVIEW);
+
+				for (auto bitr = g_position_constraint[g_current_frame].begin(); bitr != g_position_constraint[g_current_frame].end(); ++bitr)
+				{
+					//draw constraint vtx
+					glPushMatrix();
+					int vtx_id = bitr->first;
+					QVector3D pos = bitr->second;
+					QMatrix4x4 tr;
+					tr.translate(pos);
+					glMultMatrixf(tr.constData());
+					float axis_color[4];
+					axis_color[0] = 1.0f; axis_color[1] = 0.0f; axis_color[2] = 0.0f; axis_color[3] = 1.0f;
+					drawAxis(0.1, axis_color);
+					glPopMatrix();
+
+					//draw corresponding vtx in simulate data
+					glPushMatrix();
+
+					QVector3D pos2 = g_simulated_vertices[g_current_frame][vtx_id];
+					QMatrix4x4 tr2;
+					tr2.translate(pos2);
+					glMultMatrixf(tr2.constData());
+					axis_color[0] = 0.0f; axis_color[1] = 1.0f; axis_color[2] = 0.0f; axis_color[3] = 1.0f;
+					drawAxis(0.04, axis_color);
+					glPopMatrix();
+
+					float color[4];
+					color[0] = 1.0f;  color[1] = 1.0f;  color[2] = 1.0f;  color[3] = 1.0f;
+					glColor4fv(color);
+					//	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, color);
+					// The Z
+					glBegin(GL_LINES);
+					glVertex3f(pos.x(), pos.y(), pos.z());
+					glVertex3f(pos2.x(), pos2.y(), pos2.z());
+					glEnd();
+
+
+
+				}
+				glEnable(GL_DEPTH_TEST);
+			}
+
 			
 		}
 //		glPopMatrix();
-
+		glPopAttrib();
 		GLenum errorMsg = glGetError();
 		if (errorMsg != GL_NO_ERROR)
 			qDebug() << "error occurs when drawSimulateObjects" << endl;
 	}
+	void GLViewWidget::drawSimulateObjectsWithBackgroundTexture(videoEditting::Camera& camera)
+	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_COLOR_MATERIAL);
+		float Diffuse[4] = { 1,0,0,1 };
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, Diffuse);
 
+		camera.applyGLMatrices();
+
+		int tmp_cur_fram = g_current_frame;
+		std::vector<std::vector<QVector3D>> tmp_simulated_vertices = g_simulated_vertices;
+		std::vector<std::vector<QVector3D>> tmp_simulated_normal = g_simulated_normals;
+		std::vector<std::vector<QVector2D>> tmp_tracked_textures = g_tracked_textures;
+		std::vector<QVector3D> tmp_translation = g_translations;
+		std::vector<QQuaternion> tmp_rotation = g_rotations;
+		if (g_current_frame < g_simulated_vertices.size() && g_current_frame >= 0)
+		{
+			std::vector<QVector3D>& simulateObj = g_simulated_vertices[g_current_frame];
+			std::vector<QVector3D> simulateObjNormal;
+			std::vector<QVector2D> track_texture;
+			if (g_current_frame < g_simulated_normals.size())
+				simulateObjNormal = g_simulated_normals[g_current_frame];
+			if (g_current_frame < g_tracked_textures.size())
+				track_texture = g_tracked_textures[g_current_frame];
+			int vtx_size = simulateObj.size();
+			glColor3f(1.0f, 0.5f, 0.5f);
+			std::vector<int> tmp_faces = g_faces_;
+
+			if (1)
+			{
+				glPushAttrib(GL_ALL_ATTRIB_BITS);
+				glDisable(GL_DEPTH_TEST);
+
+				//glShadeModel( GL_FLAT );
+//				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+				//先要activte ,再enable ，这个解决了出现绘制结果黑色的问题
+				glActiveTextureARB(GL_TEXTURE0);  // 选择TEXTURE0为设置目标 
+				glEnable(GL_TEXTURE_2D);  // 激活TEXTURE0单元
+				glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);//不写上这个的话画出来的是黑色，不知为什么
+				glAssert(glBindTexture(GL_TEXTURE_2D, backgroundtexture)); // 为TEXTURE0单元绑定texture纹理图像
+
+				QImage GL_formatted_image;
+				GL_formatted_image = QGLWidget::convertToGLFormat(background_image);
+				if (GL_formatted_image.isNull())
+				{
+					std::cerr << "error GL_formatted_image" << std::endl;
+					exit(1);
+				}
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glAssert(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+					GL_formatted_image.width(), GL_formatted_image.height(),
+					0, GL_RGBA, GL_UNSIGNED_BYTE, GL_formatted_image.bits()));
+
+				for (int i = 0; i < g_faces_.size() / 3; ++i)
+				{
+					glBegin(GL_TRIANGLES);
+
+					if (g_faces_[3 * i + 0] < track_texture.size())
+					{
+						//if (g_tracked_isVisiable[g_current_frame][g_faces_[3 * i + 0]])
+						//{
+							glTexCoord2f(track_texture[g_faces_[3 * i + 0]].x(), track_texture[g_faces_[3 * i + 0]].y());
+						//}
+
+					}
+
+					//if (g_faces_[3 * i + 0] <  simulateObjNormal.size())
+					//{
+					//	glNormal3f(simulateObjNormal[g_faces_[3 * i + 0]].x(), simulateObjNormal[g_faces_[3 * i + 0]].y(), simulateObjNormal[g_faces_[3 * i + 0]].z());
+					//}
+					if (g_faces_[3 * i + 0] < simulateObj.size())
+					{
+						glVertex3f(simulateObj[g_faces_[3 * i + 0]].x(), simulateObj[g_faces_[3 * i + 0]].y(), simulateObj[g_faces_[3 * i + 0]].z());
+					}
+
+					if (g_faces_[3 * i + 1] < track_texture.size())
+					{
+						//if (g_tracked_isVisiable[g_current_frame][g_faces_[3 * i + 1]])
+						//{
+							glTexCoord2f(track_texture[g_faces_[3 * i + 1]].x(), track_texture[g_faces_[3 * i + 1]].y());
+						//}
+					}
+
+					//if (g_faces_[3 * i + 1] < simulateObjNormal.size())
+					//{
+					//	glNormal3f(simulateObjNormal[g_faces_[3 * i + 1]].x(), simulateObjNormal[g_faces_[3 * i + 1]].y(), simulateObjNormal[g_faces_[3 * i + 1]].z());
+
+					//}
+					if (g_faces_[3 * i + 1] < simulateObj.size())
+					{
+
+						glVertex3f(simulateObj[g_faces_[3 * i + 1]].x(), simulateObj[g_faces_[3 * i + 1]].y(), simulateObj[g_faces_[3 * i + 1]].z());
+					}
+
+					if (g_faces_[3 * i + 2] < track_texture.size())
+					{
+						//if (g_tracked_isVisiable[g_current_frame][g_faces_[3 * i + 2]])
+						//{
+							glTexCoord2f(track_texture[g_faces_[3 * i + 2]].x(), track_texture[g_faces_[3 * i + 2]].y());
+						//}
+					}
+
+					//if (g_faces_[3 * i + 2] < simulateObjNormal.size())
+					//{
+					//	glNormal3f(simulateObjNormal[g_faces_[3 * i + 2]].x(), simulateObjNormal[g_faces_[3 * i + 2]].y(), simulateObjNormal[g_faces_[3 * i + 2]].z());
+					//}
+					if (g_faces_[3 * i + 2] < simulateObj.size())
+					{
+						glVertex3f(simulateObj[g_faces_[3 * i + 2]].x(), simulateObj[g_faces_[3 * i + 2]].y(), simulateObj[g_faces_[3 * i + 2]].z());
+					}
+					glEnd();
+				}
+				if (0)
+				{
+					glBegin(GL_QUADS);
+					glTexCoord2f(0.0f, 1.0f);
+					glVertex3f(-1.0f, 1.0f, 0.0f); // 左上顶点
+					glTexCoord2f(0.0f, 0.0f);
+					glVertex3f(-1.0f, -1.0f, 0.0f); // 左下顶点
+					glTexCoord2f(1.0f, 0.0f);
+					glVertex3f(1.0f, -1.0f, 0.0f); // 右下顶点
+					glTexCoord2f(1.0f, 1.0f);
+					glVertex3f(1.0f, 1.0f, 0.0f); // 右上顶点
+					glEnd();
+
+					glBegin(GL_TRIANGLES);
+					glTexCoord2f(0.0f, 1.0f);
+					glVertex3f(4.0f, 6.0f, 0.0f); // 左上顶点
+					glTexCoord2f(0.0f, 0.0f);
+					glVertex3f(4.0f, 4.0f, 0.0f); // 左下顶点
+					glTexCoord2f(1.0f, 0.0f);
+					glVertex3f(6.0f, 4.0f, 0.0f); // 右下顶点
+					glEnd();
+
+				}
+
+
+
+				glBindTexture(GL_TEXTURE_2D, 0);
+				glDisable(GL_TEXTURE_2D);
+				glEnable(GL_DEPTH_TEST);
+				glPopAttrib();
+			}
+
+
+
+
+
+
+
+
+
+			GLenum errorMsg = glGetError();
+			if (errorMsg != GL_NO_ERROR)
+				qDebug() << "error occurs before draw points" << endl;
+			glDisable(GL_COLOR_MATERIAL);
+			glDisable(GL_LIGHTING);
+		}
+		glPopAttrib();
+		GLenum errorMsg = glGetError();
+		if (errorMsg != GL_NO_ERROR)
+			qDebug() << "error occurs when drawSimulateObjectsWithBackgroundTexture" << endl;
+	}
 
 
 	void OGL_widget_skin_hidden::initializeGL() 
@@ -224,7 +491,7 @@ namespace videoEditting
 
 
 	GLViewWidget::GLViewWidget(QWidget* parent, QGLWidget* sh) :QGLWidget(QGLFormat(QGL::SampleBuffers), parent,sh),
-		scene(sh->context())
+		scene(sh->context()), isGLwidgetInitialize(false)
 	{
 		backgroundClr.setRgb(150, 150, 150);
 		setFocusPolicy(Qt::ClickFocus);
@@ -237,11 +504,14 @@ namespace videoEditting
 		isPickMode = false;
 		pickCallBackFun = NULL;
 		backgroundtexture = -1;
+		greenBacktexture  = -1;
 		isbackgroundChanged = true;
 		background_image = QImage(400, 200, QImage::Format_RGB888);
 		background_image.fill(QColor(128.0, 128.0, 128.0, 255.0));
 		background_image = QImage("C:/Users/hehua2015/Pictures/back1.jpg");
 		cur_rendermode = solid | image_resolution;
+		isDrawGrid = false;
+		isDrawBackGoundImage = false;
 	}
 
 	GLViewWidget::~GLViewWidget(void)
@@ -250,6 +520,7 @@ namespace videoEditting
 
 	void GLViewWidget::changeRenderMode(unsigned int rendermode)
 	{
+		makeCurrent();
 		updateGL();
 	}
 	void GLViewWidget::rd_mode_toolb_wire_transc()
@@ -297,6 +568,14 @@ namespace videoEditting
 
 	void GLViewWidget::initializeGL()
 	{
+		if (isGLwidgetInitialize)
+		{
+			Logger << "error initialize twise" << endl;
+		}
+		else
+		{
+			isGLwidgetInitialize = !isGLwidgetInitialize;
+		}
 		qglClearColor(backgroundClr);
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
@@ -336,8 +615,10 @@ namespace videoEditting
 		{
 			glGenTextures(1, &backgroundtexture);
 		}
-		
-
+		if ( -1 == greenBacktexture)
+		{
+			glGenTextures(1, &greenBacktexture);
+		}
 		if (isbackgroundChanged)
 		{
 			glEnable(GL_TEXTURE_2D);
@@ -345,7 +626,7 @@ namespace videoEditting
 			isbackgroundChanged = false;
 			QImage GL_formatted_image;
 			GL_formatted_image = QGLWidget::convertToGLFormat(background_image);
-			GL_formatted_image.save("C:/Users/hehua2015/Pictures/back33.jpg");
+//			GL_formatted_image.save("C:/Users/hehua2015/Pictures/back33.jpg");
 			if (GL_formatted_image.isNull())
 			{
 				std::cerr << "error GL_formatted_image" << std::endl;
@@ -360,6 +641,17 @@ namespace videoEditting
 				0, GL_RGBA, GL_UNSIGNED_BYTE, GL_formatted_image.bits()));
 
 			glBindTexture(GL_TEXTURE_2D, 0);
+
+			glBindTexture(GL_TEXTURE_2D, greenBacktexture);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glAssert(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+				GL_formatted_image.width(), GL_formatted_image.height(),
+				0, GL_RGBA, GL_UNSIGNED_BYTE, GL_formatted_image.bits()));
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 			glDisable(GL_TEXTURE_2D);
 		}
 		
@@ -392,7 +684,7 @@ namespace videoEditting
 		glLoadIdentity();
 		
 		//画出背景图片
-		if (1)
+		if ( isDrawBackGoundImage)
 		{
 			glPushAttrib(GL_ALL_ATTRIB_BITS);
 			glDisable(GL_DEPTH_TEST);
@@ -452,7 +744,7 @@ namespace videoEditting
 
 
 
-
+		//画外框
 		glColor3f(0.2f, 0.2f, 0.8f);
 		glLineWidth(1.0f);
 		glBegin(GL_LINE_LOOP);
@@ -474,11 +766,13 @@ namespace videoEditting
 
 		glEnable(GL_LIGHTING);
 		// 画出场景
-		if (cur_rendermode & texture)
-			scene.draw(false);
+		if (cur_rendermode & solid)
+			scene.draw(isDrawGrid);
 		//画出仿真的结果
-		if(cur_rendermode & video_background_texture)
+		if(cur_rendermode & texture)
 			drawSimulateObjects(scene.getCamera());
+		if (cur_rendermode & video_background_texture)
+			drawSimulateObjectsWithBackgroundTexture(scene.getCamera());
 
 		// 画出操纵器
 		if (curTool)
@@ -773,7 +1067,17 @@ namespace videoEditting
 				QVector2D minRatio(min(x, pressPos.x()) / w, min(y, pressPos.y()) / h);
 				QVector2D maxRatio(max(x, pressPos.x()) / w, max(y, pressPos.y()) / h);
 				QSet<int>faceIDSet;
+
+				if (!curSelectObj.data())
+				{
+					curSelectObj = scene.selectObject(x, y);
+				}
+				if(!curSelectObj.data())
+				{
+					return;
+				}
 				Mesh* objPtr = (Mesh*)curSelectObj.data();
+
 				exposer.getRegionFaceID(minRatio, maxRatio, objPtr->getObjectID(), faceIDSet);
 				if (isCtrlDown)
 					objPtr->addSelectedFaceID(faceIDSet);
@@ -875,6 +1179,7 @@ namespace videoEditting
 		QVector3D trans; 
 		QQuaternion rot;
 		scene.getCamera().getCameraTransform(trans, rot);
+//		scene.getCamera().applyViewMatrices();
 		QMatrix4x4 rotation;
 		rotation.rotate(rot);
 		glMultMatrixf(rotation.transposed().constData()); //sccamera()->orientation().inverse().matrix());

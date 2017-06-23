@@ -626,6 +626,7 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR_64_12)\bin\moc.exe;%(FullPath)</AdditionalInputs>
     </CustomBuild>
+    <ClInclude Include="videoediting\BunnyMesh.h" />
     <ClInclude Include="videoediting\Cluster.h" />
     <ClInclude Include="videoediting\frameDif.h" />
     <ClInclude Include="GeneratedFiles\ui_glwidget_render_mode.h" />

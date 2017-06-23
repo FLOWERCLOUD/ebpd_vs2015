@@ -1564,6 +1564,9 @@
     <ClInclude Include="bulletInterface.h">
       <Filter>Algorithm\videoediting</Filter>
     </ClInclude>
+    <ClInclude Include="videoediting\BunnyMesh.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="PCM.rc" />

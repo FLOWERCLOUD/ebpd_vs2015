@@ -4,8 +4,8 @@
 #include "GLViewWidget.h"
 #include "HistoryCommand.h"
 #include "VideoEditingWindow.h"
-
-
+#include "bulletInterface.h"
+#include "QGLViewer\quaternion.h"
 namespace videoEditting
 {
 	ObjectInfoWidget::ObjectInfoWidget(Ui::VideoEditingWindow& ui) :ui_(ui)
@@ -22,6 +22,27 @@ namespace videoEditting
 		connect(ui_.scale_z, SIGNAL(valueChanged(double)), this, SLOT(updateSceneObject()));
 		connect(ui_.object_name, SIGNAL(editingFinished()), this, SLOT(updateObjectName()));
 		connect(ui_.object_type, SIGNAL(editingFinished()), this, SLOT(updateObjectName()));
+
+		ui_.translate_x->setValue(0.0f);
+		ui_.translate_y->setValue(0.0f);
+		ui_.translate_z->setValue(0.0f);
+		ui_.rotate_x->setValue(0.0f);
+		ui_.rotate_y->setValue(0.0f);
+		ui_.rotate_z->setValue(0.0f);
+		ui_.scale_x->setValue(1.0f);
+		ui_.scale_y->setValue(1.0f);
+		ui_.scale_z->setValue(1.0f);
+
+		ui_.translate_x->setRange(-1000, 1000);
+		ui_.translate_y->setRange(-1000, 1000);
+		ui_.translate_z->setRange(-1000, 1000);
+		ui_.rotate_x->setRange(-360, 360);
+		ui_.rotate_y->setRange(-360, 360);
+		ui_.rotate_z->setRange(-360, 360);
+		ui_.scale_x->setRange(-10, 10);
+		ui_.scale_y->setRange(-10, 10);
+		ui_.scale_z->setRange(-10, 10);
+
 
 		//camera param
 		ui_.doubleSpinBox_farplane->setValue(100);
@@ -60,6 +81,8 @@ namespace videoEditting
 			ui_.translate_y->setValue(pos.y());
 			ui_.translate_z->setValue(pos.z());
 			const QQuaternion& q = trans.getRotate();
+
+
 			float w = q.scalar();
 			float x = q.x();
 			float y = q.y();
@@ -139,10 +162,14 @@ namespace videoEditting
 
 	void ObjectInfoWidget::updateSceneObject()
 	{
+		if (!Global_WideoEditing_Window)
+			return;
+		if (!Global_WideoEditing_Window->activated_viewer())
+			return;
 		QSharedPointer<RenderableObject> pO = Global_WideoEditing_Window->activated_viewer()->getSelectedObject();
 		if (pO)
 		{
-			ObjectTransform  trans;
+			ObjectTransform  trans;// = pO->getTransform();
 			trans.setTranslate(QVector3D(ui_.translate_x->value(), ui_.translate_y->value(), ui_.translate_z->value()));
 			float a = ui_.rotate_x->value() / 180.0*M_PI;
 			float b = ui_.rotate_y->value() / 180.0*M_PI;
@@ -161,7 +188,14 @@ namespace videoEditting
 			trans.setRotate(newQuat);
 			trans.setScale(QVector3D(ui_.scale_x->value(), ui_.scale_y->value(), ui_.scale_z->value()));
 			QUndoCommand* cmd = new ManipulateCommand(pO->getObjectID(), pO->getTransform(), trans, ManipulateCommand::MANCMD_ALL);
-
+			if (pO->getType() == RenderableObject::OBJ_MESH)
+			{
+				if (g_current_frame < g_total_frame)
+				{
+					//g_translations[g_current_frame] = trans.getTranslate();
+					//g_rotations[g_current_frame] = trans.getRotate();
+				}
+			}
 //			paint3DApp->scene->getUndoStack().push(cmd);
 		}
 	}

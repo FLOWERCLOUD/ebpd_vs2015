@@ -67,6 +67,14 @@ namespace videoEditting
 			background_image = image;
 			resizeGL(glwidget_width, glwidget_height);//trick
 		}
+		bool isGLwidgetInitialized()
+		{
+			return isGLwidgetInitialize;
+		}
+		void directDraw()
+		{
+			paintGL();
+		}
 	public slots:
 		void changeRenderMode(unsigned int rendermode);
 		void rd_mode_toolb_wire_transc();
@@ -76,7 +84,26 @@ namespace videoEditting
 		void rd_mode_toolb_video_background_tex();
 		void rd_mode_image_resolution();
 		void rd_mode_tex_glwidget_resolution();
-
+		void draw_grid_toggle()
+		{
+			static bool l_isDrawGrid = false;
+			l_isDrawGrid = !l_isDrawGrid;
+			isDrawGrid = l_isDrawGrid;
+		}
+		void setDraw_grid(bool v)
+		{
+			isDrawGrid = v;
+		}
+		void draw_background_toggle()
+		{
+			static bool l_isDrawback = false;
+			l_isDrawback = !l_isDrawback;
+			isDrawBackGoundImage = l_isDrawback;
+		}
+		void setDraw_background(bool v)
+		{
+			isDrawBackGoundImage = v;
+		}
 	protected:
 		void initializeGL();
 		void paintGL();
@@ -88,7 +115,7 @@ namespace videoEditting
 		void keyPressEvent(QKeyEvent *event);
 		void keyReleaseEvent(QKeyEvent *event);
 		void drawCornerAxis();
-		
+		void drawSimulateObjectsWithBackgroundTexture(videoEditting::Camera& camera);
 	private:
 		QWeakPointer<RenderableObject> curSelectObj;
 		QColor backgroundClr;
@@ -120,7 +147,11 @@ namespace videoEditting
 		bool        isbackgroundChanged;
 		float viewport_ratio;//accoring to the backgroundimage
 		GLuint backgroundtexture;
+		GLuint greenBacktexture;
 		unsigned int cur_rendermode;
+		bool isDrawGrid;
+		bool isDrawBackGoundImage;
+		bool isGLwidgetInitialize;
 	};
 
 	class Viewport_frame_skin2;

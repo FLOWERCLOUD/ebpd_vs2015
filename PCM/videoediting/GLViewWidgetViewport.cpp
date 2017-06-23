@@ -34,7 +34,9 @@ namespace videoEditting
 		toolB_tex_glwidget_resolution->setIcon(icon6);
 
 		QIcon icon7((g_icons_theme_dir + "/texture.svg").c_str());
-		toolB_tex_5->setIcon(icon7);
+		toolB_showgrid->setIcon(icon7);
+		QIcon icon8((g_icons_theme_dir + "/texture.svg").c_str());
+		toolB_showbackground->setIcon(icon7);
 
 
 
@@ -141,6 +143,10 @@ namespace videoEditting
 		connect(renderbar->toolB_video_background_tex, SIGNAL(pressed()), glwidget, SLOT(rd_mode_toolb_video_background_tex()));
 		connect(renderbar->toolB_image_resolution, SIGNAL(pressed()), glwidget, SLOT(rd_mode_image_resolution()));
 		connect(renderbar->toolB_tex_glwidget_resolution, SIGNAL(pressed()), glwidget, SLOT(rd_mode_tex_glwidget_resolution()));
-//		QObject::connect(render->toolB_wire_transc, SIGNAL(pressed()), this, SLOT(rd_mode_toolb_wire_transc()));
+		connect(renderbar->toolB_showgrid, SIGNAL(pressed()), glwidget, SLOT(draw_grid_toggle()));
+		connect(renderbar->toolB_showbackground, SIGNAL(pressed()), glwidget, SLOT(draw_background_toggle()));
+
+			
+		//		QObject::connect(render->toolB_wire_transc, SIGNAL(pressed()), this, SLOT(rd_mode_toolb_wire_transc()));
 	}
 }

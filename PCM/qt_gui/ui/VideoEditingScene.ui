@@ -577,6 +577,21 @@
              <string>Toolbox for Step2</string>
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="spacing">
+              <number>1</number>
+             </property>
+             <property name="leftMargin">
+              <number>1</number>
+             </property>
+             <property name="topMargin">
+              <number>1</number>
+             </property>
+             <property name="rightMargin">
+              <number>1</number>
+             </property>
+             <property name="bottomMargin">
+              <number>1</number>
+             </property>
              <item>
               <widget class="QScrollArea" name="scrollArea_object_info">
                <property name="widgetResizable">
@@ -938,6 +953,21 @@
                 <string>操作工具</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_4">
+                <property name="spacing">
+                 <number>1</number>
+                </property>
+                <property name="leftMargin">
+                 <number>1</number>
+                </property>
+                <property name="topMargin">
+                 <number>1</number>
+                </property>
+                <property name="rightMargin">
+                 <number>1</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>1</number>
+                </property>
                 <item>
                  <widget class="QRadioButton" name="radioButton_select">
                   <property name="text">
@@ -992,6 +1022,21 @@
                 <string>姿态估计算法</string>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_9">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
                 <item>
                  <widget class="QPushButton" name="pushButtoncur_pose_estimation">
                   <property name="text">
@@ -1020,6 +1065,22 @@
                   </property>
                  </widget>
                 </item>
+                <item>
+                 <widget class="QPushButton" name="caculateCorredTexture">
+                  <property name="text">
+                   <string>计算当前帧
+对应纹理坐标</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="caculateAllCorredTexture">
+                  <property name="text">
+                   <string>计算所有帧
+对应纹理坐标</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -1032,7 +1093,7 @@
          <attribute name="title">
           <string>3)形状编辑（物理模拟，基于样例的变形）</string>
          </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,3">
+         <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1,0,3">
           <item>
            <widget class="QGroupBox" name="groupBox_2">
             <property name="title">
@@ -1107,6 +1168,52 @@
            </widget>
           </item>
           <item>
+           <widget class="QGroupBox" name="constraint">
+            <property name="title">
+             <string>GroupBox</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_11">
+             <item>
+              <widget class="QPushButton" name="setStrongFaceConstraint">
+               <property name="text">
+                <string>strong constraint 
+selected face</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="setWeakFaceConstraint">
+               <property name="text">
+                <string>weak constraint 
+ selected face</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="unsetFaceConstraint">
+               <property name="text">
+                <string>unconstraint selected face</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="showConstraint">
+               <property name="text">
+                <string>showConstraint</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="unshowConstraint">
+               <property name="text">
+                <string>unshowConstraint</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer_3">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -1144,6 +1251,8 @@
     <addaction name="actionSave_as"/>
     <addaction name="actionClose"/>
     <addaction name="actionLoad_model"/>
+    <addaction name="actionLoad_poses"/>
+    <addaction name="actionSave_poses"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -1156,6 +1265,9 @@
     <addaction name="actionAlpha2trimap"/>
     <addaction name="actionSplit_Video"/>
     <addaction name="actionCompute_gradient"/>
+    <addaction name="actionWrite_CameraViewer_to_video"/>
+    <addaction name="actionWrite_CameraViewer_to_Image_array"/>
+    <addaction name="actionRender_CameraViewer_To_Image_array"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -1214,6 +1326,31 @@
   <action name="actionLoad_model">
    <property name="text">
     <string>load model</string>
+   </property>
+  </action>
+  <action name="actionLoad_poses">
+   <property name="text">
+    <string>load poses</string>
+   </property>
+  </action>
+  <action name="actionSave_poses">
+   <property name="text">
+    <string>save poses</string>
+   </property>
+  </action>
+  <action name="actionWrite_CameraViewer_to_video">
+   <property name="text">
+    <string>write CameraViewer to video</string>
+   </property>
+  </action>
+  <action name="actionRender_CameraViewer_To_Image_array">
+   <property name="text">
+    <string>Render CameraViewer To Image array</string>
+   </property>
+  </action>
+  <action name="actionWrite_CameraViewer_to_Image_array">
+   <property name="text">
+    <string>write CameraViewer to Image array</string>
    </property>
   </action>
  </widget>

@@ -136,7 +136,8 @@ namespace videoEditting
 				((Camera*)curObject.data())->updateCameraPose();
 			}
 			//update curpose
-			g_translations[g_current_frame] = getTransform()->getTranslate();
+			if (g_current_frame <g_translations.size())
+				g_translations[g_current_frame] = getTransform()->getTranslate();
 //			g_rotations[g_current_frame] = getTransform()->getRotate();
 		}
 	}

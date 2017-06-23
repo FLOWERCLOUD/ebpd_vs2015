@@ -44,10 +44,14 @@ namespace videoEditting
 		glColor3f(0.3, 0.3, 0.3);
 		for (int i = -10; i <= 10; ++i)
 		{
-			glVertex3f(-10, i, 0);
-			glVertex3f(10, i, 0);
-			glVertex3f(i, -10, 0);
-			glVertex3f(i, 10, 0);
+			//glVertex3f(-10, i, 0);
+			//glVertex3f(10, i, 0);
+			//glVertex3f(i, -10, 0);
+			//glVertex3f(i, 10, 0);
+			glVertex3f(-10,0,i);
+			glVertex3f(10,0, i);
+			glVertex3f(i,0,-10);
+			glVertex3f(i,0, 10);
 		}
 		glEnd();
 		glEnable(GL_LIGHTING);

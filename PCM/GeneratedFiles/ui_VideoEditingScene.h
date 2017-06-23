@@ -53,6 +53,11 @@ public:
     QAction *actionSplit_Video;
     QAction *actionCompute_gradient;
     QAction *actionLoad_model;
+    QAction *actionLoad_poses;
+    QAction *actionSave_poses;
+    QAction *actionWrite_CameraViewer_to_video;
+    QAction *actionRender_CameraViewer_To_Image_array;
+    QAction *actionWrite_CameraViewer_to_Image_array;
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_5;
     QVBoxLayout *verticalLayout;
@@ -181,6 +186,8 @@ public:
     QPushButton *set_curframe_as_key_frame_of_pose;
     QPushButton *pushButton_whole_pose_estimation;
     QPushButton *pushButton_correspondence;
+    QPushButton *caculateCorredTexture;
+    QPushButton *caculateAllCorredTexture;
     QWidget *tab_simulate;
     QHBoxLayout *horizontalLayout_9;
     QGroupBox *groupBox_2;
@@ -196,6 +203,13 @@ public:
     QLabel *label_16;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
+    QGroupBox *constraint;
+    QVBoxLayout *verticalLayout_11;
+    QPushButton *setStrongFaceConstraint;
+    QPushButton *setWeakFaceConstraint;
+    QPushButton *unsetFaceConstraint;
+    QPushButton *showConstraint;
+    QPushButton *unshowConstraint;
     QSpacerItem *horizontalSpacer_3;
     QMenuBar *menubar;
     QMenu *menuFile;
@@ -229,6 +243,16 @@ public:
         actionCompute_gradient->setObjectName(QStringLiteral("actionCompute_gradient"));
         actionLoad_model = new QAction(VideoEditingWindow);
         actionLoad_model->setObjectName(QStringLiteral("actionLoad_model"));
+        actionLoad_poses = new QAction(VideoEditingWindow);
+        actionLoad_poses->setObjectName(QStringLiteral("actionLoad_poses"));
+        actionSave_poses = new QAction(VideoEditingWindow);
+        actionSave_poses->setObjectName(QStringLiteral("actionSave_poses"));
+        actionWrite_CameraViewer_to_video = new QAction(VideoEditingWindow);
+        actionWrite_CameraViewer_to_video->setObjectName(QStringLiteral("actionWrite_CameraViewer_to_video"));
+        actionRender_CameraViewer_To_Image_array = new QAction(VideoEditingWindow);
+        actionRender_CameraViewer_To_Image_array->setObjectName(QStringLiteral("actionRender_CameraViewer_To_Image_array"));
+        actionWrite_CameraViewer_to_Image_array = new QAction(VideoEditingWindow);
+        actionWrite_CameraViewer_to_Image_array->setObjectName(QStringLiteral("actionWrite_CameraViewer_to_Image_array"));
         centralwidget = new QWidget(VideoEditingWindow);
         centralwidget->setObjectName(QStringLiteral("centralwidget"));
         verticalLayout_5 = new QVBoxLayout(centralwidget);
@@ -578,7 +602,9 @@ public:
         groupBox = new QGroupBox(tab_pose_estimation);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         horizontalLayout_3 = new QHBoxLayout(groupBox);
+        horizontalLayout_3->setSpacing(1);
         horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        horizontalLayout_3->setContentsMargins(1, 1, 1, 1);
         scrollArea_object_info = new QScrollArea(groupBox);
         scrollArea_object_info->setObjectName(QStringLiteral("scrollArea_object_info"));
         scrollArea_object_info->setWidgetResizable(true);
@@ -850,7 +876,9 @@ public:
         groupBox_manipulate = new QGroupBox(groupBox);
         groupBox_manipulate->setObjectName(QStringLiteral("groupBox_manipulate"));
         verticalLayout_4 = new QVBoxLayout(groupBox_manipulate);
+        verticalLayout_4->setSpacing(1);
         verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        verticalLayout_4->setContentsMargins(1, 1, 1, 1);
         radioButton_select = new QRadioButton(groupBox_manipulate);
         radioButton_select->setObjectName(QStringLiteral("radioButton_select"));
         radioButton_select->setChecked(true);
@@ -888,7 +916,9 @@ public:
         groupBox_3 = new QGroupBox(groupBox);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
         verticalLayout_9 = new QVBoxLayout(groupBox_3);
+        verticalLayout_9->setSpacing(0);
         verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
+        verticalLayout_9->setContentsMargins(0, 0, 0, 0);
         pushButtoncur_pose_estimation = new QPushButton(groupBox_3);
         pushButtoncur_pose_estimation->setObjectName(QStringLiteral("pushButtoncur_pose_estimation"));
 
@@ -908,6 +938,16 @@ public:
         pushButton_correspondence->setObjectName(QStringLiteral("pushButton_correspondence"));
 
         verticalLayout_9->addWidget(pushButton_correspondence);
+
+        caculateCorredTexture = new QPushButton(groupBox_3);
+        caculateCorredTexture->setObjectName(QStringLiteral("caculateCorredTexture"));
+
+        verticalLayout_9->addWidget(caculateCorredTexture);
+
+        caculateAllCorredTexture = new QPushButton(groupBox_3);
+        caculateAllCorredTexture->setObjectName(QStringLiteral("caculateAllCorredTexture"));
+
+        verticalLayout_9->addWidget(caculateAllCorredTexture);
 
 
         horizontalLayout_3->addWidget(groupBox_3);
@@ -979,13 +1019,45 @@ public:
 
         horizontalLayout_9->addWidget(groupBox_4);
 
+        constraint = new QGroupBox(tab_simulate);
+        constraint->setObjectName(QStringLiteral("constraint"));
+        verticalLayout_11 = new QVBoxLayout(constraint);
+        verticalLayout_11->setObjectName(QStringLiteral("verticalLayout_11"));
+        setStrongFaceConstraint = new QPushButton(constraint);
+        setStrongFaceConstraint->setObjectName(QStringLiteral("setStrongFaceConstraint"));
+
+        verticalLayout_11->addWidget(setStrongFaceConstraint);
+
+        setWeakFaceConstraint = new QPushButton(constraint);
+        setWeakFaceConstraint->setObjectName(QStringLiteral("setWeakFaceConstraint"));
+
+        verticalLayout_11->addWidget(setWeakFaceConstraint);
+
+        unsetFaceConstraint = new QPushButton(constraint);
+        unsetFaceConstraint->setObjectName(QStringLiteral("unsetFaceConstraint"));
+
+        verticalLayout_11->addWidget(unsetFaceConstraint);
+
+        showConstraint = new QPushButton(constraint);
+        showConstraint->setObjectName(QStringLiteral("showConstraint"));
+
+        verticalLayout_11->addWidget(showConstraint);
+
+        unshowConstraint = new QPushButton(constraint);
+        unshowConstraint->setObjectName(QStringLiteral("unshowConstraint"));
+
+        verticalLayout_11->addWidget(unshowConstraint);
+
+
+        horizontalLayout_9->addWidget(constraint);
+
         horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout_9->addItem(horizontalSpacer_3);
 
         horizontalLayout_9->setStretch(0, 1);
         horizontalLayout_9->setStretch(1, 1);
-        horizontalLayout_9->setStretch(2, 3);
+        horizontalLayout_9->setStretch(3, 3);
         tabWidget_algorithom->addTab(tab_simulate, QString());
 
         verticalLayout->addWidget(tabWidget_algorithom);
@@ -1014,6 +1086,8 @@ public:
         menuFile->addAction(actionSave_as);
         menuFile->addAction(actionClose);
         menuFile->addAction(actionLoad_model);
+        menuFile->addAction(actionLoad_poses);
+        menuFile->addAction(actionSave_poses);
         menuTools->addAction(actionRead_frame);
         menuTools->addAction(actionCamera);
         menuTools->addAction(actionMatting);
@@ -1021,6 +1095,9 @@ public:
         menuTools->addAction(actionAlpha2trimap);
         menuTools->addAction(actionSplit_Video);
         menuTools->addAction(actionCompute_gradient);
+        menuTools->addAction(actionWrite_CameraViewer_to_video);
+        menuTools->addAction(actionWrite_CameraViewer_to_Image_array);
+        menuTools->addAction(actionRender_CameraViewer_To_Image_array);
 
         retranslateUi(VideoEditingWindow);
 
@@ -1045,6 +1122,11 @@ public:
         actionSplit_Video->setText(QApplication::translate("VideoEditingWindow", "Split Video", 0));
         actionCompute_gradient->setText(QApplication::translate("VideoEditingWindow", "Compute gradient", 0));
         actionLoad_model->setText(QApplication::translate("VideoEditingWindow", "load model", 0));
+        actionLoad_poses->setText(QApplication::translate("VideoEditingWindow", "load poses", 0));
+        actionSave_poses->setText(QApplication::translate("VideoEditingWindow", "save poses", 0));
+        actionWrite_CameraViewer_to_video->setText(QApplication::translate("VideoEditingWindow", "write CameraViewer to video", 0));
+        actionRender_CameraViewer_To_Image_array->setText(QApplication::translate("VideoEditingWindow", "Render CameraViewer To Image array", 0));
+        actionWrite_CameraViewer_to_Image_array->setText(QApplication::translate("VideoEditingWindow", "write CameraViewer to Image array", 0));
         SourceVideo->setTitle(QApplication::translate("VideoEditingWindow", "Source Video", 0));
         videoFrame->setText(QString());
         source_video_tab->setTabText(source_video_tab->indexOf(tab_imagemode), QApplication::translate("VideoEditingWindow", "Image Mode", 0));
@@ -1123,6 +1205,10 @@ public:
         set_curframe_as_key_frame_of_pose->setText(QApplication::translate("VideoEditingWindow", "\347\241\256\345\256\232\345\275\223\345\211\215\345\270\247\344\274\260\350\256\241", 0));
         pushButton_whole_pose_estimation->setText(QApplication::translate("VideoEditingWindow", "\345\205\250\345\270\247\345\247\277\346\200\201\344\274\260\350\256\241", 0));
         pushButton_correspondence->setText(QApplication::translate("VideoEditingWindow", "\345\257\271\345\272\224\345\205\263\347\263\273", 0));
+        caculateCorredTexture->setText(QApplication::translate("VideoEditingWindow", "\350\256\241\347\256\227\345\275\223\345\211\215\345\270\247\n"
+"\345\257\271\345\272\224\347\272\271\347\220\206\345\235\220\346\240\207", 0));
+        caculateAllCorredTexture->setText(QApplication::translate("VideoEditingWindow", "\350\256\241\347\256\227\346\211\200\346\234\211\345\270\247\n"
+"\345\257\271\345\272\224\347\272\271\347\220\206\345\235\220\346\240\207", 0));
         tabWidget_algorithom->setTabText(tabWidget_algorithom->indexOf(tab_pose_estimation), QApplication::translate("VideoEditingWindow", "2)\345\247\277\346\200\201\344\274\260\350\256\241", 0));
         groupBox_2->setTitle(QApplication::translate("VideoEditingWindow", "simulate", 0));
         begin_simulate->setText(QApplication::translate("VideoEditingWindow", "\345\274\200\345\247\213\346\250\241\346\213\237", 0));
@@ -1133,6 +1219,14 @@ public:
         groupBox_4->setTitle(QApplication::translate("VideoEditingWindow", "info", 0));
         label_15->setText(QApplication::translate("VideoEditingWindow", "\345\275\223\345\211\215\346\250\241\346\213\237\345\270\247", 0));
         label_16->setText(QApplication::translate("VideoEditingWindow", "\346\200\273\345\270\247\346\225\260", 0));
+        constraint->setTitle(QApplication::translate("VideoEditingWindow", "GroupBox", 0));
+        setStrongFaceConstraint->setText(QApplication::translate("VideoEditingWindow", "strong constraint \n"
+"selected face", 0));
+        setWeakFaceConstraint->setText(QApplication::translate("VideoEditingWindow", "weak constraint \n"
+" selected face", 0));
+        unsetFaceConstraint->setText(QApplication::translate("VideoEditingWindow", "unconstraint selected face", 0));
+        showConstraint->setText(QApplication::translate("VideoEditingWindow", "showConstraint", 0));
+        unshowConstraint->setText(QApplication::translate("VideoEditingWindow", "unshowConstraint", 0));
         tabWidget_algorithom->setTabText(tabWidget_algorithom->indexOf(tab_simulate), QApplication::translate("VideoEditingWindow", "3)\345\275\242\347\212\266\347\274\226\350\276\221\357\274\210\347\211\251\347\220\206\346\250\241\346\213\237\357\274\214\345\237\272\344\272\216\346\240\267\344\276\213\347\232\204\345\217\230\345\275\242\357\274\211", 0));
         menuFile->setTitle(QApplication::translate("VideoEditingWindow", "File", 0));
         menuTools->setTitle(QApplication::translate("VideoEditingWindow", "Tools", 0));

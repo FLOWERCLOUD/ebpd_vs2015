@@ -11,7 +11,7 @@
 #include "bulletInterface.h"
 #include <QFileDialog>
 #include <QMessageBox>
- 
+#include <fstream>
 
 using namespace cv;
 VideoEditingWindow* VideoEditingWindow:: window_ = 0;
@@ -87,7 +87,7 @@ inline Mat mattingMethod(const Mat& trimapMat, Mat& srcMat, Mat& alphaMat , Mat&
 
 VideoEditingWindow::VideoEditingWindow(QWidget *parent /*= 0*/):
 	preprocessThread(&preprocessor), cameraWidget(NULL), rfWidget(NULL), currentFrame(NULL),
-	timer(NULL), transformEditor(NULL)
+	timer(NULL), transformEditor(NULL), cur_active_viewer(NULL), world_viewer(NULL), camera_viewer(NULL)
 {
 	ui_.setupUi(this);
 	transformEditor = new videoEditting::ObjectInfoWidget(ui_);
@@ -149,6 +149,7 @@ void VideoEditingWindow::setUpSourceVideo()
 	world_viewer = viewport->getWorld_viewer();
 	cur_active_viewer = world_viewer;
 	world_viewer->getScene().setObserveCamera(camera_viewer->getScene().getCameraWeakRef());
+	world_viewer->setDraw_grid(true);
 	return;
 
 //	_hidden = new OGL_widget_skin_hidden(this);
@@ -245,6 +246,9 @@ void VideoEditingWindow::setUpToolbox()
 	connect(ui_.actionAlpha2trimap, SIGNAL(triggered()), this, SLOT(alpha2Trimap()));
 	connect(ui_.actionSplit_Video, SIGNAL(triggered()), this, SLOT(splitVideo()));
 	connect(ui_.actionCompute_gradient, SIGNAL(triggered()), this, SLOT(computeGradient()));
+	connect(ui_.actionWrite_CameraViewer_to_video, SIGNAL(triggered()), this, SLOT(writeCameraViewertovideo()));
+	connect(ui_.actionWrite_CameraViewer_to_Image_array, SIGNAL(triggered()), this, SLOT(writeCameraViewertoImagearray()));
+	connect(ui_.actionRender_CameraViewer_To_Image_array, SIGNAL(triggered()), this, SLOT(renderCameraViewerToImagearray()));
 
 	connect(ui_.pushButton_pause, SIGNAL(clicked()), this, SLOT(pause()));
 	connect(ui_.pushButton_play, SIGNAL(clicked()), this, SLOT(play()));
@@ -285,6 +289,8 @@ void VideoEditingWindow::setUpToolbox()
 	connect(ui_.source_video_tab, SIGNAL(currentChanged(int)), this, SLOT(changeShowMode(int)));
 	//step2
 	connect(ui_.actionLoad_model, SIGNAL(triggered()), this, SLOT(importModel()));
+	connect(ui_.actionLoad_poses, SIGNAL(triggered()), this, SLOT(importPose()));
+	connect(ui_.actionSave_poses, SIGNAL(triggered()), this, SLOT(exportPose()));
 
 	connect(ui_.radioButton_select, SIGNAL(clicked()), this, SLOT(selectTool()));
 	connect(ui_.radioButton_selectface, SIGNAL(clicked()), this, SLOT(selectFaceTool()));
@@ -297,15 +303,19 @@ void VideoEditingWindow::setUpToolbox()
 	connect(ui_.set_curframe_as_key_frame_of_pose, SIGNAL(clicked()), this, SLOT(setCurFramePoseEstimationAsKeyFrame()));
 	connect(ui_.pushButton_whole_pose_estimation, SIGNAL(clicked()), this, SLOT(runWholeFramePoseEstimation()));
 	connect(ui_.pushButton_correspondence, SIGNAL(clicked()), this, SLOT(showCorrespondence()));
-
+	connect(ui_.caculateCorredTexture, SIGNAL(clicked()), this, SLOT(caculateCurFrameCorredTexture()));
+	connect(ui_.caculateAllCorredTexture, SIGNAL(clicked()), this, SLOT(caculateAllCorredTexture()));
 
 	//step3
 	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(begin_simulate()));
-	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(pause_simulate()));
-	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(continuie_simulate()));
-	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(restart()));
-	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(step_simulate()));
-
+	connect(ui_.pause_simulate, SIGNAL(clicked()), this, SLOT(pause_simulate()));
+	connect(ui_.continue_simulate, SIGNAL(clicked()), this, SLOT(continuie_simulate()));
+	connect(ui_.restart, SIGNAL(clicked()), this, SLOT(restart()));
+	connect(ui_.setStrongFaceConstraint, SIGNAL(clicked()), this, SLOT(setStrongFaceConstraint()));
+	connect(ui_.setWeakFaceConstraint, SIGNAL(clicked()), this, SLOT(setWeakFaceConstraint()));
+	connect(ui_.unsetFaceConstraint, SIGNAL(clicked()), this, SLOT(unsetFaceConstraint()));
+	connect(ui_.showConstraint, SIGNAL(clicked()), this, SLOT(showConstraint()));
+	connect(ui_.unshowConstraint, SIGNAL(clicked()), this, SLOT(unshowConstraint()));
 
 	back_ground = imread("./background.jpg");	//默认背景
 
@@ -968,6 +978,106 @@ void VideoEditingWindow::computeGradient()
 	QMessageBox::information(this, "Information", aver, QMessageBox::Ok);
 }
 
+void VideoEditingWindow::writeCameraViewertovideo()
+{
+	using namespace videoEditting;
+	using namespace videoEditting;
+
+	QString fileName = QFileDialog::getSaveFileName(this,
+		tr("save video"),
+		"./resource/video",
+		tr("*.avi"));
+	if (fileName.size() == 0)
+		return;
+	g_cameraviewer_image_array.resize(g_total_frame);
+	if (camera_viewer && camera_viewer->isGLwidgetInitialized())
+	{
+		for (size_t frame_id = 0; frame_id < g_total_frame; frame_id++)
+		{
+			turnToFrame(frame_id + 1);
+			camera_viewer->directDraw();
+			g_cameraviewer_image_array[frame_id] = camera_viewer->grabFrameBuffer();
+		}
+	}
+
+
+	if (fileName.size() != 0)
+	{
+		string vedioFilename = fileName.toLocal8Bit().constData();
+		Mat frame;
+		int width, height;
+		if (g_cameraviewer_image_array.size())
+		{
+			width = g_cameraviewer_image_array[0].width();
+			height = g_cameraviewer_image_array[0].height();
+		}
+		else
+		{
+			width = height = 0;
+		}
+		//CvVideoWriter * writer = 0;//初始化视频写入		
+		writer = VideoWriter(vedioFilename.c_str(), CV_FOURCC('X', 'V', 'I', 'D'), fps, Size(width, height));//初始化结束，默认640*480大小，亦可读取一帧，获取其原始大小
+		for (size_t i = 0; i < g_cameraviewer_image_array.size(); i++)
+		{
+			QImage l_image = g_cameraviewer_image_array[i];
+			frame = QImage2cvMat(l_image);
+			writer << frame;
+
+		}
+		if (writer.isOpened())
+			writer.release();
+	}
+
+
+}
+
+void VideoEditingWindow::writeCameraViewertoImagearray()
+{
+	using namespace videoEditting;
+	QString cur_dir = "./resource/video";
+	QString filepath = QFileDialog::getExistingDirectory(this, "Get existing directory", cur_dir);
+
+	g_cameraviewer_image_array.resize(g_total_frame);
+	if (camera_viewer && camera_viewer->isGLwidgetInitialized())
+	{
+		for (size_t frame_id = 0; frame_id < g_total_frame; frame_id++)
+		{
+			turnToFrame(frame_id + 1);
+			camera_viewer->directDraw();
+			g_cameraviewer_image_array[frame_id] = camera_viewer->grabFrameBuffer();
+		}
+	}
+
+	if (!filepath.isEmpty())
+	{
+		filepath += "/";
+		for (size_t i = 0; i < g_cameraviewer_image_array.size(); i++)
+		{
+			QString fullpath = filepath + QString("result_%1.jpg").arg(i);
+			QImage l_image = g_cameraviewer_image_array[i];
+//			frame = QImage2cvMat(l_image);
+			l_image.save(fullpath);
+		}
+	}
+
+
+
+}
+
+void VideoEditingWindow::renderCameraViewerToImagearray()
+{
+
+
+
+
+
+
+
+}
+
+
+
+
 void VideoEditingWindow::nextFrame()
 {
 	currentframePos++;
@@ -996,11 +1106,13 @@ void VideoEditingWindow::nextFrame()
 			updateCurSceneObjectPose();
 			if (camera_viewer)
 			{
+				camera_viewer->makeCurrent();
 				camera_viewer->setBackGroundImage(curImage);
 				camera_viewer->updateGL();
 			}
 			if (world_viewer)
 			{
+				world_viewer->makeCurrent();
 				world_viewer->setBackGroundImage(curImage);
 				world_viewer->updateGL();
 			}
@@ -2019,6 +2131,124 @@ void VideoEditingWindow::importModel()
 
 }
 
+void VideoEditingWindow::importPose()
+{
+	using namespace  std;
+	using namespace videoEditting;
+	QString fileName = QFileDialog::getOpenFileName(this,
+		tr("Load poses"),
+		"./resource/meshes/scene",
+		tr("*.poses"));
+	if (fileName.size() != 0)
+	{
+		string string_name = fileName.toLocal8Bit().constData();
+		ifstream ifs(string_name);
+		int key_frame_size;
+		ifs >> key_frame_size;
+		g_pose_key_frame.clear();
+		for (size_t i = 0; i < key_frame_size; i++)
+		{
+			int idx;
+			ifs >> idx;
+			g_pose_key_frame.insert(idx);
+		}
+		ifs >> g_total_frame;
+		for (size_t i = 0; i <  g_total_frame; i++)
+		{
+			float x, y, z;
+			ifs >> x >> y >> z;
+			g_translations[i].setX(x);
+			g_translations[i].setY(y);
+			g_translations[i].setZ(z);
+		}
+		for (size_t i = 0; i < g_total_frame; i++)
+		{
+			float x, y, z,w;
+			ifs >> x >> y >> z>> w;
+			g_rotations[i].setX(x);
+			g_rotations[i].setY(y);
+			g_rotations[i].setZ(z);
+			g_rotations[i].setScalar(w);
+		}
+
+		if (camera_viewer)
+		{
+			Camera& camera = camera_viewer->getScene().getCamera();
+
+			float tmp[3];
+			ifs >> tmp[0] >> tmp[1] >> tmp[2];
+			camera.setOrigin(QVector3D(tmp[0], tmp[1], tmp[2]));
+			ifs >> tmp[0] >> tmp[1] >> tmp[2];
+			camera.setTarget(QVector3D(tmp[0], tmp[1], tmp[2]));
+			QVector3D dirs[3];
+			for (int i = 0; i < 3; ++i)
+			{
+				ifs >> tmp[0] >> tmp[1] >> tmp[2];
+				dirs[i] = QVector3D(tmp[0], tmp[1], tmp[2]);
+			}
+			camera.setViewDirection(dirs);
+			float length = (camera.getTarget() - camera.getOrigin()).length();
+			camera.setLength(length);
+			camera.updateCameraLazy();
+		}
+
+
+		//		update_viewports();
+		ifs.close();
+		updateCurSceneObjectPose();
+	}
+}
+void VideoEditingWindow::exportPose()
+{
+	using namespace  std;
+	using namespace videoEditting;
+	QString fileName = QFileDialog::getSaveFileName(this,
+		tr("save poses"),
+		"./resource/meshes/scene",
+		tr("*.poses"));
+	if (fileName.size() != 0)
+	{
+		string string_name = fileName.toLocal8Bit().constData();
+//		string string_name(file);// = fileName.toStdString();
+		cout << string_name << endl;
+		ofstream ofs(string_name);
+		ofs.setf(ios::fixed, ios::floatfield);
+		ofs.precision(6);
+		ofs << g_pose_key_frame.size() << std::endl;
+		for (auto bitr = g_pose_key_frame.begin();bitr != g_pose_key_frame.end();++bitr)
+		{
+			ofs << *bitr << endl;
+		}
+		ofs << g_total_frame << endl;
+		for (size_t i = 0; i < g_translations.size(); i++)
+		{
+			ofs << g_translations[i].x() << " " << g_translations[i].y() << " " << g_translations[i].z() << endl;
+		}
+		for (size_t i = 0; i < g_rotations.size(); i++)
+		{
+			ofs << g_rotations[i].x() << " " << g_rotations[i].y() << " " << g_rotations[i].z()<<" "<< g_rotations[i].scalar() << endl;
+		}
+		if (camera_viewer)
+		{
+			Camera& camera = camera_viewer->getScene().getCamera();
+			const QVector3D& origin = camera.getOrigin();
+			const QVector3D& target = camera.getTarget();
+			QVector3D dirs[3];
+			camera.getViewDirection(dirs);
+			ofs << origin.x() << " " << origin.y() << " " << origin.z() << endl;
+			ofs << target.x() << " " << target.y() << " " << target.z() << endl;
+			for (int i = 0; i < 3; ++i)
+			{
+				ofs << dirs[i].x() << " " << dirs[i].y() << " " << dirs[i].z() << endl;
+			}			
+		}
+		ofs.close();
+		//		update_viewports();
+	}
+
+}
+
+
 
 void VideoEditingWindow::selectTool()
 {
@@ -2179,6 +2409,229 @@ void VideoEditingWindow::showCorrespondence()
 
 
 }
+
+void VideoEditingWindow::caculateCurFrameCorredTexture()
+{
+	using namespace videoEditting;
+	using namespace std;
+	int cur_frame = g_current_frame;
+	if (!g_tracked_textures.size())
+		g_tracked_textures.resize(g_total_frame);
+	if (g_current_frame >= g_tracked_textures.size())
+		g_tracked_textures.resize(g_total_frame);
+	if (camera_viewer)
+	{
+		videoEditting::Camera& camera = camera_viewer->getScene().getCamera();
+
+		QMatrix4x4 viewmatrix = camera.getViewMatrix();
+		QMatrix4x4 projMatrix = camera.getProjMatrix();
+		QMatrix4x4 obj_tr;
+		if (g_current_frame < g_total_frame)
+		{
+			QVector3D& trans = g_translations[g_current_frame];
+			QQuaternion& rot = g_rotations[g_current_frame];
+			QMatrix4x4 m_rotMatrix;
+			m_rotMatrix.setToIdentity();
+			m_rotMatrix.rotate(rot);
+			obj_tr.translate(trans);
+			obj_tr *= m_rotMatrix;
+		}
+		QMatrix4x4 composedMatrix = projMatrix*viewmatrix*obj_tr;
+		vector<QVector3D> screen_normalized_vtx;
+		screen_normalized_vtx.resize(g_init_vertices.size());
+		g_tracked_textures[g_current_frame].clear();
+		//统计包围盒
+		float max_x = -100, max_y= -100,max_z;
+		float min_x= 100, min_y =100,min_z;
+		for (int i = 0; i < g_init_vertices.size(); ++i)
+		{
+			QVector4D converted_vertexs = composedMatrix * QVector4D(g_init_vertices[i],1);
+			screen_normalized_vtx[i] = QVector3D(converted_vertexs.x()/ converted_vertexs.w(), converted_vertexs.y() / converted_vertexs.w(), converted_vertexs.z() / converted_vertexs.w());
+			//sceen_normalized 是在 [-1,1] 间 ，我们需要转换到 纹理坐标 [0,1] 之间。
+			QVector2D texture_coor((screen_normalized_vtx[i].x() + 1.0) / 2.0f, (screen_normalized_vtx[i].y() + 1.0) / 2.0f);
+			
+			g_tracked_textures[g_current_frame].push_back(texture_coor);
+			if (screen_normalized_vtx[i].x() > max_x)
+			{
+				max_x = screen_normalized_vtx[i].x();
+
+			}
+			if (screen_normalized_vtx[i].y() > max_y)
+			{
+				max_y = screen_normalized_vtx[i].y();
+			}
+			if (screen_normalized_vtx[i].x() < min_x)
+			{
+				min_x = screen_normalized_vtx[i].x();
+
+			}
+			if (screen_normalized_vtx[i].y() < min_y)
+			{
+				min_y = screen_normalized_vtx[i].y();
+			}
+		}
+		cout << "min x " << min_x<< " min y" << min_y << endl;
+		cout << "max x " << max_x << " max y" << max_y << endl;
+
+	}
+	
+
+
+
+}
+void VideoEditingWindow::caculateAllCorredTexture()
+{
+	using namespace videoEditting;
+	using namespace std;
+
+	g_tracked_textures.resize(g_total_frame);
+	g_tracked_isVisiable.resize(g_total_frame);
+	g_simulated_isVisiable.resize(g_total_frame);
+	
+	if (camera_viewer)
+	{
+		for (size_t c_frame = 0; c_frame < g_total_frame; c_frame++)
+		{
+			videoEditting::Camera& camera = camera_viewer->getScene().getCamera();
+
+			QMatrix4x4 viewmatrix = camera.getViewMatrix();
+			QMatrix4x4 projMatrix = camera.getProjMatrix();
+			QMatrix4x4 obj_tr;
+			if (c_frame < g_total_frame)
+			{
+				QVector3D& trans = g_translations[c_frame];
+				QQuaternion& rot = g_rotations[c_frame];
+				QMatrix4x4 m_rotMatrix;
+				m_rotMatrix.setToIdentity();
+				m_rotMatrix.rotate(rot);
+				obj_tr.translate(trans);
+				obj_tr *= m_rotMatrix;
+			}
+			QMatrix4x4 viewproj = projMatrix*viewmatrix;
+			QMatrix4x4 composedMatrix = projMatrix*viewmatrix*obj_tr;
+			vector<QVector3D> screen_normalized_vtx;
+			screen_normalized_vtx.resize(g_init_vertices.size());
+			g_tracked_textures[c_frame].clear();
+			//统计包围盒
+			float max_x = -100, max_y = -100, max_z;
+			float min_x = 100, min_y = 100, min_z;
+			for (int i = 0; i < g_init_vertices.size(); ++i)
+			{
+				QVector4D converted_vertexs = composedMatrix * QVector4D(g_init_vertices[i], 1);
+				screen_normalized_vtx[i] = QVector3D(converted_vertexs.x() / converted_vertexs.w(), converted_vertexs.y() / converted_vertexs.w(), converted_vertexs.z() / converted_vertexs.w());
+				//sceen_normalized 是在 [-1,1] 间 ，我们需要转换到 纹理坐标 [0,1] 之间。
+				QVector2D texture_coor((screen_normalized_vtx[i].x() + 1.0) / 2.0f, (screen_normalized_vtx[i].y() + 1.0) / 2.0f);
+
+				g_tracked_textures[c_frame].push_back(texture_coor);
+				if (screen_normalized_vtx[i].x() > max_x)
+				{
+					max_x = screen_normalized_vtx[i].x();
+
+				}
+				if (screen_normalized_vtx[i].y() > max_y)
+				{
+					max_y = screen_normalized_vtx[i].y();
+				}
+				if (screen_normalized_vtx[i].x() < min_x)
+				{
+					min_x = screen_normalized_vtx[i].x();
+
+				}
+				if (screen_normalized_vtx[i].y() < min_y)
+				{
+					min_y = screen_normalized_vtx[i].y();
+				}
+			}
+			cout << "min x " << min_x << " min y" << min_y << endl;
+			cout << "max x " << max_x << " max y" << max_y << endl;
+
+			//计算可见性
+			std::vector<int>& tracked_isvisable   = g_tracked_isVisiable[c_frame];
+			std::vector<int>& simulated_isvisable = g_simulated_isVisiable[c_frame];
+
+
+			//使用simulate 得到的normal 来替代 
+			if (!g_init_normals.size() && g_simulated_normals.size()&& g_simulated_normals[0].size())
+			{
+				QMatrix4x4 inverse_first_obj_tr;
+				if (0 < g_total_frame)
+				{
+//					QVector3D& trans = g_translations[0];
+					QQuaternion& rot = g_rotations[0];
+					QMatrix4x4 m_rotMatrix;
+					m_rotMatrix.setToIdentity();
+					m_rotMatrix.rotate(-rot);
+					inverse_first_obj_tr = m_rotMatrix;
+//					first_obj_tr.translate(trans);
+//					first_obj_tr *= m_rotMatrix;
+				}
+
+				g_init_normals.resize(g_simulated_normals[0].size());
+				for (size_t i = 0; i < g_init_normals.size(); i++)
+				{
+					g_init_normals[i] = inverse_first_obj_tr *g_simulated_normals[0][i];
+					g_init_normals[i].normalize();
+				}
+			}
+			if (g_init_normals.size())
+			{
+				std::vector<QVector3D> tracked_normal_array;
+				tracked_normal_array.resize(g_init_normals.size());
+				tracked_isvisable.clear();
+				tracked_isvisable.resize(g_init_normals.size());
+				for (int i = 0; i < g_init_normals.size(); ++i)
+				{
+					QVector4D converted_normal = composedMatrix * QVector4D(g_init_normals[i], 0);
+					tracked_normal_array[i] = QVector3D(converted_normal.x() , converted_normal.y() , converted_normal.z());
+					if ( QVector3D::dotProduct(tracked_normal_array[i],QVector3D(0,0,1))>0 ) //不可见
+					{
+						tracked_isvisable[i] = 0;
+					}
+					else
+					{
+						tracked_isvisable[i] = 1;
+					}
+
+				}
+			}
+
+			if (c_frame < g_simulated_normals.size())
+			{
+				std::vector<QVector3D> simulated_normal_array;
+				simulated_normal_array = g_simulated_normals[c_frame];
+				simulated_isvisable.clear();
+				simulated_isvisable.resize(simulated_normal_array.size());
+				for (size_t i = 0; i < g_simulated_normals.size(); i++)
+				{
+					QVector4D converted_normal = viewproj * QVector4D(simulated_normal_array[i], 0);
+					QVector3D converted_normal_vec = QVector3D(converted_normal.x(), converted_normal.y(), converted_normal.z());
+					if (QVector3D::dotProduct(converted_normal_vec, QVector3D(0, 0, 1)) > 0) //不可见
+					{
+						simulated_isvisable[i] = 0;
+					}
+					else
+					{
+						simulated_isvisable[i] = 1;
+					}
+				}
+
+			}
+			else
+			{
+				cout << " please first to simulate to caculate visiable" << endl;
+			}
+
+		}
+
+
+	}
+
+	std::vector<std::vector<int> >		tmp_tracked_isVisiable = g_tracked_isVisiable;
+	std::vector<std::vector<int> >		tmp_simulated_isVisiable = g_simulated_isVisiable;
+
+}
+
+
 void VideoEditingWindow::updateCurSceneObjectPose()
 {
 	using namespace videoEditting;
@@ -2218,6 +2671,12 @@ void  VideoEditingWindow::begin_simulate()
 {
 	if (!bullet_wrapper)
 	{
+
+		bullet_wrapper = QSharedPointer<BulletInterface>(new BulletInterface());
+	}
+	else
+	{
+		bullet_wrapper.clear();
 		bullet_wrapper = QSharedPointer<BulletInterface>(new BulletInterface());
 	}
 			
@@ -2245,6 +2704,80 @@ void  VideoEditingWindow::step_simulate()
 }
 
 
+void VideoEditingWindow::setStrongFaceConstraint()
+{
+	using namespace videoEditting;
+	QWeakPointer<RenderableObject> p_object = activated_viewer()->getSelectedObject();
+	if (p_object.data() && p_object.data()->getType() == RenderableObject::OBJ_MESH)
+	{
+		Mesh* curObj = ((Mesh*)p_object.data());
+		const QSet<int>& selectedFace = curObj->getSelectFaceIDSet();
+		QSet<int> constraint_vtx;
+		for (auto bitr = selectedFace.begin(); bitr != selectedFace.end(); ++bitr)
+		{
+			int face_id = *bitr;
+			const ObjTriangle& triangle = curObj->getFaces()[face_id];
+			constraint_vtx.insert(triangle.vertIndex[0]);
+			constraint_vtx.insert(triangle.vertIndex[1]);
+			constraint_vtx.insert(triangle.vertIndex[2]);
+		}
+		int con_size = constraint_vtx.size();
+		g_constrainted_nodes.insert(constraint_vtx.begin(), constraint_vtx.end());
+		int nodes_size = g_constrainted_nodes.size();
+		for (int frame_id = 0; frame_id < g_total_frame; ++frame_id)
+		{
+			std::unordered_map<int, QVector3D>& map = g_position_constraint[frame_id];
+			QQuaternion rot = g_rotations[frame_id];
+			QVector3D   trans = g_translations[frame_id];
+			QMatrix4x4 tr;
+			QMatrix4x4 m_rotMatrix;
+			m_rotMatrix.setToIdentity();
+			m_rotMatrix.rotate(rot);
+			tr.translate(trans);
+			tr *= m_rotMatrix;
+
+			for (auto bitr = g_constrainted_nodes.begin(); bitr != g_constrainted_nodes.end(); ++bitr)
+			{
+				int constraint_id = *bitr;
+				QVector3D target_vtx = tr * g_init_vertices[constraint_id];
+				map[constraint_id] = target_vtx;
+			}
+		}
+	}
+}
+
+void VideoEditingWindow::setWeakFaceConstraint()
+{
+
+}
+
+
+namespace videoEditting
+{
+	extern bool isShowSimulationConstraint;
+}
+
+void VideoEditingWindow::unsetFaceConstraint()
+{
+	using namespace videoEditting;
+	g_constrainted_nodes.clear();
+	for (int i = 0; i < g_position_constraint.size(); ++i)
+	{
+		g_position_constraint[i].clear();
+	}
+}
+void VideoEditingWindow::showConstraint()
+{
+	using namespace videoEditting;
+	isShowSimulationConstraint = true;
+	updateGLView();
+}
+void VideoEditingWindow::unshowConstraint()
+{
+	using namespace videoEditting;
+	isShowSimulationConstraint = false;
+	updateGLView();
+}
 
 
 

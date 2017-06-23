@@ -52,6 +52,7 @@ namespace videoEditting
 		void zoomCamera(double dz);
 
 		void applyGLMatrices();
+		void applyViewMatrices();
 
 		void getRay(int x, int y, QVector3D& ori, QVector3D& dir);
 
@@ -73,7 +74,34 @@ namespace videoEditting
 		void setCenter(QVector3D& center, float length = 10);
 
 		const QVector3D& getOrigin() { return origin; }
-
+		void setOrigin(QVector3D& in)
+		{
+			origin = in;
+		}
+		void getViewDirection(QVector3D dirs[3])
+		{
+			dirs[0] = direction[0];
+			dirs[1] = direction[1];
+			dirs[2] = direction[2];
+		}
+		void setViewDirection(QVector3D dirs[3])
+		{
+			direction[0] = dirs[0] ;
+			direction[1] = dirs[1] ;
+			direction[2] = dirs[2] ;
+		}
+		const QVector3D& getTarget()
+		{
+			return target;
+		}
+		void setTarget(QVector3D& in)
+		{
+			target = in;
+		}
+		void setLength(float in)
+		{
+			length = in;
+		}
 		void addAttachedObjects(const QWeakPointer<RenderableObject> obj);
 		void clearAttachedObjects();
 		void setAttachObjectOffset(float x, float y, float z);
@@ -85,7 +113,10 @@ namespace videoEditting
 		void updateCameraPose();//这个应只给manipulator调用
 		void drawGeometry();
 		void drawAppearance();
-		
+		void updateCameraLazy()
+		{
+			cameraShouldUpdate = true;
+		}
 		friend QDataStream& operator<<(QDataStream& out, const Camera&mesh);
 		friend QDataStream& operator >> (QDataStream& in, Camera&mesh);
 	private:
@@ -107,7 +138,7 @@ namespace videoEditting
 		float farplane;
 									// 以下为观察参数，一旦改变需要重新设置观察矩阵
 		QVector3D target;
-		double  deltaAngle[2];
+		double  deltaAngle[2]; //delta angle[0] 对应于derection[1],delta angle[1] 对应于derection[0]
 		double  deltaLength;
 		double  length;
 
@@ -121,6 +152,7 @@ namespace videoEditting
 		float attachOffset[3];
 		float attachRotation;
 		float attachScale[2];
+		bool cameraShouldUpdate;
 	};
 
 }
