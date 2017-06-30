@@ -181,13 +181,16 @@ public:
     QRadioButton *radioButton_scale;
     QRadioButton *radioButton_fouces;
     QGroupBox *groupBox_3;
-    QVBoxLayout *verticalLayout_9;
-    QPushButton *pushButtoncur_pose_estimation;
-    QPushButton *set_curframe_as_key_frame_of_pose;
+    QGridLayout *gridLayout_8;
     QPushButton *pushButton_whole_pose_estimation;
     QPushButton *pushButton_correspondence;
     QPushButton *caculateCorredTexture;
     QPushButton *caculateAllCorredTexture;
+    QPushButton *pushButtoncur_pose_estimation;
+    QPushButton *set_curframe_as_key_frame_of_pose;
+    QPushButton *button_buildviewdatabase;
+    QPushButton *button_showtheDatabase;
+    QPushButton *button_setparameter;
     QWidget *tab_simulate;
     QHBoxLayout *horizontalLayout_9;
     QGroupBox *groupBox_2;
@@ -220,7 +223,7 @@ public:
     {
         if (VideoEditingWindow->objectName().isEmpty())
             VideoEditingWindow->setObjectName(QStringLiteral("VideoEditingWindow"));
-        VideoEditingWindow->resize(856, 939);
+        VideoEditingWindow->resize(1053, 932);
         actionOpen = new QAction(VideoEditingWindow);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionSave_as = new QAction(VideoEditingWindow);
@@ -610,7 +613,7 @@ public:
         scrollArea_object_info->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1000, 161));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1000, 186));
         scrollAreaWidgetContents->setMinimumSize(QSize(1000, 0));
         horizontalLayout_8 = new QHBoxLayout(scrollAreaWidgetContents);
         horizontalLayout_8->setSpacing(0);
@@ -915,39 +918,53 @@ public:
 
         groupBox_3 = new QGroupBox(groupBox);
         groupBox_3->setObjectName(QStringLiteral("groupBox_3"));
-        verticalLayout_9 = new QVBoxLayout(groupBox_3);
-        verticalLayout_9->setSpacing(0);
-        verticalLayout_9->setObjectName(QStringLiteral("verticalLayout_9"));
-        verticalLayout_9->setContentsMargins(0, 0, 0, 0);
-        pushButtoncur_pose_estimation = new QPushButton(groupBox_3);
-        pushButtoncur_pose_estimation->setObjectName(QStringLiteral("pushButtoncur_pose_estimation"));
-
-        verticalLayout_9->addWidget(pushButtoncur_pose_estimation);
-
-        set_curframe_as_key_frame_of_pose = new QPushButton(groupBox_3);
-        set_curframe_as_key_frame_of_pose->setObjectName(QStringLiteral("set_curframe_as_key_frame_of_pose"));
-
-        verticalLayout_9->addWidget(set_curframe_as_key_frame_of_pose);
-
+        gridLayout_8 = new QGridLayout(groupBox_3);
+        gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
+        gridLayout_8->setContentsMargins(0, 0, 0, 0);
         pushButton_whole_pose_estimation = new QPushButton(groupBox_3);
         pushButton_whole_pose_estimation->setObjectName(QStringLiteral("pushButton_whole_pose_estimation"));
 
-        verticalLayout_9->addWidget(pushButton_whole_pose_estimation);
+        gridLayout_8->addWidget(pushButton_whole_pose_estimation, 2, 0, 1, 1);
 
         pushButton_correspondence = new QPushButton(groupBox_3);
         pushButton_correspondence->setObjectName(QStringLiteral("pushButton_correspondence"));
 
-        verticalLayout_9->addWidget(pushButton_correspondence);
+        gridLayout_8->addWidget(pushButton_correspondence, 3, 0, 1, 1);
 
         caculateCorredTexture = new QPushButton(groupBox_3);
         caculateCorredTexture->setObjectName(QStringLiteral("caculateCorredTexture"));
 
-        verticalLayout_9->addWidget(caculateCorredTexture);
+        gridLayout_8->addWidget(caculateCorredTexture, 4, 0, 1, 1);
 
         caculateAllCorredTexture = new QPushButton(groupBox_3);
         caculateAllCorredTexture->setObjectName(QStringLiteral("caculateAllCorredTexture"));
 
-        verticalLayout_9->addWidget(caculateAllCorredTexture);
+        gridLayout_8->addWidget(caculateAllCorredTexture, 5, 0, 1, 1);
+
+        pushButtoncur_pose_estimation = new QPushButton(groupBox_3);
+        pushButtoncur_pose_estimation->setObjectName(QStringLiteral("pushButtoncur_pose_estimation"));
+
+        gridLayout_8->addWidget(pushButtoncur_pose_estimation, 0, 0, 1, 1);
+
+        set_curframe_as_key_frame_of_pose = new QPushButton(groupBox_3);
+        set_curframe_as_key_frame_of_pose->setObjectName(QStringLiteral("set_curframe_as_key_frame_of_pose"));
+
+        gridLayout_8->addWidget(set_curframe_as_key_frame_of_pose, 1, 0, 1, 1);
+
+        button_buildviewdatabase = new QPushButton(groupBox_3);
+        button_buildviewdatabase->setObjectName(QStringLiteral("button_buildviewdatabase"));
+
+        gridLayout_8->addWidget(button_buildviewdatabase, 0, 1, 1, 1);
+
+        button_showtheDatabase = new QPushButton(groupBox_3);
+        button_showtheDatabase->setObjectName(QStringLiteral("button_showtheDatabase"));
+
+        gridLayout_8->addWidget(button_showtheDatabase, 1, 1, 1, 1);
+
+        button_setparameter = new QPushButton(groupBox_3);
+        button_setparameter->setObjectName(QStringLiteral("button_setparameter"));
+
+        gridLayout_8->addWidget(button_setparameter, 2, 1, 1, 1);
 
 
         horizontalLayout_3->addWidget(groupBox_3);
@@ -1070,7 +1087,7 @@ public:
         VideoEditingWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(VideoEditingWindow);
         menubar->setObjectName(QStringLiteral("menubar"));
-        menubar->setGeometry(QRect(0, 0, 856, 23));
+        menubar->setGeometry(QRect(0, 0, 1053, 23));
         menuFile = new QMenu(menubar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuTools = new QMenu(menubar);
@@ -1201,14 +1218,17 @@ public:
         radioButton_scale->setText(QApplication::translate("VideoEditingWindow", "\347\274\251\346\224\276", 0));
         radioButton_fouces->setText(QApplication::translate("VideoEditingWindow", "\347\204\246\347\202\271\345\267\245\345\205\267", 0));
         groupBox_3->setTitle(QApplication::translate("VideoEditingWindow", "\345\247\277\346\200\201\344\274\260\350\256\241\347\256\227\346\263\225", 0));
-        pushButtoncur_pose_estimation->setText(QApplication::translate("VideoEditingWindow", "\345\275\223\345\211\215\345\270\247\345\247\277\346\200\201\344\274\260\350\256\241", 0));
-        set_curframe_as_key_frame_of_pose->setText(QApplication::translate("VideoEditingWindow", "\347\241\256\345\256\232\345\275\223\345\211\215\345\270\247\344\274\260\350\256\241", 0));
         pushButton_whole_pose_estimation->setText(QApplication::translate("VideoEditingWindow", "\345\205\250\345\270\247\345\247\277\346\200\201\344\274\260\350\256\241", 0));
         pushButton_correspondence->setText(QApplication::translate("VideoEditingWindow", "\345\257\271\345\272\224\345\205\263\347\263\273", 0));
         caculateCorredTexture->setText(QApplication::translate("VideoEditingWindow", "\350\256\241\347\256\227\345\275\223\345\211\215\345\270\247\n"
 "\345\257\271\345\272\224\347\272\271\347\220\206\345\235\220\346\240\207", 0));
         caculateAllCorredTexture->setText(QApplication::translate("VideoEditingWindow", "\350\256\241\347\256\227\346\211\200\346\234\211\345\270\247\n"
 "\345\257\271\345\272\224\347\272\271\347\220\206\345\235\220\346\240\207", 0));
+        pushButtoncur_pose_estimation->setText(QApplication::translate("VideoEditingWindow", "\345\275\223\345\211\215\345\270\247\345\247\277\346\200\201\344\274\260\350\256\241", 0));
+        set_curframe_as_key_frame_of_pose->setText(QApplication::translate("VideoEditingWindow", "\347\241\256\345\256\232\345\275\223\345\211\215\345\270\247\344\274\260\350\256\241", 0));
+        button_buildviewdatabase->setText(QApplication::translate("VideoEditingWindow", "\345\273\272\347\253\213\350\247\206\350\247\222\346\225\260\346\215\256\345\272\223", 0));
+        button_showtheDatabase->setText(QApplication::translate("VideoEditingWindow", "\346\230\276\347\244\272\346\225\260\346\215\256\345\272\223", 0));
+        button_setparameter->setText(QApplication::translate("VideoEditingWindow", "\350\256\276\347\275\256\346\225\260\346\215\256\345\272\223\345\217\202\346\225\260", 0));
         tabWidget_algorithom->setTabText(tabWidget_algorithom->indexOf(tab_pose_estimation), QApplication::translate("VideoEditingWindow", "2)\345\247\277\346\200\201\344\274\260\350\256\241", 0));
         groupBox_2->setTitle(QApplication::translate("VideoEditingWindow", "simulate", 0));
         begin_simulate->setText(QApplication::translate("VideoEditingWindow", "\345\274\200\345\247\213\346\250\241\346\213\237", 0));

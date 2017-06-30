@@ -33,7 +33,12 @@ namespace videoEditting
 		QVector3D wMax = transform.getTransformMatrix() * localBBox.pMax;
 		return (wMax - wMin).length();
 	}
-
+	QVector3D RenderableObject::getObjectCenter()
+	{
+		QVector3D wMin = transform.getTransformMatrix() * localBBox.pMin;
+		QVector3D wMax = transform.getTransformMatrix() * localBBox.pMax;
+		return (wMax - wMin) / 2.0f;
+	}
 	void RenderableObject::setTransform(const ObjectTransform& trans)
 	{
 		transform = trans;

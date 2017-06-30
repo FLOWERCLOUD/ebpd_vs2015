@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>856</width>
-    <height>939</height>
+    <width>1053</width>
+    <height>932</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -603,7 +603,7 @@
                   <x>0</x>
                   <y>0</y>
                   <width>1000</width>
-                  <height>161</height>
+                  <height>186</height>
                  </rect>
                 </property>
                 <property name="minimumSize">
@@ -1021,10 +1021,7 @@
                <property name="title">
                 <string>姿态估计算法</string>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_9">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
+               <layout class="QGridLayout" name="gridLayout_8">
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
@@ -1037,35 +1034,21 @@
                 <property name="bottomMargin">
                  <number>0</number>
                 </property>
-                <item>
-                 <widget class="QPushButton" name="pushButtoncur_pose_estimation">
-                  <property name="text">
-                   <string>当前帧姿态估计</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="set_curframe_as_key_frame_of_pose">
-                  <property name="text">
-                   <string>确定当前帧估计</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
+                <item row="2" column="0">
                  <widget class="QPushButton" name="pushButton_whole_pose_estimation">
                   <property name="text">
                    <string>全帧姿态估计</string>
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item row="3" column="0">
                  <widget class="QPushButton" name="pushButton_correspondence">
                   <property name="text">
                    <string>对应关系</string>
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item row="4" column="0">
                  <widget class="QPushButton" name="caculateCorredTexture">
                   <property name="text">
                    <string>计算当前帧
@@ -1073,11 +1056,46 @@
                   </property>
                  </widget>
                 </item>
-                <item>
+                <item row="5" column="0">
                  <widget class="QPushButton" name="caculateAllCorredTexture">
                   <property name="text">
                    <string>计算所有帧
 对应纹理坐标</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QPushButton" name="pushButtoncur_pose_estimation">
+                  <property name="text">
+                   <string>当前帧姿态估计</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QPushButton" name="set_curframe_as_key_frame_of_pose">
+                  <property name="text">
+                   <string>确定当前帧估计</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="button_buildviewdatabase">
+                  <property name="text">
+                   <string>建立视角数据库</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QPushButton" name="button_showtheDatabase">
+                  <property name="text">
+                   <string>显示数据库</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QPushButton" name="button_setparameter">
+                  <property name="text">
+                   <string>设置数据库参数</string>
                   </property>
                  </widget>
                 </item>
@@ -1239,7 +1257,7 @@ selected face</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>856</width>
+     <width>1053</width>
      <height>23</height>
     </rect>
    </property>

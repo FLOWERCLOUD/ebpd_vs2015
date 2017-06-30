@@ -22,7 +22,7 @@ namespace videoEditting
 		projType = GE_PROJ_PERSPECTIVE;
 		depthType = GE_DEPTH_GEOMETRY;
 		isProjDepthTypeUpdated = true;
-		depthBufferObj = frameBufferObj = -1;
+		depthBufferObj = frameBufferObj = -1;  //depthBufferObj 在本程序并没有使用
 		textureObj[0] = textureObj[1] = -1;
 	}
 

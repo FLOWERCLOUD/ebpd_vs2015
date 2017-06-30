@@ -9,6 +9,7 @@
 #include "BulletCollision/CollisionShapes/btBoxShape.h"
 #include "LinearMath/btDefaultMotionState.h"
 #include "videoediting\BunnyMesh.h"
+
 #include <iostream>
 #include <QMatrix4x4>
 namespace videoEditting
@@ -32,6 +33,20 @@ namespace videoEditting
 	int g_current_frame = 0;
 	float g_time_step = 0.001f;
 	std::vector<QImage>       g_cameraviewer_image_array;
+	std::vector<QImage>		  g_viewRenderImage;
+	void saveImageArray(std::vector<QImage>& images, QString filepath, QString name)
+	{
+		if (!filepath.isEmpty())
+		{
+			filepath += "/";
+			for (size_t i = 0; i < images.size(); i++)
+			{
+				QString fullpath = filepath + name+QString("_%1.jpg").arg(i,4, 10, QChar('0'));
+				QImage l_image = images[i];
+				l_image.save(fullpath);
+			}
+		}
+	}
 }
 
 using namespace videoEditting;

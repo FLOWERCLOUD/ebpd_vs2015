@@ -29,6 +29,7 @@ namespace videoEditting
 class CameraWidget;
 class ReadFrameWidget;
 class BulletInterface;
+class ViewDataBase;
 class VideoEditingWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -128,7 +129,9 @@ private slots:
 	void showCorrespondence();
 	void caculateCurFrameCorredTexture();
 	void caculateAllCorredTexture();
-
+	void buildviewdatabase();
+	void showtheDatabase();
+	void setparameter();
 	void updateCurSceneObjectPose();
 	void updateCurSceneObjectPose(QString& objname);
 	//step3 tools
@@ -188,6 +191,7 @@ private:
 	videoEditting::GLViewWidget* cur_active_viewer;
 	videoEditting::OGL_widget_skin_hidden* _hidden;
 	QSharedPointer<BulletInterface>        bullet_wrapper;
+	QSharedPointer<ViewDataBase>		   viewdatabase;
 public:
 	videoEditting::ObjectInfoWidget* transformEditor;
 	void updateGLView();

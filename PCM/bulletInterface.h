@@ -38,6 +38,8 @@ namespace videoEditting
 	extern int g_current_frame;
 	extern float g_time_step;
 	extern std::vector<QImage>        g_cameraviewer_image_array;
+	extern 	std::vector<QImage>		  g_viewRenderImage;
+	void saveImageArray(std::vector<QImage>& images, QString path, QString name);
 }
 class BulletInterface
 {

@@ -9,9 +9,12 @@
 #include "videoediting/GLViewWidget.h"
 #include "videoediting/RenderableObject.h"
 #include "bulletInterface.h"
+#include "sihouttesExposer.h"
+#include "Viewdatabase.h"
 #include <QFileDialog>
 #include <QMessageBox>
 #include <fstream>
+
 
 using namespace cv;
 VideoEditingWindow* VideoEditingWindow:: window_ = 0;
@@ -305,7 +308,9 @@ void VideoEditingWindow::setUpToolbox()
 	connect(ui_.pushButton_correspondence, SIGNAL(clicked()), this, SLOT(showCorrespondence()));
 	connect(ui_.caculateCorredTexture, SIGNAL(clicked()), this, SLOT(caculateCurFrameCorredTexture()));
 	connect(ui_.caculateAllCorredTexture, SIGNAL(clicked()), this, SLOT(caculateAllCorredTexture()));
-
+	connect(ui_.button_buildviewdatabase, SIGNAL(clicked()), this, SLOT(buildviewdatabase()));
+	connect(ui_.button_showtheDatabase, SIGNAL(clicked()), this, SLOT(showtheDatabase()));
+	connect(ui_.button_setparameter, SIGNAL(clicked()), this, SLOT(setparameter()));
 	//step3
 	connect(ui_.begin_simulate, SIGNAL(clicked()), this, SLOT(begin_simulate()));
 	connect(ui_.pause_simulate, SIGNAL(clicked()), this, SLOT(pause_simulate()));
@@ -759,7 +764,7 @@ void VideoEditingWindow::write_video()
 	QString filepath = QFileDialog::getExistingDirectory(this, "Get existing directory", cur_dir);
 	filepath += "\\";
 	QString videoFilepath = filepath;
-	string vedioFilename = videoFilepath.toStdString();
+	string vedioFilename = videoFilepath.toLocal8Bit().constData();
 	vedioFilename.append(videoName);
 
 	//double fps=25.0;	//帧率
@@ -989,18 +994,7 @@ void VideoEditingWindow::writeCameraViewertovideo()
 		tr("*.avi"));
 	if (fileName.size() == 0)
 		return;
-	g_cameraviewer_image_array.resize(g_total_frame);
-	if (camera_viewer && camera_viewer->isGLwidgetInitialized())
-	{
-		for (size_t frame_id = 0; frame_id < g_total_frame; frame_id++)
-		{
-			turnToFrame(frame_id + 1);
-			camera_viewer->directDraw();
-			g_cameraviewer_image_array[frame_id] = camera_viewer->grabFrameBuffer();
-		}
-	}
-
-
+	renderCameraViewerToImagearray();
 	if (fileName.size() != 0)
 	{
 		string vedioFilename = fileName.toLocal8Bit().constData();
@@ -1008,24 +1002,36 @@ void VideoEditingWindow::writeCameraViewertovideo()
 		int width, height;
 		if (g_cameraviewer_image_array.size())
 		{
-			width = g_cameraviewer_image_array[0].width();
-			height = g_cameraviewer_image_array[0].height();
+			//width = g_cameraviewer_image_array[0].width();
+			//height = g_cameraviewer_image_array[0].height();
+			QImage l_image = g_cameraviewer_image_array[0];
+			frame = QImage2cvMat(l_image);
+			width = frame.cols;
+			height = frame.rows;
 		}
 		else
 		{
 			width = height = 0;
 		}
 		//CvVideoWriter * writer = 0;//初始化视频写入		
-		writer = VideoWriter(vedioFilename.c_str(), CV_FOURCC('X', 'V', 'I', 'D'), fps, Size(width, height));//初始化结束，默认640*480大小，亦可读取一帧，获取其原始大小
+//		writer = VideoWriter(vedioFilename.c_str(), CV_FOURCC('X', 'V', 'I', 'D'), rate, Size(width, height)); 
+		writer = VideoWriter(vedioFilename.c_str(), CV_FOURCC('D', 'I', 'V', 'X'), rate, frame.size());
+		if (!writer.isOpened())
+			return;
 		for (size_t i = 0; i < g_cameraviewer_image_array.size(); i++)
 		{
 			QImage l_image = g_cameraviewer_image_array[i];
 			frame = QImage2cvMat(l_image);
-			writer << frame;
+			frame.convertTo(frame, CV_8UC3);
+			imwrite("./resource/video/a.jpg", frame);
+			writer << frame;  //不知为什么就是保存的视频只有 6kB
 
 		}
 		if (writer.isOpened())
+		{
 			writer.release();
+		}
+			
 	}
 
 
@@ -1037,23 +1043,13 @@ void VideoEditingWindow::writeCameraViewertoImagearray()
 	QString cur_dir = "./resource/video";
 	QString filepath = QFileDialog::getExistingDirectory(this, "Get existing directory", cur_dir);
 
-	g_cameraviewer_image_array.resize(g_total_frame);
-	if (camera_viewer && camera_viewer->isGLwidgetInitialized())
-	{
-		for (size_t frame_id = 0; frame_id < g_total_frame; frame_id++)
-		{
-			turnToFrame(frame_id + 1);
-			camera_viewer->directDraw();
-			g_cameraviewer_image_array[frame_id] = camera_viewer->grabFrameBuffer();
-		}
-	}
-
+	renderCameraViewerToImagearray();
 	if (!filepath.isEmpty())
 	{
 		filepath += "/";
 		for (size_t i = 0; i < g_cameraviewer_image_array.size(); i++)
 		{
-			QString fullpath = filepath + QString("result_%1.jpg").arg(i);
+			QString fullpath = filepath + QString("result_%1.jpg").arg(i,4, 10, QChar('0'));
 			QImage l_image = g_cameraviewer_image_array[i];
 //			frame = QImage2cvMat(l_image);
 			l_image.save(fullpath);
@@ -1066,13 +1062,17 @@ void VideoEditingWindow::writeCameraViewertoImagearray()
 
 void VideoEditingWindow::renderCameraViewerToImagearray()
 {
-
-
-
-
-
-
-
+	using namespace videoEditting;
+	g_cameraviewer_image_array.resize(g_total_frame);
+	if (camera_viewer && camera_viewer->isGLwidgetInitialized())
+	{
+		for (size_t frame_id = 0; frame_id < g_total_frame; frame_id++)
+		{
+			turnToFrame(frame_id + 1);
+			camera_viewer->directDraw();
+			g_cameraviewer_image_array[frame_id] = camera_viewer->grabFrameBuffer();
+		}
+	}
 }
 
 
@@ -2631,7 +2631,109 @@ void VideoEditingWindow::caculateAllCorredTexture()
 
 }
 
+void VideoEditingWindow::buildviewdatabase()
+{
+	using namespace videoEditting;
 
+	if (!viewdatabase)
+	{
+		viewdatabase = QSharedPointer<ViewDataBase>(new ViewDataBase());
+	}
+	viewdatabase->createConnection();  //创建连接
+
+	g_viewRenderImage.clear();
+	QWeakPointer<RenderableObject> p_object = activated_viewer()->getSelectedObject();
+	SihouttesExposer exposer;
+	exposer.init(camera_viewer->width(), camera_viewer->height(), 0, 0);
+	if (p_object.data() && p_object.data()->getType() == RenderableObject::OBJ_MESH)
+	{
+		Mesh* curObj = ((Mesh*)p_object.data());
+		QVector3D& center = curObj->getObjectCenter();
+		float radius = curObj->getApproSize() /2.0f;
+		exposer.setRenderObject(p_object);
+//		int view_size = 100;
+		//球坐标 到直角坐标
+		// fi = [0 ,2*pi] ,theta = [0,pi] , r = appro_size
+		int fi_num = 360 ; int theta_num = 180;
+		int fi_grid = 3;
+		int theata_grid = 3;
+		for (int fi_i = 0; fi_i < fi_num;  fi_i+= fi_grid)
+		{
+			for (int theata_j = 0; theata_j < theta_num; theata_j+= theata_grid)
+			{
+				float cur_fi = fi_i  * PI / 180.0f;
+				float cur_theta= theata_j  * PI / 180.0f;
+				float r = 3* radius;
+				//转化为直角坐标系
+				float z = r*sin(cur_theta)*cos(cur_fi);
+				float x = r*sin(cur_theta)*sin(cur_fi);
+				float y = r*cos(cur_theta);
+				QVector3D camera_pos(x, y, z);
+				QVector3D dir = center - camera_pos ;
+				QMatrix4x4 viewMatrix;
+				viewMatrix.setToIdentity();
+				QVector3D up;
+				QVector3D x_vec(1, 0, 0);
+				QVector3D y_vec(0, 1, 0);
+				float result = QVector3D::dotProduct(dir.normalized(), y_vec);
+				if (abs(result) >0.9f)
+				{
+					if (result < 0)
+					{
+						up = -x_vec;
+					}
+					else
+					{
+						up = x_vec;
+					}
+				}
+				else  
+				{
+					up = y_vec;
+				}
+				viewMatrix.lookAt(camera_pos, center, up);
+				QMatrix4x4 projMatrix;
+				projMatrix.setToIdentity();
+				float fov_degree = 60;
+				float aspectRatio = 1.0;
+				float nearplane = 0.2;
+				float farplane = 100;
+				projMatrix.perspective(fov_degree, aspectRatio, nearplane, farplane);
+
+				glMatrixMode(GL_MODELVIEW);
+				glLoadMatrixf(viewMatrix.constData());
+				glMatrixMode(GL_PROJECTION);
+				glLoadMatrixf(projMatrix.constData());
+
+
+
+
+				exposer.renderGeometry();
+				QImage renderedImage = exposer.getRenderedQImage();
+				g_viewRenderImage.push_back(renderedImage);
+
+			}
+		}
+
+	}
+
+	saveImageArray(g_viewRenderImage, "./resource/meshes/scene/viewimagearray/", "patrick");
+	viewdatabase->createTable();
+	viewdatabase->insert();
+
+
+}
+void VideoEditingWindow::showtheDatabase()
+{
+
+
+}
+void VideoEditingWindow::setparameter()
+{
+
+
+
+}
 void VideoEditingWindow::updateCurSceneObjectPose()
 {
 	using namespace videoEditting;

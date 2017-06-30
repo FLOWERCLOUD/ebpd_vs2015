@@ -88,7 +88,7 @@ namespace videoEditting
 
 		// 获得物体近似大小
 		float getApproSize();
-
+		QVector3D getObjectCenter(); // 世界坐标
 		int getObjectID() { return objectID; }
 
 		inline ObjectTransform& getTransform() { return transform; }

@@ -795,6 +795,12 @@
     <ClCompile Include="GeneratedFiles\Release\moc_VideoEditingWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="videoediting\sihouttesExposer.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
+    <ClCompile Include="videoediting\Viewdatabase.cpp">
+      <Filter>Tools\videoediting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="main_window.qrc">
@@ -1565,6 +1571,12 @@
       <Filter>Algorithm\videoediting</Filter>
     </ClInclude>
     <ClInclude Include="videoediting\BunnyMesh.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\sihouttesExposer.h">
+      <Filter>Tools\videoediting</Filter>
+    </ClInclude>
+    <ClInclude Include="videoediting\Viewdatabase.h">
       <Filter>Tools\videoediting</Filter>
     </ClInclude>
   </ItemGroup>
